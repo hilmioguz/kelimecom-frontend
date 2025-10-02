@@ -1,0 +1,432 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com gundem | Sözlükler Veritabanı</title>
+<link href="/assets/css/style.css" rel="stylesheet">
+<style>
+    .copyurl {
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        display: block;
+    }
+</style>
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+    <%- include('partials/dil-filtreleme'); -%>
+</header>
+<main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-20 col-lg-10 col-xl-12 mx-lg-auto">
+                <section>
+                    <% if (user || abonekurum) {%>
+                    <div class="pb-1">
+                        <p class="text-center lead mb-0"><%- __('results_headline')%></p>
+                    </div>
+                    <% }  else { %>
+                    <div class="pb-1">
+                        <p class="text-center lead mb-0"><%- __('results_headline_not_registered')%></p>
+                    </div>
+                    <% } %>
+                </section>
+                <%- include('partials/sonuc-filtre'); -%>
+            </div>
+        </div>
+        <div class="row">
+            <!-- SOL SUTUN -->
+            <div class="col-lg-5 col-xl-4 mobilde-2">
+                <aside class="sol-aside">
+                    <% if(abonekurum) { %>
+                    <div class="kx-card">
+                        <div class="kx-card__header">
+                            <div class="kx-card__title">
+                                <%= abonekurum.institution_name %>
+                            </div>
+                        </div>
+                        <div class="kx-card__body">
+                            <img src="<%= abonekurum.logoImage %>" width="200">
+                        </div>
+                    </div>
+                    <% } %>
+                    <div class="kx-card">
+                        <div class="kx-card__header">
+                            <div class="kx-card__title">
+                                <%- __('wordofday') %>
+                            </div>
+                        </div>
+                        <div class="kx-card__body" id="gununKelimesi">
+                            <div class="skeleton-effect-wave">
+                                <p style="width: 100px;" class="skeleton-block"></p>
+                                <p style="width: 200px;" class="skeleton-block"></p>
+                                <p style="width: 300px;" class="skeleton-block"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kx-card">
+                        <div class="kx-card__header">
+                            <div class="kx-card__title">
+                                <%- __('allaboutkelimecom') %>
+                            </div>
+                        </div>
+                        <div class="kx-card__body">
+                            <p class="body-text"><%- __('watchkelimecom') %>
+                            </p>
+                            <div class="kelimex-video mt-3">
+                                <a data-fancybox="video" data-width="640" data-height="360"
+                                    href="https://www.youtube.com/embed/z8PmpBk60xg?autoplay=1">
+                                    <img class="card-img img-fluid" src="/assets/img/video-bg.png" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            <!-- SOL SUTUN SONU -->
+            <div class="col-lg-10 col-xl-12 mobilde-1 pb-4">
+                <!-- ANA İÇERİK BASLANGICI -->
+                <section>
+                    <% if (kelime.length) { %>
+                    <% kelime.forEach(function(item) { %>
+
+                    <div class="kx-card kx-card__simple">
+                        <div class="kx-card__header">
+                            <div class="d-flex">
+                                <% if (item.isLimited) { %>
+                                    <span class="kx-card-title ana-metin"><i class="fas fa-lock mr-1"></i><%= item.madde %></span>
+                                <% } else {
+                                    const theurl = `${encodeURI(item.madde)}/${item.id}-${item.whichDict.id}/${item.lang}/${meta.sonucFiltreTip}/${item.code}`;
+                                    %>
+                                <a href="/kelime/<%=theurl%>" class="kx-card-title"><span class="ana-metin"><%=item.madde%></span></a>
+                                <% } %>
+                                <% if(item.whichDict && item.whichDict.telaffuz && item.whichDict.telaffuz.length) {%>
+                                    <span class="ml-1 text-muted">(<%= item.whichDict.telaffuz.join(', ') %>)</span>
+                                <% } %>
+                                <span class="madde-detay text-muted ml-1"><% if(item.karsiMadde && item.karsiMadde.length) {%>(<%=item.karsiMadde.map((ikitem) => ikitem.madde).join(', ')%>)<%}%></span>
+                            </div>
+
+                            <div class="icon-bag tip-filtre">
+                                <% if(item.whichDict && item.whichDict.tip && item.whichDict.tip.length) {%>
+                                <a href="#" class="badge kx-badge <%=item.whichDict.tip[0] %> active" ><%= item.whichDict.tip.join(', ') %> </a><% } %>
+                                <a href="javascript:void(0);" class="favorilereEkle icon <%_ if (item.isFavored){%> active <%}%>" data-islimited="<%= item.isLimited %>" data-maddeid="<%= item.id %>" data-anlamid="<%= item.anlamId %>" title="Favorilere Ekle"><i class="fas fa-star"></i></a>
+                                <a href="javascript:void(0);" class="begenenlereEkle icon <% if (item.isLiked) {%> active <%}%>" data-islimited="<%= item.isLimited %>" data-maddeid="<%= item.id %>" data-anlamid="<%= item.anlamId %>" title="Beğen"><i class="fas fa-heart"></i></a>
+                                <a href="javascript:void(0);" class="copybutton icon" title="Bağlantı" data-text-copied="<%- __('copied') %>"><i class="fas fa-link"></i></a>
+                                <span class="copyurl">https://kelime.com/arama/<%= item.madde %></span>
+                            </div>
+                        </div>
+                        <div class="kx-card__body">
+                                <span class="wholecontent">
+                                    <div class="sonuc-origin">
+                                        <strong><%= item.dil.toUpperCase() %></strong> /  <%= item.sozluk %>
+                                    </div>
+                                    <% if (item.isLimited) { %>
+                                        <%= item.anlam %>
+                                    <% } else {
+                                        const theurl = `${encodeURI(item.madde)}/${item.id}-${item.whichDict.id}/${item.lang}/${meta.sonucFiltreTip}/${item.code}`;
+                                        %>
+                                    <a href="/kelime/<%=theurl%>" class="body-text">
+                                        <div class="show-read-more">
+                                            <%- item.anlam %>
+                                        </div>
+                                    </a>
+                                    <% } %>
+                                </span>
+                        </div>
+                    </div>
+                    <% }) %>
+                <% } else { %>
+                    <div id="hasNoResultBlock" class="kx-card kx-card__sari active">
+                        <div class="kx-card__header align-left">
+                            <div class="smiley">
+                                <i class="fas fa-frown"></i>
+                            </div>
+                            <span class="kx-card-title"><span class="text-muted">Belirtilen arama kriterleri sonucu</span> "<span class="ana-metin"><%= meta.sonucKelime %></span>" <span class="text-muted">bulunamadı :(</span></span>
+                        </div>
+                        <div class="kx-card__body clearfix">
+                            <p class="body-text clearfix">
+                                - Aradığınız kelimenin yazılışının doğru olduğundan emin misiniz? Onlarca sözlük içerisinde arama yaptık ama maalesef bir sonuç bulamadık. <br>
+                                <br>
+                                - Aşağıdaki sonuçların aradığınız kelime ile alakalı bir ipucu verebileceğini ümit ediyoruz.<br>
+                                <br>
+                                - Kelimenin anlamını öğrendiğiniz takdirde, sözlüğümüze katkıda bulunabilirseniz çok müteşekkir oluruz. <a href="#">Eklemek için tıklayınız.</a><br>
+                            </p>
+                            <ul class="kelime-aksiyonlari mb-0">
+                                <li>
+                                    <img src="/assets/img/kalem-icon.svg"> <a href="#">Kelimeyi doğru yazdığınızı ve sözlüğümüzde bulunmasını istiyorsanız tıklayınız</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <% } %>
+                    <!-- <div class="sonuc-info-card">
+                        <p>Bu kelimesi ile alakalı <%= metadata.total %> sonuç daha bulunuyor. Maalesef bu sonuçları görüntüleyebilmek için <a href="#">bireysel</a> veya <a href="#">kurumsal</a> üyelik gerekmektedir.</p>
+                    </div> -->
+
+                </section>
+                <%- include('partials/cekim-benzerlerde', {active_page: 'arama'}); -%>
+
+                <%- include('partials/madde-anlamlarinda', {active_page: 'arama'}); -%>
+                <%- include('partials/paket-secenek'); -%>
+                <!-- ANA İÇERİK SONU -->
+            </div>
+            <!-- SAG SUTUN -->
+            <div class="col-lg-5 col-xl-4 mobilde-3">
+                <aside class="sag-aside">
+                    <div class="kx-card">
+                        <div class="kx-card__header">
+                            <div class="kx-card__title">
+                                <%- __('tags') %>
+                            </div>
+                        </div>
+                        <div class="kx-card__body">
+                            <p class="body-text">
+                                <%= meta.sonucKelime %> ne demek, <%= meta.sonucKelime %> nedir, <%= meta.sonucKelime %> anlamı, <%= meta.sonucKelime %> yazılışı, <%= meta.sonucKelime %> nasıl yazılır, <%= meta.sonucKelime %> nasıl okunur, <%= meta.sonucKelime %> nedir kısaca <br>
+                                <br>
+                                <%= meta.sonucKelime %> türkçesi, <%= meta.sonucKelime %> ingilizcesi, <%= meta.sonucKelime %> osmanlıcası, <%= meta.sonucKelime %> arapçası, <%= meta.sonucKelime %>
+                                farsçası, <%= meta.sonucKelime %> almancası, <%= meta.sonucKelime %> fransızcası, <%= meta.sonucKelime %> rusçası, <%= meta.sonucKelime %> çincesi
+                            </p>
+                        </div>
+                    </div>
+                    <%- include('partials/davet-gonderme'); -%>
+                    <%- include('partials/sosyal-medya-takip'); -%>
+                    <!-- <div class="kx-card">
+                        <div class="kx-card__body">
+                            <a href="#">
+                                <img src="https://dummyimage.com/400x600/ededed/000000&amp;text=REKLAM+YERİ" class="img-fluid">
+                            </a>
+                        </div>
+                    </div> -->
+                </aside>
+            </div>
+            <!-- SAG SUTUN SONU -->
+        </div>
+    </div>
+
+    <%- include('partials/visitblog'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+    <kelime-keyboard id="kelime-keyboard" />
+
+</main>
+
+<%- contentFor('footerBlock') %>
+<%- include('partials/sozluk-filtre-modal'); -%>
+<%- include('partials/dil-filtre-modal'); -%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<%- include('partials/sanal-klavye', {active_page: 'arama'}); -%>
+<script>
+$(document).ready(function () {
+    const as = `<%= metadata.total %>`;
+
+    function showNoResults() {
+        if ($('#hasNoResultBlock')) {
+            $('#hasNoResultBlock').show();
+        }
+    }
+
+    intervalId = setInterval(function() {
+        const csonuc = $("#cekim-benzerlerde-arama").attr('data-total');
+        const asonuc = $("#madde-anlamlarinda-arama").attr('data-total');
+        const toplamSonuc= $("#toplamSonuc");
+        // console.log('csonuc:', csonuc, 'asonuc:', asonuc);
+        if (csonuc != 'null' && asonuc != 'null') {
+            if (csonuc > 0 || asonuc > 0) {
+                const total = Number(as) + Number(csonuc) + Number(asonuc);
+                toplamSonuc.html(total);
+                toplamSonuc.removeClass('fa fa-spinner');
+                clearInterval(intervalId);
+                intervalId = null;
+            } else {
+                showNoResults();
+                toplamSonuc.html(0);
+                toplamSonuc.removeClass('fa fa-spinner');
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+    }, 500);
+
+
+  $.validator.addMethod(
+    "validEmail",
+    function (value, element) {
+      if (value.length > 1) {
+        if (
+          /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+            value
+          )
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    },
+    "Geçerli bir eposta adresi giriniz"
+  );
+
+  $("#invitation-form").validate({
+    rules: {
+      invitedBy: {
+        required: true,
+        minlength: 3,
+      },
+      email: {
+        required: true,
+        email: true,
+        validEmail: true,
+      },
+    },
+    messages: {
+      invitedBy: {
+        required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+        minlength: "minimum 3 karakter",
+      },
+      email: {
+        required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+        email: "Geçersiz e-posta!",
+      },
+    },
+  });
+
+  $("#invitation-button").on("click", function () {
+    if ($("#invitation-form").valid()) {
+      $(this).prop("disabled", true);
+      $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+      const that = this;
+      $.ajax({
+        url: "/davetet",
+        method: "post",
+        data: $("#invitation-form").serialize(),
+        success: function (result) {
+          if (typeof result.errors == "undefined") {
+            Swal.fire({
+              title: "Başarılı!",
+              text: "Davetiniz belirtiğiniz e-posta adresine gönderildi!",
+              type: "success",
+              heightAuto: false,
+            });
+            $(that).prop("disabled", false);
+            $(that).html("DAVET GÖNDER");
+            $(':input','#invitation-form')
+              .not(':button, :submit, :reset, :hidden')
+              .val('');
+          } else {
+            let err = "";
+            $(that).prop("disabled", false);
+            $(that).html("DAVET GÖNDER");
+            result.errors.forEach(function (e) {
+              err += e.text + "\n";
+              Swal.fire({
+                title: "HATA!",
+                text: err.message,
+                type: "warning",
+                heightAuto: false,
+              });
+            });
+          }
+        },
+        error: function (errors) {
+          $(that).prop("disabled", false);
+          $(that).html("DAVET GÖNDER");
+          Swal.fire({
+            title: "HATA!",
+            text: errors.responseJSON,
+            type: "warning",
+            heightAuto: false,
+          });
+        },
+      });
+      $(':input','#invitation-form')
+      .not(':button, :submit, :reset, :hidden')
+      .val('');
+    }
+  });
+
+
+
+  /*!
+ * August 2017
+ * copiq 1.0.0
+ * @author Mario Vidov
+ * @url http://vidov.it
+ * @twitter MarioVidov
+ * MIT license
+ */
+
+(function($) {
+    $.fn.copiq = function (options) {
+        var settings = $.extend({
+            parent: 'body',
+            content: '',
+            onSuccess: function () {},
+            onError: function () {}
+        }, options);
+
+        return this.each(function () {
+            var $element = $(this);
+            $element.on('click', function () {
+                var source = $element.parents(settings.parent).find(settings.content);
+                var range = document.createRange();
+                var selection = window.getSelection();
+
+                range.selectNodeContents(source[0]);
+                selection.removeAllRanges();
+                selection.addRange(range);
+
+                try {
+                    var successful = document.execCommand('copy');
+                    var callback = successful ? 'onSuccess' : 'onError';
+                    settings[callback]($element, source, selection.toString());
+                } catch (err) {}
+                selection.removeAllRanges();
+            });
+        });
+    };
+})(jQuery);
+$('.copybutton').copiq({
+        parent: '.tip-filtre',
+        content: '.copyurl',
+        onSuccess: function($element, source, selection) {
+            const eskisi = $element.html();
+            $element.html($element.attr("data-text-copied"));
+            setTimeout(function() {
+                $element.html(eskisi);
+            }, 2000);
+        }
+});
+$('.apabutton').copiq({
+        parent: '.alinti-ikonlar',
+        content: '.apa',
+        onSuccess: function($element, source, selection) {
+            const eskisi = $element.html();
+            $element.html($element.attr("data-text-copied"));
+            setTimeout(function() {
+                $element.html(eskisi);
+            }, 2000);
+        }
+});
+$('.mlabutton').copiq({
+        parent: '.alinti-ikonlar',
+        content: '.mla',
+        onSuccess: function($element, source, selection) {
+            const eskisi = $element.html();
+            $element.html($element.attr("data-text-copied"));
+            setTimeout(function() {
+                $element.html(eskisi);
+            }, 2000);
+        }
+});
+$('.cmsbutton').copiq({
+        parent: '.alinti-ikonlar',
+        content: '.cms',
+        onSuccess: function($element, source, selection) {
+            const eskisi = $element.html();
+            $element.html($element.attr("data-text-copied"));
+            setTimeout(function() {
+                $element.html(eskisi);
+            }, 2000);
+        }
+});
+});
+</script>

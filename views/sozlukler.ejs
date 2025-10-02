@@ -1,0 +1,1548 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header>
+    <%- include('partials/menu'); -%>
+</header>
+  <main role="main">
+    <section class="degrade-desen-bg">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+                    <div class="cozumleyici-nedir">
+                        <h1>Hangi Sözlükler?</h1>
+                        <p>Aşağıda adı geçen ve Kelime.com sistemine yüklü olan sözlüklerden herhangi birini satın alıp yanında verilen aktivasyon kartını kullanarak Kelime.com'ı tam paket olacak şekilde 6 ay boyunca ücretsiz kullanabilirsiniz. 6 ayın sonunda sadece satın aldığınız eserin içerisinde  arama imkanına sahip olabilirsiniz. Hem kitap sahibi olup hem de onlarca sözlüğün veritabanına ücretsiz sahip olmak için bence denemeye değer. <a href="#" class="dark-turuncu">Aktivasyon kartı nasıl kullanılır tıkla.</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row hidden-mobile">
+                <div class="col">
+                    <!-- sections/_sozlukler.scss -->
+                    <ul class="nav justify-content-center nav-tabs sozluk-tab-linkler">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="sozlukTumu-tab" data-toggle="tab" href="#sozlukTumu">Tümü</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sozluk1-tab" data-toggle="tab" href="#sozluk1">Türkçe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sozluk2-tab" data-toggle="tab" href="#sozluk2">İngilizce</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sozluk3-tab" data-toggle="tab" href="#sozluk3">Osmanlıca</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sozluk4-tab" data-toggle="tab" href="#sozluk4">Fransızca</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sozluk5-tab" data-toggle="tab" href="#sozluk5">Arapça</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sozluk6-tab" data-toggle="tab" href="#sozluk6">Almanca</a>
+                        </li>
+                    </ul>
+                    <!-- sections/_sozlukler.scss -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="standard-padding">
+        <div class="container">
+            <div class="row mb-1">
+                <div class="col-lg-16 mx-auto">
+                    <div class="section-baslik">Kelime.com Veritabanında Bulunan Tüm Eserler</div>
+                    <div class="section-alt-baslik">Bu eserlerden birini satın alarak bir taşla iki kuş vurun...</div>
+                </div>
+            </div>
+            <div class="row hidden-desktop">
+                <div class="col-md-16 mx-auto my-2">
+                    <form>
+                        <select id='mySelect' class="custom-select">
+                            <option value='#sozlukTumu'>Tümü</option>
+                            <option value='#sozluk1'>Türkçe</option>
+                            <option value='#sozluk2'>İngilizce</option>
+                            <option value='#sozluk3'>Osmanlıca</option>
+                            <option value='#sozluk4'>Fransızca</option>
+                            <option value='#sozluk5'>Arapça</option>
+                            <option value='#sozluk6'>Almanca</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <!-- sections/_sozlukler.scss -->
+            <div class="tab-content sozluk-tab-icerikler p-5">
+                <div class="tab-pane fade show active" id="sozlukTumu">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sozluk1">
+                  <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sozluk2">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sozluk3">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sozluk4">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sozluk5">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sozluk6">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center">SATIN AL</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-5 col-sm-10">
+                                    <div class="sozluk-card">
+                                        <div class="socluk-card-header">
+                                            <div class="sozluk-card__baslik">
+                                                Büyük Türkçe Sözlük
+                                            </div>
+                                            <div class="sozluk-card__yazar">
+                                                Prof. Dr. Pars Tuğlacı
+                                            </div>
+                                        </div>
+                                        <img src="/assets/img/sozluk-kapak.jpg" class="img-fluid mb-2">
+                                        <a href="#" class="btn btn-sozluk btn-block text-center" data-toggle="modal" data-target="#hakkindaModal">HAKKINDA</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <nav class="sozluk-pagination">
+                                        <ul class="pagination pagination-lg">
+                                            <li class="page-item active"><span class="page-link">1</span></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sections/_sozlukler.scss -->
+        </div>
+    </section>
+    <%- include('partials/visitblog'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>
+<!-- Hakkında Modal -->
+<div class="modal fade" id="hakkindaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hakkında</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Modal yazıları...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#mySelect').on('change', function (e) {
+            var id = $(this).val();
+            $('a[href="' + id + '"]').tab('show');
+        });
+    });
+</script>
+
+

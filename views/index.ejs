@@ -1,0 +1,137 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+<%- contentFor('body') %>
+<% if (meta.duyuruGosterildi == null && meta.duyuruGosterildi != true) { %>
+<%- include('partials/duyuru'); -%>
+<% } %>
+<% if (messages && messages.length){ %>
+  <%- include('partials/message'); -%>
+<% } %>
+<main role="main">
+  <section class="index-hero">
+      <%- include('partials/menu'); -%>
+      <div class="container masaustu-ortala">
+          <div class="row">
+              <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+                <% if (abonekurum) { %>
+                <div class="intro__corporate kurumbadge badge--corporate">
+                    <% if (abonekurum.logoImage) { %><div class="badge__img"><img src="<%= abonekurum.logoImage %>"></div><% } %><span class="badge__text"><%= abonekurum.institution_name %></span>
+                </div>
+                <% } %>
+                  <div class="vh-spacer-wrapper">
+
+                      <div class="hero-logo hidden-max-laptop">
+                          <div class="logo-attachment"><%- __('dictionary_db') %></div>
+                          <img src="/assets/img/logo.svg" class="hero-logo_img">
+                      </div>
+                      <%- include('partials/dil-sec'); -%>
+
+                      <div class="main-search">
+                          <div class="input-group input-group-lg" style="background-color: #fff;">
+                              <div class="input-group-prepend" id="anaSearchIcon">
+                                  <span class="input-group-text"><img src="/assets/img/search.svg" class="arama-buyutec"></span>
+                              </div>
+                              <input type="text" id="kelimexAramaKutusu" class="form-control ana-arama-kutusu input" style="height: 65px;" dir="auto" autocomplete="off">
+                          </div>
+                          <button class="btn btn-text" id="smart-keyboard-toggle"><i class="fas fa-keyboard"></i></button>
+                          <div id="arama-onerileri"></div>
+
+                          <div class="search-alt-yazi">
+                              <a href="https://www.hiperkitap.com" target="_blank"><span>Hiperkitap;</span> <%- __('hiperkitap') %></a>
+                              <a href="https://www.wikilala.com" target="_blank"><span>Wikilala;</span> <%- __('wikilala') %></a>
+                              <a href="https://www.oklavye.com" target="_blank"><span>oKlavye;</span> <%- __('oklavye') %></a>
+                          </div>
+                      </div>
+
+                  </div>
+
+                  <div class="kelimex-ile-yapabilecekleriniz">
+                      <div class="yapabilecekleriniz-baslik">
+                          <%- __('abilities') %>
+                      </div>
+                      <div class="yapabilecekleriniz-baslik hidden-mobile">
+                          <%- __('trysamples') %>
+                      </div>
+                      <div class="aciklama">
+                         <%- __('aciklama') %>
+                      </div>
+                      <div class="ornek">
+                          <a href="/arama/kelime">kelime</a>
+                      </div>
+                      <div class="aciklama">
+                        <%- __('ornek_acıklama') %>
+                      </div>
+                      <div class="ornek">
+                          <a href="/arama/%D9%82%D9%84%D9%85">قلم</a>
+                      </div>
+                      <div class="aciklama">
+                        <%- __('ornek_acıklama2') %>
+                      </div>
+                      <div class="ornek">
+                          <a href="/cozumleyici?aranan=kad%3Fr">kad<span style="color:rgb(255, 0, 0);font-weight:700;">?</span>r</a>
+                      </div>
+                      <div class="aciklama">
+                        <%- __('ornek_acıklama3') %>
+                      </div>
+                      <div class="ornek">
+                          <a href="/cozumleyici?aranan=%D8%B3%D9%84%D9%AD%D9%85">سل<span style="color:rgb(255, 0, 0);font-weight:700;">*</span>م</a>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </section>
+  <%- include('partials/enler'); -%>
+  <section class="py-5 gradient-bg kelimex-nedir">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-16 mx-auto">
+                  <h2 class="text-white text-center mb-5"><%- __('whatis_kelime') %></h2>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-16 mx-auto">
+                  <div class="row">
+                      <div class="col-20 col-md-12 kelimex-yazi">
+                          <p class="lead text-white"><%- __('whatis_kelime_msg') %></p>
+                      </div>
+                      <div class="col-20 col-md-8">
+                          <div class="kelimex-video">
+                              <a data-fancybox="video" data-width="640" data-height="360"
+                                  href="https://www.youtube.com/watch?v=OVh_lpRmxUE?autoplay=1">
+                                  <img class="card-img img-fluid shadow" src="/assets/img/video-bg.png" />
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <%- include('partials/profile-sidenav'); -%>
+  <kelime-keyboard id="kelime-keyboard" />
+
+</main>
+<%- contentFor('footerBlock') %>
+<div class="text-center gradient-bg kelimex-nedir">
+  <%- __('your_ipaddress') %> <%= ip %>
+</div>
+<%- include('partials/sozluk-filtre-modal'); -%>
+<%- include('partials/dil-filtre-modal'); -%>
+<%- include('partials/sanal-klavye', {active_page: 'index'}); -%>
+<script>
+  $(function() {
+    var alert = $('div.alert[auto-close]');
+    alert.each(function() {
+      var that = $(this);
+      var time_period = that.attr('auto-close');
+      setTimeout(function() {
+        that.alert('close');
+      }, time_period);
+    });
+  });
+
+</script>
+<%- include('partials/enler-script'); -%>

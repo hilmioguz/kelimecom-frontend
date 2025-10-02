@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="<%- meta.siteLang %>">
+<head>
+    <%- include('partials/header', {meta: locals.meta ? locals.meta:null}); -%>
+    <%- defineContent('headerBlock') %>
+</head>
+<body>
+    <div id="metaHolder" stlye="display:none" data-meta="<% if (meta) { %><%= JSON.stringify({...meta}) %><% } %>"></div>
+<%- body %>
+<script>
+    const siteLang = `<%= meta.siteLang %>`;
+</script>
+<%- include('partials/script'); -%>
+<%- defineContent('footerBlock') %>
+</body>
+</html>

@@ -1,0 +1,830 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com ödeme | Sözlükler Veritabanı</title>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header>
+    <%- include('partials/menu'); -%>
+</header>
+
+<main role="main">
+    <section class="degrade-desen-bg">
+        <div class="container">
+          <div class="row py-5">
+            <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+              <div class="cozumleyici-nedir">
+                <h1>Ödeme İşlemleri</h1>
+                <p>Ödeme işlemlerinizi 4 adımda kolayca tamamlayın. İlk adımda ödeme planınızı belirleyin. İkinci adımda fatura bilgilerinizi, üçüncü adımda kart
+                  bilgilerinizi ve son adımda onay vererek işleminizi tamamlayın.</p>
+              </div>
+            </div>
+          </div>
+          <div class="row hidden-mobile">
+            <div class="col">
+              <!-- sections/_sozlukler.scss -->
+              <ul class="nav justify-content-center nav-tabs sozluk-tab-linkler">
+                <li class="nav-item">
+                  <a class="nav-link active" id="odeme-tab-0" data-toggle="tab" href="#odeme-0">0. ADIM</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="odeme-tab-1" data-toggle="tab" href="#odeme-1">1. ADIM</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="odeme-tab-2" data-toggle="tab" href="#odeme-2">2. ADIM</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="odeme-tab-3" data-toggle="tab" href="#odeme-3">3. ADIM</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="odeme-tab-4" data-toggle="tab" href="#odeme-4">4. ADIM</a>
+                </li>
+
+              </ul>
+              <!-- sections/_sozlukler.scss -->
+            </div>
+          </div>
+        </div>
+    </section>
+
+      <section class="standard-padding">
+        <div class="container">
+          <!-- Mobilde tablar dropdowna dönüşüyor -->
+          <div class="row hidden-desktop">
+            <div class="col-md-20 mx-auto my-2">
+              <form>
+                <select id='mySelect' class="custom-select mb-4">
+                  <option value='#odeme-0' selected>0. ADIM</option>
+                  <option value='#odeme-1'>1. ADIM</option>
+                  <option value='#odeme-2'>2. ADIM</option>
+                  <option value='#odeme-3'>3. ADIM</option>
+                  <option value='#odeme-4'>4. ADIM</option>
+
+                </select>
+              </form>
+            </div>
+          </div>
+          <!-- sections/_sozlukler.scss -->
+          <div class="tab-content sozluk-tab-icerikler">
+            <div class="tab-pane fade show active" id="odeme-0">
+                <div class="row">
+                    <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="odeme-planlari">
+                                    <a href="#" class="odeme-plani active">
+                                        <div class="baslik">Aylık Paket</div>
+                                        <div class="fiyat"><strong>₺19.90</strong></div>
+                                        <div class="icerik">Tüm Sözlükler</div>
+                                    </a>
+                                    <a href="#" class="odeme-plani">
+                                        <div class="baslik">6 Aylık Paket</div>
+                                        <div class="fiyat"><strong>₺99.90</strong></div>
+                                        <div class="icerik">Tüm Sözlükler</div>
+                                    </a>
+                                    <a href="#" class="odeme-plani">
+                                        <div class="baslik">Yıllık Paket</div>
+                                        <div class="fiyat"><strong>₺199.90</strong></div>
+                                        <div class="icerik">Tüm Sözlükler</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col">
+                                <div class="odeme-paket-icerigi p-5">
+                                    <div class="d-lg-flex mb-3">
+                                        <div class="row1 mb-3 mb-lg-0">
+                                            <div class="paket-icerik-baslik mb-3">
+                                                <div class="basliklar">
+                                                    <h4 class="koyu-turuncu mb-0">PAKET İÇERİĞİ HAKKINDA BİLGİLENDİRME</h4>
+                                                </div>
+                                            </div>
+                                            <p class="text-dark mb-4">Yukarıda bulunan ödeme planlarından birini seçtiğiniz takdirde paket süresi boyunca
+                                                aşağıda bulunan sözlüklerin tümünden ücretsiz faydalanabilirsiniz.</p>
+                                            <div class="paket-icerik-badges">
+                                                <a href="#">Genel Türkçe Sözlük</a>
+                                                <a href="#">Genel İngilizce Sözlük</a>
+                                                <a href="#">Genel Osmanlıca Sözlük</a>
+                                                <a href="#">Genel Fransızca Sözlük</a>
+                                                <a href="#">Genel Arapça Sözlük</a>
+                                                <a href="#">Genel Almanca Sözlük</a>
+                                                <a href="#">Genel Rusça Sözlük</a>
+                                                <a href="#">Genel Farsça Sözlük</a>
+                                                <a href="#">Genel İspanyolca Sözlük</a>
+                                                <a href="#">Genel Çince Sözlük</a>
+                                                <a href="#">Kamusi Türki</a>
+                                                <a href="#">Redhouse a Turkish and English Lexicon</a>
+                                                <a href="#">Kamusul Muhit</a>
+                                                <a href="#">Vankulu Lügatı</a>
+                                                <a href="#">Osmanlıca Tamlamalar Sözlüğü</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row3">
+                                        <p class="lead text-warning mb-0">VERİ TABANIMIZ HER GEÇEN GÜN SİZE HİZMET SAĞLAMAK İÇİN ÇALIŞIYOR.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="odeme-1">
+                          <div class="row">
+                              <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                                  <div class="row mb-4">
+                                      <div class="col-20 d-flex align-items-center pl-md-5">
+                                          <span class="mr-2 text-muted pl-md-5">Aylık</span>
+                                          <div class="custom-control custom-switch">
+                                              <input class="custom-control-input" name="isActive" id="customSwitch" type="checkbox" checked>
+                                              <label class="custom-control-label" for="customSwitch"></label>
+                                          </div>
+                                          <span>Yıllık <span style="color: #00c700;">(%25 tasarruf edin)</span></span>
+                                      </div>
+                                  </div>
+                                  <div class="row mb-4">
+                                      <div class="col">
+                                          <div class="odeme-planlari">
+                                              <a href="#" class="odeme-plani">
+                                                  <div class="baslik">Temel</div>
+                                                  <div class="fiyat"><strong>₺29</strong> / Aylık</div>
+                                                  <div class="icerik">10+1 Sözlük</div>
+                                              </a>
+                                              <a href="#" class="odeme-plani">
+                                                  <div class="baslik">Premium</div>
+                                                  <div class="fiyat"><strong>₺49</strong> / Aylık</div>
+                                                  <div class="icerik">15+5 Sözlük</div>
+                                              </a>
+                                              <a href="#" class="odeme-plani">
+                                                  <div class="baslik">Profesyonel</div>
+                                                  <div class="fiyat"><strong>₺49</strong> / Aylık</div>
+                                                  <div class="icerik">20+10 Sözlük</div>
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="row mb-5">
+                                      <div class="col">
+                                          <div class="odeme-paket-icerigi">
+                                              <div class="d-lg-flex mb-3">
+                                                 <div class="row1 mb-3 mb-lg-0">
+                                                  <div class="paket-icerik-baslik mb-5">
+                                                      <img src="/assets/img/paket-icon.png">
+                                                      <div class="basliklar">
+                                                          <h4 class="koyu-turuncu mb-0">TEMEL PAKET İÇERİĞİ</h4>
+                                                          <p class="mb-0 text-muted"><span class="text-dark">10 Sözlük</span> İçinde Arama</p>
+                                                      </div>
+                                                  </div>
+                                                  <div class="paket-icerik-badges">
+                                                      <a href="#">Genel Türkçe Sözlük</a>
+                                                      <a href="#">Kamusi Türki</a>
+                                                      <a href="#">Redhouse</a>
+                                                      <a href="#">Kamusi Türki</a>
+                                                      <a href="#">Redhouse</a>
+                                                      <a href="#">Genel Türkçe Sözlük</a>
+                                                      <a href="#">Redhouse</a>
+                                                      <a href="#">Genel Türkçe Sözlük</a>
+                                                      <a href="#">... TÜMÜ</a>
+                                                  </div>
+                                              </div>
+                                              <div class="row2 p-lg-3">
+                                                  <ul class="pakette-ne-var">
+                                                      <li><span>250 Kelime</span> Günlük Sorgu</li>
+                                                      <li><span>Sınırsız</span> Hassas Arama</li>
+                                                      <li><span>Sınırsız</span> Benzer Arama</li>
+                                                      <li><span>Sınırsız</span> Anlamlarda Bulma</li>
+                                                      <li><span>Sınırsız</span> Metinlerde Bulma</li>
+                                                      <li><span>10000 Karakter</span> Gün. Çeviri</li>
+                                                      <li><span>100 Kelime</span> Günlük Çözümle</li>
+                                                      <li>Kelime Özellikleri <span>Var</span></li>
+                                                      <li>Kelime Kökeni <span>Var</span></li>
+                                                      <li>Gelişmiş Filtre <span>Var</span></li>
+                                                      <li><span>Reklamsız</span> Kullanım</li>
+
+                                                  </ul>
+                                              </div>
+                                              </div>
+
+                                              <div class="row3">
+                                                  <p class="lead text-warning mb-0">+ PAKETİNİZE ÖZEL ÜCRETSİZ 3 ADET (ÜCRETSİZ) SÖZLÜK DAHA SEÇEBİLİRSİNİZ.</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col">
+                                          <h4 class="koyu-turuncu">
+                                              Paketinize özel ücretsiz (3 adet) sözlük seçin veya Satın alın
+                                          </h4>
+
+                                      </div>
+                                      <div class="ekstra-sozlukler">
+                                          <a href="#" class="ekstra-sozluk active">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-kilit.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | 29.99TL / Aylık
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+                                          <a href="#" class="ekstra-sozluk">
+                                              <div class="sozluk-icon">
+                                                  <img src="/assets/img/sozluk-yildiz.png">
+                                              </div>
+                                              <div class="sozluk-yazilar">
+                                                  <div class="sozluk-yazilar__baslik">
+                                                      Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                  </div>
+                                                  <div class="sozluk-yazilar__subtext">
+                                                      Türkçe | Ücretsiz
+                                                  </div>
+                                              </div>
+                                          </a>
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+            <div class="tab-pane fade" id="odeme-2">
+                                    <div class="row">
+                                        <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                                            <div class="row mb-4">
+                                                <div class="col-20 d-flex align-items-center pl-5">
+                                                    <span class="mr-2 text-muted pl-5">Bireysel</span>
+                                                    <div class="custom-control custom-switch">
+                                                        <input class="custom-control-input" name="isActive" id="customSwitch2" type="checkbox" checked>
+                                                        <label class="custom-control-label" for="customSwitch2"></label>
+                                                    </div>
+                                                    <span>Kurumsal</span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col">
+                                                    <form>
+                                                        <div class="form-group row">
+                                                          <label class="col-sm-4 col-form-label">Adresiniz <span class="turuncu">*</span></label>
+                                                          <div class="col-sm-16">
+                                                            <textarea rows="3" class="form-control"></textarea>
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                          <label for="inputPassword" class="col-sm-4 col-form-label">Ülke <span class="turuncu">*</span></label>
+                                                          <div class="col-sm-16">
+                                                            <select class="custom-select form-control">
+                                                                <option value="">Türkiye</option>
+                                                                <option value="">Amerika</option>
+                                                                <option value="">İngiltere</option>
+                                                                <option value="">İspanya</option>
+                                                                <option value="">Rusya</option>
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                          <label for="inputPassword" class="col-sm-4 col-form-label">İl <span class="turuncu">*</span></label>
+                                                          <div class="col-sm-16">
+                                                            <select class="custom-select form-control">
+                                                                <option value="">Seçiniz</option>
+                                                                <option value="">1</option>
+                                                                <option value="">2</option>
+                                                                <option value="">3</option>
+                                                                <option value="">4</option>
+                                                            </select>
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4 col-form-label">Posta Kodu</label>
+                                                            <div class="col-sm-16">
+                                                              <input type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4 col-form-label">Adı Soyadı <span class="turuncu">*</span></label>
+                                                            <div class="col-sm-16">
+                                                              <input type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4 col-form-label">Telefon <span class="turuncu">*</span></label>
+                                                            <div class="col-5 col-sm-3">
+                                                              <input type="text" class="form-control" value="+90">
+                                                            </div>
+                                                            <div class="col-15 col-sm-13">
+                                                              <input type="text" class="form-control" id="telefon_no" placeholder="(___) ___ __ __">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4 col-form-label">T.C. Kimlik No <span class="turuncu">*</span></label>
+                                                            <div class="col-sm-16">
+                                                              <input type="text" class="form-control" placeholder="Seçiniz">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4 col-form-label">Firma Unvanı</label>
+                                                            <div class="col-sm-16">
+                                                              <input type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4 col-form-label">Vergi Dairesi</label>
+                                                            <div class="col-sm-16">
+                                                              <input type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                      </form>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col">
+                                                    <div class="odeme-paket-icerigi">
+                                                        <p class="mb-0 text-dark">BİLGİLENDİRME <br>
+                                                            Fatura bilgilerinizin eksiksiz ve doğru olduğundan emin olunuz. <br>
+                                                            NOT: E-Fatura mükellefleri fatura tipini "KURUMSAL" olarak düzenleyip bilgilerini eksiksiz ve doğru olarak girmeleri gerekmektedir.
+                                                            Faturalama işleminden sonra bilgilerin değiştirilmesi mümkün değildir.
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+            <div class="tab-pane fade" id="odeme-3">
+                                              <div class="row">
+                                                  <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                                                      <div class="row mb-4">
+                                                          <div class="col">
+                                                              <form>
+                                                                  <div class="form-group row">
+                                                                    <label class="col-sm-4 col-form-label">Kart Numarası <span class="turuncu">*</span></label>
+                                                                    <div class="col-sm-16">
+                                                                      <input type="text" class="form-control" id="kredi_karti" placeholder="____ ____ ____ ____">
+                                                                    </div>
+                                                                  </div>
+                                                                  <div class="form-group row">
+                                                                    <label class="col-sm-4 col-form-label">Kart Üzerindeki İsim</label>
+                                                                    <div class="col-sm-16">
+                                                                      <input type="text" class="form-control" id="kredi_karti">
+                                                                    </div>
+                                                                  </div>
+                                                                  <div class="form-group row">
+                                                                    <label for="inputPassword" class="col-sm-4 col-form-label">Son Kullanma Tarihi</label>
+                                                                    <div class="col-sm-5">
+                                                                      <select class="custom-select form-control">
+                                                                          <option value="">01</option>
+                                                                          <option value="">02</option>
+                                                                          <option value="">03</option>
+                                                                          <option value="">04</option>
+                                                                          <option value="">05</option>
+                                                                          <option value="">06</option>
+                                                                          <option value="">07</option>
+                                                                          <option value="">08</option>
+                                                                          <option value="">09</option>
+                                                                          <option value="">10</option>
+                                                                          <option value="">11</option>
+                                                                          <option value="">12</option>
+                                                                      </select>
+                                                                    </div>
+                                                                    <div class="col-sm-5">
+                                                                      <select class="custom-select form-control">
+                                                                          <option value="">2019</option>
+                                                                          <option value="">2020</option>
+                                                                          <option value="">2021</option>
+                                                                          <option value="">2022</option>
+                                                                      </select>
+                                                                    </div>
+                                                                  </div>
+                                                                  <div class="form-group row">
+                                                                      <label class="col-sm-4 col-form-label">Güvenlik Kodu</label>
+                                                                      <div class="col-sm-5">
+                                                                        <input type="text" class="form-control">
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="form-group row">
+                                                                      <label class="col-sm-4 col-form-label">Kupon Kodu Kullan</label>
+                                                                      <div class="col-sm-11">
+                                                                        <input type="text" class="form-control">
+                                                                      </div>
+                                                                      <div class="col-sm-5">
+                                                                        <button class="btn btn-warning btn-block">KULLAN</button>
+                                                                      </div>
+                                                                  </div>
+                                                                </form>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row mb-4">
+                                                          <div class="col">
+                                                              <div class="odeme-paket-icerigi">
+                                                                  <p class="mb-0 text-dark">TAKSİT SEÇENEKLERİ <br>
+                                                                      Taksit seçenekleri kart bilgilerini girdikten sonra görüntülenecektir.
+                                                                  </p>
+
+                                                              </div>
+                                                          </div>
+                                                      </div>
+
+                                                  </div>
+                                              </div>
+                                          </div>
+            <div class="tab-pane fade" id="odeme-4">
+                                                        <div class="row">
+                                                            <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                                                                <h4 class="koyu-turuncu mb-3">Satın Alınan Paket Özeti</h4>
+                                                                <div class="row mb-4">
+                                                                    <div class="col">
+                                                                        <div class="odeme-paket-icerigi">
+                                                                            <div class="d-lg-flex mb-3">
+                                                                               <div class="row1 mb-3 mb-lg-0">
+                                                                                <div class="paket-icerik-baslik mb-5">
+                                                                                    <img src="/assets/img/paket-icon.png">
+                                                                                    <div class="basliklar">
+                                                                                        <h4 class="koyu-turuncu mb-0">TEMEL PAKET İÇERİĞİ</h4>
+                                                                                        <p class="mb-0 text-muted"><span class="text-dark">10 Sözlük</span> İçinde Arama</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="paket-icerik-badges">
+                                                                                    <a href="#">Genel Türkçe Sözlük</a>
+                                                                                    <a href="#">Kamusi Türki</a>
+                                                                                    <a href="#">Redhouse</a>
+                                                                                    <a href="#">Kamusi Türki</a>
+                                                                                    <a href="#">Redhouse</a>
+                                                                                    <a href="#">Genel Türkçe Sözlük</a>
+                                                                                    <a href="#">Redhouse</a>
+                                                                                    <a href="#">Genel Türkçe Sözlük</a>
+                                                                                    <a href="#">... TÜMÜ</a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row2 p-lg-3">
+                                                                                <ul class="pakette-ne-var">
+                                                                                    <li><span>250 Kelime</span> Günlük Sorgu</li>
+                                                                                    <li><span>Sınırsız</span> Hassas Arama</li>
+                                                                                    <li><span>Sınırsız</span> Benzer Arama</li>
+                                                                                    <li><span>Sınırsız</span> Anlamlarda Bulma</li>
+                                                                                    <li><span>Sınırsız</span> Metinlerde Bulma</li>
+                                                                                    <li><span>10000 Karakter</span> Gün. Çeviri</li>
+                                                                                    <li><span>100 Kelime</span> Günlük Çözümle</li>
+                                                                                    <li>Kelime Özellikleri <span>Var</span></li>
+                                                                                    <li>Kelime Kökeni <span>Var</span></li>
+                                                                                    <li>Gelişmiş Filtre <span>Var</span></li>
+                                                                                    <li><span>Reklamsız</span> Kullanım</li>
+
+                                                                                </ul>
+                                                                            </div>
+                                                                            </div>
+
+                                                                            <div class="row3">
+                                                                                <p class="lead text-warning mb-0">+ PAKETİNİZE ÖZEL ÜCRETSİZ 3 ADET (ÜCRETSİZ) SÖZLÜK DAHA SEÇEBİLİRSİNİZ.</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-5">
+                                                                    <div class="ekstra-sozlukler">
+                                                                        <a href="#" class="ekstra-sozluk">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-5">
+                                                                    <div class="col">
+                                                                        <h4 class="koyu-turuncu">
+                                                                            Satın Alınan Ekstra Sözlük / Sözlükler Özeti
+                                                                        </h4>
+
+                                                                    </div>
+                                                                    <div class="ekstra-sozlukler">
+                                                                        <a href="#" class="ekstra-sozluk active">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-kilit.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | 29.99TL / Aylık
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk active">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk active">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <a href="#" class="ekstra-sozluk active">
+                                                                            <div class="sozluk-icon">
+                                                                                <img src="/assets/img/sozluk-yildiz.png">
+                                                                            </div>
+                                                                            <div class="sozluk-yazilar">
+                                                                                <div class="sozluk-yazilar__baslik">
+                                                                                    Ansiklopedik Türkçe / Osmanlıca Kelime Sözlükler lorem ipsum
+                                                                                </div>
+                                                                                <div class="sozluk-yazilar__subtext">
+                                                                                    Türkçe | Ücretsiz
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mb-5">
+                                                                    <div class="col">
+                                                                        <h4 class="koyu-turuncu mb-2">Fatura Bilgileri Özeti</h4>
+                                                                        <div class="odeme-paket-icerigi">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-6">
+                                                                                    <div>
+                                                                                       <h6 class="koyu-turuncu">AD SOYAD</h6>
+                                                                                       <p class="text-dark">Ahmet Özer</p>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                       <h6 class="koyu-turuncu">T.C. KİMLİK NO</h6>
+                                                                                       <p class="text-dark">123456789</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-6">
+                                                                                    <div>
+                                                                                       <h6 class="koyu-turuncu">TELEFON NO</h6>
+                                                                                       <p class="text-dark">0539 123 45 67</p>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                       <h6 class="koyu-turuncu">ÜLKE</h6>
+                                                                                       <p class="text-dark">Türkiye</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-6">
+                                                                                    <div>
+                                                                                       <h6 class="koyu-turuncu">İL</h6>
+                                                                                       <p class="text-dark">İstanbul</p>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                       <h6 class="koyu-turuncu">ADRES</h6>
+                                                                                       <p class="text-dark">Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <p class="text-dark lead">Ödemeyi tamamla butonuna bastığınızda <a href="#" data-toggle="modal" data-target="#mesafeliSatisSozlesmesi">Mesafeli Satış Sözleşmesini</a> kabul etmiş sayılırsınız.</p>
+                                                                    </div>
+
+                                                                    <!-- Mesafeli Satış Sözleşmesi -->
+                                                                    <div class="modal fade" id="mesafeliSatisSozlesmesi" data-backdrop="static" data-keyboard="false" tabindex="-1">
+                                                                        <div class="modal-dialog modal-dialog-scrollable">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                            <h5 class="modal-title" >Mesafeli Satış Sözleşmesi</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis sed saepe quasi excepturi dolor placeat veritatis dicta quaerat suscipit culpa. Qui nulla quisquam autem hic provident totam aliquam expedita nam et nemo? Minima maxime facere aperiam ipsa distinctio! Nam neque laudantium, dolorum odit quas doloremque incidunt non officiis deserunt voluptas a saepe beatae sapiente, hic rerum minus? Minima nobis, dicta incidunt ut, quibusdam, officiis architecto hic enim eos veritatis at culpa ipsam! Deleniti, modi molestiae magni unde ducimus voluptatibus cum architecto amet! Quibusdam doloribus dolore dolores perspiciatis accusamus nostrum dignissimos, reprehenderit molestias voluptatibus autem asperiores, fuga, sunt dolor dicta laudantium sint quisquam sed aspernatur provident odio! Porro delectus expedita perferendis similique unde inventore autem id doloremque nobis quod sapiente voluptatum culpa commodi nemo sit ipsam, qui, voluptas veniam ea esse corporis dolor quae ratione voluptatem. Libero voluptatibus non voluptate atque enim sequi exercitationem excepturi dolores, temporibus sint. Iure sint deserunt dolore architecto perspiciatis eveniet error earum voluptatibus soluta libero nobis eos cum, ipsum neque? Tempora magnam ab nesciunt illum, alias minima dignissimos vitae neque facere, culpa at soluta repellat accusantium adipisci incidunt aspernatur consequatur sint fugiat eos amet nisi? Officiis earum aliquam modi nam fugit alias iste aut minima temporibus.
+                                                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quasi quibusdam, perferendis cumque aspernatur unde est ratione, excepturi suscipit eos odit, laboriosam molestias officia commodi quia quo voluptas incidunt deserunt repudiandae earum repellat possimus beatae assumenda fugit! Explicabo quisquam error minus recusandae saepe doloribus nobis, veritatis iste animi voluptatem suscipit, corporis porro tempore rem nemo quaerat vero neque ipsa adipisci dolores non beatae id? Tempore cumque fugiat esse, dolores perferendis quas consequatur. Cupiditate eius ipsam repellat in non ab reiciendis perspiciatis. Unde natus ratione sed porro sit reiciendis tenetur deleniti tempora magnam? Ullam perspiciatis nulla soluta facere temporibus ipsam provident assumenda.
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Kapat</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+          </div>
+          <!-- sections/_sozlukler.scss -->
+          <div class="col-lg-16 col-md-20 mx-auto mb-4">
+            <div class="d-flex justify-content-around alt-ayarlar">
+
+            </div>
+            <div class="row pt-4 justify-content-around align-items-center">
+
+              <div class="d-flex mb-4 mb-md-0">
+                <div class="paket-tutar text-center px-4">
+                    <p class="koyu-turuncu mb-1">PAKET FİYATI</p>
+                    <p class="text-muted mb-0">29.90 / AYLIK</p>
+                </div>
+                <div class="paket-tutar text-center px-4">
+                    <p class="koyu-turuncu mb-1">EKSTRALAR</p>
+                    <p class="text-muted mb-0">9.90 / AYLIK</p>
+                </div>
+                <div class="paket-tutar text-center px-4">
+                    <p class="koyu-turuncu mb-1">TOPLAM TUTAR</p>
+                    <p class="text-muted mb-0">39.80 / AYLIK</p>
+                </div>
+              </div>
+              <div class="d-flex">
+                <button class="btn btn-outline-primary flex-1 mr-2">İPTAL</button>
+                <button class="btn btn-primary flex-1">İLERLE</button>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+    <%- include('partials/visitblog'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>
+  <script>
+    $(document).ready(function () {
+      $('#mySelect').on('change', function (e) {
+        var id = $(this).val();
+        $('a[href="' + id + '"]').tab('show');
+      });
+    });
+
+    $("#telefon_no").inputmask({"mask": "(999) 999 99 99"});
+    $("#kredi_karti").inputmask({"mask": "9999 9999 9999 9999"});
+  </script>

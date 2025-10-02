@@ -1,0 +1,127 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com gundem | Sözlükler Veritabanı</title>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+    <%- include('partials/dil-filtreleme'); -%>
+</header>
+
+<main role="main" class="alt-sayfa">
+    <div class="container-fluid limit">
+        <div class="row">
+            <!-- SOL SUTUN -->
+            <div class="col-lg-5 col-xl-4 mobilde-2">
+                <aside class="sol-aside">
+                    <div class="py-2 my-3">
+                        <div class="sidebar-yenile">
+                            <span class="koyu-turuncu h5">Bugün</span>
+                            <a href="javascript:location.reload();" class="yenile-link">
+                                <i class="fas fa-redo-alt mr-1"></i> YENİLE <span class="koyu-turuncu ml-1">(<%= getMaddeBugun.meta.total %>)</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sidebar-aramalar">
+                        <% if (getMaddeBugun && getMaddeBugun.data.length > 0) { getMaddeBugun.data.forEach((bgundem) => { %>
+                        <div class="arama">
+                            <a href="#"><span class="badge <%= bgundem.whichDict[0].dictId.lang %>"><%= bgundem.whichDict[0].dictId.lang %></span><%= bgundem.madde %> [<%= bgundem.whichDict[0].tip.join(', ') %>]</a>
+                        </div>
+                        <% });} %>
+                    </div>
+                </aside>
+            </div>
+            <!-- SOL SUTUN SONU -->
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-lg-10 col-xl-12 mobilde-1">
+                <section class="kelime-ekle-premium py-2 my-3 mb-4">
+                    <a href="#">KELİME.COM'DA SEN DE (KELİME) EKLE ve PREMİUM ÜYELİĞİ KAZAN</a>
+                </section>
+                <section class="pb-5">
+                    <% if (gundems.data && gundems.data.length > 0) { gundems.data.forEach((gundem) => { %>
+                        <div class="kx-card kx-card__transparent kx-card__user">
+                            <div class="kx-card__user-img">
+                                <% if (gundem.whichDict[0].userSubmitted.picture) { %>
+                                <img src="<%= gundem.whichDict[0].userSubmitted.picture %>" class="img-fluid">
+                                <% } else { %>
+                                <img src="/assets/img/profil-avatar.jpg" class="img-fluid">
+                                <% } %>
+                            </div>
+                            <div class="kx-card_flex-wrapper w-100">
+                                <div class="kx-card__header">
+                                    <div class="kx-card-title"><span class="ana-metin"><%= gundem.madde %></span></div>
+                                    <a href="#" class="badge kx-badge" style="background:#ff0f1a;border-color: #ff0f1a;"><%= gundem.whichDict[0].tip.join(', ') %></a>
+                                </div>
+                                <div class="kx-card__body">
+                                    <div class="sonuc-origin">
+                                        <%= gundem.whichDict[0].dictId.name %> / <a href="#">@<%= gundem.whichDict[0].userSubmitted.name %></a>
+                                    </div>
+                                    <p class="body-text blok-goster-gizle"><%- gundem.whichDict[0].anlam %>
+                                    </p>
+                                </div>
+                                <div class="kx-card__footer">
+                                    <div class="moderator">
+                                        <img src="/assets/img/moderator-onayli.png" class="mr-1"> Moderatör tarafından onaylandı.
+                                    </div>
+                                    <ul class="kx-card__footer-linkleri">
+                                        <li><a href="#"><i class="fas fa-heart mr-2"></i> 9512</a></li>
+                                        <li><a href="#"><i class="fas fa-star mr-2"></i> 321</a></li>
+                                        <li><a href="#"><i class="fas fa-share-alt mr-2"></i> 18</a></li>
+                                        <li><a href="#"><i class="fas fa-share mr-2"></i> Git</a></li>
+                                        <li>
+                                            <div class="btn-group dropleft">
+                                                <button type="button" class="btn btn-text dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v mr-2"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a href="#">şikayet</a>
+                                                    <a href="#">engelle</a>
+                                                    <a href="#">modzen</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    <% })} %>
+
+
+                    <div class="yukleniyor">
+                        <img src="/assets/img/loading.gif"> <span>Daha fazlası yükleniyor</span>
+                    </div>
+
+                </section>
+
+            </div>
+            <!-- ANA İÇERİK SONU -->
+            <!-- SAG SUTUN -->
+            <div class="col-lg-5 col-xl-4 mobilde-3">
+                <aside class="sag-aside">
+                    <div class="py-2 my-3">
+                        <div class="sidebar-yenile">
+                            <span class="koyu-turuncu h5">Dün</span>
+                            <a href="javascript:location.reload();" class="yenile-link">
+                                <i class="fas fa-redo-alt mr-1"></i> YENİLE <span class="koyu-turuncu ml-1">(<%= getMaddeDun.meta.total %>)</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sidebar-aramalar">
+                        <% if (getMaddeDun && getMaddeDun.data.length > 0) { getMaddeDun.data.forEach((dgundem) => { %>
+                        <div class="arama">
+                            <a href="#"><span class="badge <%= dgundem.whichDict[0].dictId.lang %>"><%= dgundem.whichDict[0].dictId.lang %></span><%= dgundem.madde %> [<%= dgundem.whichDict[0].tip.join(', ') %>]</a>
+                        </div>
+                        <% });} %>
+                    </div>
+
+                </aside>
+            </div>
+            <!-- SAG SUTUN SONU -->
+        </div>
+    </div>
+    <%- include('partials/visitblog'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>

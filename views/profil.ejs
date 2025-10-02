@@ -1,0 +1,245 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet" />
+
+<%- contentFor('body') %>
+<header class="mb-0"><%- include('partials/menu'); -%>
+
+  <div class="container-fluid degrade-desen-bg">
+    <div class="row">
+      <div class="col-md-18 col-lg-14 col-xl-12 mx-auto">
+          <div class="profil-bar-ust">
+            <div class="row">
+              <div class="col-20 col-md-5 mb-2 mb-lg-1">
+                <a href="#" class="avatar-link"><img src="<%= user.picture %>" class="img-fluid profil-avatar"></a>
+              </div>
+              <div class="col-20 col-md-15">
+                <div class="profil-bilgiler pt-lg-2">
+                  <div class="profil-bilgiler__isim mb-2">
+                    <span class="mr-md-3 profil-isim order-2 order-md-1">@<%= user.nickname %></span>
+                    <span class="order-1 order-md-2 takip-sosyal-wrapper">
+                      <a href="javascript:void();" id="followButton" class="takip-btn">Takip Et</a>
+                      <a href="javascript:void();" id="followButton" class="takip-btn">Takibi bırak</a>
+                      <span class="takip-sosyal">
+                        <% if (user && user.facebook) { %><a href="https://facebook.com/<%= user.facebook %>" target="_blank" class="mr-1"><i class="fab fa-facebook-f"></i></a> <% } %>
+                        <% if (user && user.twitter) { %><a href="https://twitter.com/<%= user.twitter %>" target="_blank" class="mr-1"><i class="fab fa-twitter"></i></a><% } %>
+                        <% if (user && user.instagram) { %><a href="https://instagram.com/<%= user.instagram %>" target="_blank" class="mr-1"><i class="fab fa-instagram"></i></a><% } %>
+                        <% if (user && user.linkedin) { %><a href="https://linkedin.com/<%= user.linkedin %>" target="_blank" class="mr-1"><i class="fab fa-linkedin-in"></i></a><% } %>
+                      </span>
+                    </span>
+                  </div>
+                  <div class="profil-bilgiler__biyografi">
+                    <%= user && user.profileMessage ? user.profileMessage : '' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid profil-rakamlar">
+    <div class="row">
+      <div class="col-md-18 col-lg-14 col-xl-12 mx-auto">
+        <div class="nav profil-rakamlar__kutu">
+          <a href="#profile-duvar" class="text-center active" data-toggle="tab">
+            <p>duvar</p>
+            <p class="bold" id="profile-duvar-stat"></p>
+          </a>
+          <a href="#profile-likes" class="text-center" data-toggle="tab">
+            <p>beğeni</p>
+            <p class="bold" id="profile-likes-stat"></p>
+          </a>
+          <a href="#profile-favorites" class="text-center" data-toggle="tab">
+            <p>favori</p>
+            <p class="bold" id="profile-favorites-stat"></p>
+          </a>
+          <a href="#profile-followers" class="text-center" data-toggle="tab">
+            <p>takipçi</p>
+            <p class="bold"><%- (stats && stats.followers) ? stats.followers : '0' %></p>
+          </a>
+          <a href="#profile-followings" class="text-center" data-toggle="tab">
+            <p>takip ed.</p>
+            <p class="bold"><%- (stats && stats.follows) ? stats.follows : '0' %></p>
+          </a>
+          <a href="#profile-eklenen" class="text-center" data-toggle="tab">
+            <p>eklenilen</p>
+            <p class="bold"><%- (stats && stats.madde) ? stats.madde : '0' %></p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<main role="main" class="alt-sayfa">
+  <div class="container-fluid p-0">
+
+    <div class="row">
+        <!-- ANA İÇERİK BASLANGICI -->
+        <div class="col-md-18 col-lg-14 col-xl-12 mx-auto">
+            <section class="kelime-ekle-premium py-2 my-3 mb-4">
+                <a href="/sende-ekle">KELİME.COM’A SEN DE (KELİME) EKLE ve PREMİUM ÜYELİĞİ KAZAN</a>
+            </section>
+
+            <section class="pb-5">
+              <div class="row spacer-5px">
+                <div class="tab-content">
+                <section id="profile-duvar" class="tab-pane active" data-total=null data-page="1" data-pages=null>
+                  <div class="ara-baslik">
+                      <span>Profil Duvar</span>
+                  </div>
+                  <div id="profile-duvar-sonucu">
+                      <div class="kx-card kx-card__simple">
+                          <div class="skeleton-effect-wave p-4">
+                              <p style="width: 15%;" class="skeleton-block"></p>
+                              <p style="width: 25%;" class="skeleton-block"></p>
+                              <p style="width: 100%" class="skeleton-block"></p>
+                              <p style="width: 100%" class="skeleton-block"></p>
+                              <p style="width: 40%;" class="skeleton-block"></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="yukleniyor" id="profile-duvar-dahafazla">
+                      <span><%- __('show_more')%></span>
+                  </div>
+              </section>
+                <section id="profile-likes" class="tab-pane" data-total=null data-page="1" data-pages=null>
+                  <div class="ara-baslik">
+                      <span>Beğendiği Madde Başlıkları</span>
+                  </div>
+                  <div id="profile-likes-sonucu">
+                      <div class="kx-card kx-card__simple">
+                          <div class="skeleton-effect-wave p-4">
+                              <p style="width: 15%;" class="skeleton-block"></p>
+                              <p style="width: 25%;" class="skeleton-block"></p>
+                              <p style="width: 100%" class="skeleton-block"></p>
+                              <p style="width: 100%" class="skeleton-block"></p>
+                              <p style="width: 40%;" class="skeleton-block"></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="yukleniyor" id="profile-likes-dahafazla">
+                      <span><%- __('show_more')%></span>
+                  </div>
+              </section>
+              <section id="profile-favorites" data-total=null class="tab-pane" data-page="1" data-pages=null>
+                <div class="ara-baslik">
+                    <span>Favoriye Eklediği Madde Başlıkları</span>
+                </div>
+                <div id="profile-favorites-sonucu">
+                    <div class="kx-card kx-card__simple">
+                        <div class="skeleton-effect-wave p-4">
+                            <p style="width: 15%;" class="skeleton-block"></p>
+                            <p style="width: 25%;" class="skeleton-block"></p>
+                            <p style="width: 100%" class="skeleton-block"></p>
+                            <p style="width: 100%" class="skeleton-block"></p>
+                            <p style="width: 40%;" class="skeleton-block"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="yukleniyor" id="profile-favorites-dahafazla">
+                    <span><%- __('show_more')%></span>
+                </div>
+            </section>
+            <section id="profile-followers" data-total=null class="tab-pane" data-page="1" data-pages=null>
+              <div class="ara-baslik">
+                  <span>Takip Edenler</span>
+              </div>
+              <div id="profile-followers-sonucu">
+                  <div class="kx-card kx-card__simple">
+                      <div class="skeleton-effect-wave p-4">
+                          <p style="width: 15%;" class="skeleton-block"></p>
+                          <p style="width: 25%;" class="skeleton-block"></p>
+                          <p style="width: 100%" class="skeleton-block"></p>
+                          <p style="width: 100%" class="skeleton-block"></p>
+                          <p style="width: 40%;" class="skeleton-block"></p>
+                      </div>
+                  </div>
+              </div>
+              <div class="yukleniyor" id="profile-followers-dahafazla">
+                  <span><%- __('show_more')%></span>
+              </div>
+          </section>
+          <section id="profile-followings" class="tab-pane" data-total=null data-page="1" data-pages=null>
+            <div class="ara-baslik">
+                <span>Takip Ettikleri</span>
+            </div>
+            <div id="profile-followings-sonucu">
+                <div class="kx-card kx-card__simple">
+                    <div class="skeleton-effect-wave p-4">
+                        <p style="width: 15%;" class="skeleton-block"></p>
+                        <p style="width: 25%;" class="skeleton-block"></p>
+                        <p style="width: 100%" class="skeleton-block"></p>
+                        <p style="width: 100%" class="skeleton-block"></p>
+                        <p style="width: 40%;" class="skeleton-block"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="yukleniyor" id="profile-followings-dahafazla">
+                <span><%- __('show_more')%></span>
+            </div>
+        </section>
+        <section id="profile-eklenen" class="tab-pane" data-total=null data-page="1" data-pages=null>
+          <div class="ara-baslik">
+              <span>Eklediği Madde Başlıkları</span>
+          </div>
+          <div id="profile-eklenen-sonucu">
+              <div class="kx-card kx-card__simple">
+                  <div class="skeleton-effect-wave p-4">
+                      <p style="width: 15%;" class="skeleton-block"></p>
+                      <p style="width: 25%;" class="skeleton-block"></p>
+                      <p style="width: 100%" class="skeleton-block"></p>
+                      <p style="width: 100%" class="skeleton-block"></p>
+                      <p style="width: 40%;" class="skeleton-block"></p>
+                  </div>
+              </div>
+          </div>
+          <div class="yukleniyor" id="profile-eklenen-dahafazla">
+              <span><%- __('show_more')%></span>
+          </div>
+      </section>
+                <!-- <div class="col-md-10 col-lg-5">
+                  <div class="uye-profil-card">
+                    <div class="dropdown-bar mb-3">
+                      <div class="btn-group ">
+                        <button type="button" class="btn btn-text dropdown-toggle" data-toggle="dropdown">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a href="#">şikayet</a>
+                          <a href="#">engelle</a>
+                          <a href="#">modzen</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="uye-profil-card__avatar mb-2">
+                      <a href="#"><img src="https://randomuser.me/api/portraits/men/20.jpg" class="uye-profil-card__avatar-img"></a>
+                    </div>
+                    <div class="uye-profil-card__isim mb-2">
+                      <a href="#">Johnni Warren</a>
+                    </div>
+                    <div class="uye-profil-card__status mb-4">
+                      <a href="#" class="btn btn-outline-dark">Takipten Çıkar</a>
+                    </div>
+                    <div class="uye-profil-card__social mb-3">
+                      <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                      <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                      <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+              </div>
+            </section>
+
+        </div>
+        <!-- ANA İÇERİK SONU -->
+</div>
+
+  <%- include('partials/visitblog'); -%> <%- include('partials/profile-sidenav'); -%>
+</main>
+<%- contentFor('footerBlock') %>
+<script>
+  $(document).ready(function () {
+
+  });
+</script>

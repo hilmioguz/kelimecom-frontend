@@ -1,0 +1,241 @@
+
+<% if(typeof user != "undefined" && user){ %>
+<nav class="sidenav" id="profil-menu" data-sidenav data-sidenav-toggle=".sidenav-toggle">
+    <div class="sidenav-brand px-0">
+      <span>Menü</span>
+      <button id="sidenav-close">&times;</button>
+    </div>
+    <div class="sidenav-wrapper">
+
+      <div class="user-box">
+        <div class="user-box__avatar">
+          <% if (user && user.picture) { %><img src="<%= user.picture %>" class="img-fluid"><% } else { %> <img src="/assets/img/user-avatar.jpg" class="img-fluid"><% } %>
+        </div>
+        <div class="user-box__info">
+          <h5 class="mb-1"><%= user.name  %> </h5>
+          <div class="user-mail mb-2"><i class="fas fa-envelope text-info mr-1"></i> <a href="#"
+            class="muted"><%= user.email  %></a></div>
+          <% if(user.role != 'user') {%> <div class="user-role muted mb-1"><%= user.role.toUpperCase();  %></div><% } %>
+          <% if(user.packetId) {%><div class="user-role muted mb-1"><%= user.packetId.name %></div><% } %>
+          <% if(user.paketEnd) {%><div class="user-role muted mb-1"><%= new Date(user.paketEnd).toLocaleDateString(meta.siteLang,{
+            month: 'long',
+            year: 'numeric',
+          }) %></div><% } %>
+          <% if(user.kurumId) {%><div class="user-role muted mb-1"><%= user.kurumId.institution_name %></div><% } %>
+          <a href="#" id="logout-button" class="profil-buton profil-buton-turuncu"><%- __("logout") %></a>
+        </div>
+      </div>
+      <!-- <div class="d-flex flex-row justify-content-around">
+        <a href="#" data-toggle="modal" data-target="#sifreEditModal" class="profil-buton profil-buton-sari"><%- __("edit_password") %></a>
+      </div> -->
+      <div class="profil-content-box">
+        <a href="/profil" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-clone icon-mavi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Profilim</div>
+            <div class="muted">Duvar, Takipçilerim, Eklediklerim</div>
+          </div>
+        </a>
+        <!-- <a href="/profil" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-chart-bar icon-sari"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Bildirimler (3)</div>
+            <div class="muted">Beğenenler ve Kampanyalar</div>
+          </div>
+        </a> -->
+        <a href="/ayarlar" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-user-cog icon-yesil"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Gizlilik & Ayarlar</div>
+            <div class="muted">Hesap Ayarları</div>
+          </div>
+        </a>
+        <a href="/history" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-history icon-kirmizi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Arama Geçmişim</div>
+          </div>
+        </a>
+        <!-- <a href="#" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-history icon-kirmizi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Mobil Uygulamalarımız</div>
+            <div class="muted"><span class="sari">iOS</span> ve <span class="sari">Android</span> platformlar için</div>
+          </div>
+        </a> -->
+      </div>
+
+      <!-- <div class="profil-content-box">
+        <h5 class="profil-content-box__title mb-3">Olup Biten Hakkında</h5>
+        <a href="#" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-clone icon-mavi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Sİze özel %50 indirim</div>
+            <div class="muted">Sor gün 14.02.21</div>
+          </div>
+          <div class="price-badge">
+            Satın Al
+          </div>
+        </a>
+        <a href="#" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-chart-bar icon-sari"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Popüler Kelimeistler</div>
+            <div class="muted">Son 1 ayın en iyileri</div>
+          </div>
+          <div class="price-badge">
+            Tıkla
+          </div>
+        </a>
+        <a href="#" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-user-cog icon-yesil"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Son Eklenen Kelimeler</div>
+            <div class="muted">Son bir haftada eklenenler</div>
+          </div>
+          <div class="price-badge">
+            26.000+
+          </div>
+        </a>
+        <a href="#" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-history icon-kirmizi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Son Gelen Ziyaretçiler</div>
+            <div class="muted">Son 1 haftada gelenler</div>
+          </div>
+          <div class="price-badge">
+            990.000+
+          </div>
+        </a>
+        <a href="#" class="profil-row-item">
+          <div class="profil-row-item__icon">
+            <i class="fas fa-history icon-kirmizi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Aktif Kurumlar</div>
+            <div class="muted">Sık kullanan kurumlar sırası</div>
+          </div>
+          <div class="price-badge">
+            Tıkla
+          </div>
+        </a>
+      </div> -->
+      <div class="profil-content-box">
+        <!-- <h5 class="profil-content-box__title mb-3">Moderatöre Özel</h5> -->
+        <% if (user.assignedSet && user.assignedSet.id) {%>
+          <div class="d-flex flex-row justify-content-around my-4">
+            <% if (user.canDoKulucka) { %>
+              <a href="/kulucka-eklediklerim/<%=user.assignedSet.id%>" class="profil-row-item bg-sari-muted color-card">
+                <div class="profil-row-item__sembol">
+                  <i class="fas fa-book icon-sari"></i>
+                </div>
+                <div class="profil-row-item__text">
+                  <div class="bold">Kuluçka setini gör ve düzenle</div>
+                </div>
+                <div class="price-badge price-badge-color icon-sari">
+                  +%28
+                </div>
+              </a>
+            <% } else if (user.canDoKuluckaModerate) {%>
+        <a href="/kulucka-eklediklerim/<%=user.assignedSet.id%>" class="profil-row-item bg-sari-muted color-card">
+          <div class="profil-row-item__sembol">
+            <i class="fas fa-book icon-sari"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Teslim edilmiş kuluçka setini gör ve düzenle</div>
+          </div>
+        </a>
+          <% } %>
+          </div>
+        <%}%>
+
+        <!-- <a href="#" class="profil-row-item bg-mavi-muted color-card">
+          <div class="profil-row-item__sembol">
+            <i class="fas fa-thumbs-up icon-mavi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Kelime Onayla</div>
+          </div>
+        </a> -->
+        <a href="/sende-ekle" class="profil-row-item bg-kirmizi-muted color-card">
+          <div class="profil-row-item__sembol">
+            <i class="fas fa-plus icon-kirmizi"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Sen de Ekle</div>
+          </div>
+        </a>
+        <!-- <a href="#" class="profil-row-item bg-mor-muted color-card">
+          <div class="profil-row-item__sembol">
+            <i class="fas fa-binoculars icon-mor"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Üyeleri Denetle</div>
+            <div class="muted">Sık kullanan kurumlar sırası</div>
+          </div>
+          <div class="price-badge price-badge-color icon-mor">
+            +%8
+          </div>
+        </a> -->
+        <!-- <a href="#" class="profil-row-item bg-yesil-muted color-card">
+          <div class="profil-row-item__sembol">
+            <i class="fas fa-edit icon-yesil"></i>
+          </div>
+          <div class="profil-row-item__text">
+            <div class="bold">Kasaya Gözat</div>
+            <div class="muted">Sık kullanan kurumlar sırası</div>
+          </div>
+          <div class="price-badge price-badge-color icon-yesil">
+            +%50
+          </div>
+        </a> -->
+
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- şire editleme modal -->
+<!-- <div class="modal fade" id="sifreEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title"><%- __('new_pasword_title') %></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body p-lg-5">
+            <form id="editpass-form" method="post" action="javascript:;">
+                <div class="d-flex flex-column align-items-center justify-content-between">
+                  <input class="form-control px-3 my-2" type="password" name="password" id="password" placeholder="<%- __('new_password') %>" autocomplete="new-password" required>
+                  <input class="form-control px-3 my-2" type="password" name="password2" placeholder="<%- __('new_password2') %>" autocomplete="new-password" required>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="editpass-button" type="button" class="btn btn-primary btn-block"><%- __('renew') %></button>
+          </div>
+      </div>
+  </div>
+</div> -->
+<!-- şire editleme modal Sonu -->
+  <% } %>

@@ -1,0 +1,1032 @@
+<%- contentFor('headerBlock') %>
+  <link href="assets/css/style.css" rel="stylesheet">
+  <!-- Font Awesome 5.x Icon library (check themes to change this) -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+  <!-- Krajee Markdown Editor Main Library Default Style -->
+  <link href="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/css/markdown-editor.css" media="all" rel="stylesheet" type="text/css" />
+  <!-- Highlight JS style provided with plugin for code styling -->
+  <link href="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/highlight/highlight.min.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="/assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/fancy_fileupload.css" type="text/css" media="all">
+  <style>
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+      border: 1px solid #ced4da;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+      background-color: #e4e4e4;
+      border: 1px solid #ced4da;
+    }
+
+    .select2-container .select2-selection--multiple {
+      min-height: 38px;
+      width: 100%;
+    }
+    .select2 {
+      width: 100% !important;
+    }
+    .select2-container--default .select2-selection--multiple {
+      background-color: white;
+      border: 1px solid #ced4da;
+      max-width: 200px;
+    }
+    .select2-selection--single {
+      background-color: white!important;
+      border: 1px solid #ced4da!important;
+      min-height: 38px;
+    }
+    .md-header .btn-group .btn-outline-secondary {
+      color: #f8690d !important;
+    }
+
+    .error {
+      color: red !important;
+    }
+
+    .w-40px {
+      width: 40px;
+    }
+    .fileUploaded {
+    display: none;
+    }
+    .uploadDelete {
+      margin-left: 5px;
+    }
+    .viewUpload {
+      background: greenyellow;
+    }
+  </style>
+  <%- contentFor('body') %>
+    <header>
+      <%- include('partials/menu'); -%>
+    </header>
+    <main role="main">
+      <section class="degrade-desen-bg">
+        <div class="container">
+          <div class="row py-5">
+            <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+              <div class="cozumleyici-nedir">
+                <h1>Sen de Ekle</h1>
+                <p>Sen de bildiğin ve öğrendiğin kelime türlerinden 15 tane ekle 1 ay boyunca
+                  Kelime.com’dan tam sürüm yararlan. Ekledğin kelimelerin ücretsiz şekilde halka açık kullanılacağını da
+                  unutma. <a href="#" class="dark-turuncu">Kelime ekleme nasıl kullanılır tıkla.</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="row hidden-mobile">
+            <div class="col mt-5">
+              <!-- sections/_sozlukler.scss -->
+              <ul class="nav justify-content-center nav-tabs sozluk-tab-linkler" id="selectTab">
+                <li class="nav-item">
+                  <a class="nav-link active" id="kelime-tab" data-toggle="tab" data-tip="kelime"
+                    href="#sendeekleform"><%- __('word') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="tamlama-tab" data-toggle="tab" data-tip="tamlama"
+                    href="#sendeekleform"><%- __('noun') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="cumle-tab" data-toggle="tab" data-tip="kalıp" href="#sendeekleform"><%- __('pattern') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="atasozu-tab" data-toggle="tab" data-tip="atasözü"
+                    href="#sendeekleform"><%- __('proverb') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="deyim-tab" data-toggle="tab" data-tip="deyim" href="#sendeekleform"><%- __('expression') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="kisi-tab" data-toggle="tab" data-tip="kişi" href="#sendeekleform"><%- __('person') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="eser-tab" data-toggle="tab" data-tip="eser" href="#sendeekleform"><%- __('work') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="olay-tab" data-toggle="tab" data-tip="olay" href="#sendeekleform"><%- __('event') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="yapi-tab" data-toggle="tab" data-tip="yapı" href="#sendeekleform"><%- __('structure') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="yeradi-tab" data-toggle="tab" data-tip="yeradı"
+                    href="#sendeekleform"><%- __('placename') %></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="soz-tab" data-toggle="tab" data-tip="söz" href="#sendeekleform"><%- __('utterance') %></a>
+                </li>
+              </ul>
+              <!-- sections/_sozlukler.scss -->
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="standard-padding">
+        <div class="container">
+          <!-- Mobilde tablar dropdowna dönüşüyor -->
+          <!-- sections/_sozlukler.scss -->
+          <div class="tab-content sozluk-tab-icerikler">
+            <!-- KELİME TAB -->
+            <div class="tab-pane fade show active" id="sendeekleformtab">
+              <div class="row">
+                <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                  <p class="text-center">Lütfen girilen madde için uygun sekmeyi seçiniz. Doğru ekleme yapmak için Madde Nasıl Eklenir? videosunu izleyiniz.
+                    <br><span class="text-danger">Not:
+                      Sadece * (yıldız) işaretli olan yerler zorunludur.</span>
+                  </p>
+                  <button class="btn btn-text" id="smart-keyboard-toggle"><i class="fas fa-keyboard">Klavye</i></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-16 col-md-20 mx-auto mb-4">
+                  <form id="sendeekleform" class="moderator-form">
+                    <div class="flex-sira mb-md-1">
+                      <div class="zorunlu-yildiz form-group w-25">
+                        <label for="dil">Dili</label>
+                        <select name="dil"
+                          class="dilSecimi custom-select custom-select bg-primary text-white parca-auto-width">
+                          <option value="">Seçiniz</option>
+                        </select>
+                      </div>
+                      <div class="zorunlu-yildiz form-group w-50">
+                        <label for="madde">Eklenecek maddebaşı</label>
+                        <input type="text" name="madde" id="maddeBasi" class="klayveInput form-control flex-grow-2 parca" placeholder="Örn: hakim">
+                        <input type="hidden" name="tip" id="tipInputField">
+                      </div>
+                      <div class="form-group d-flex flex-column w-25">
+                        <label for="sesDosyasi" class="mt-2">Ses Ekle</label>
+                        <a href="#" class="openfileUpload btn btn-light buton-border-gri" data-name="sesDosyasi" data-accept=".mp3, .wav" data-toggle="modal"
+                        data-target="#fileUpload"><i class="fas fa-volume-down mr-2"></i>Yükle</a>
+                        <input type="hidden" data-name="sesDosyasi" name="sesDosyasi" class="sesDosyasi">
+                      </div>
+                      <div class="digeryazimSection no-yildiz form-group w-auto">
+                        <label for="digeryazim">Diğer yazım şekli</label>
+                          <select name="digeryazim" multiple="multiple" class="digerInput form-control flex-grow-2 parca"
+                          placeholder="Örn: hâkim">
+                          </select>
+                      </div>
+                      <div class="sozSection no-yildiz form-group w-auto">
+                        <label for="sozusoyleyen">Sözü Söyleyen Kişi</label>
+                        <input type="text" name="sozusoyleyen" class="form-control  flex-grow-2 parca"
+                          placeholder="Örn: Fatih Sultan Mehmet">
+                      </div>
+                    </div>
+
+                    <div class="karsidilSection flex-sira mb-md-1">
+                      <div class="form-group w-25">
+                        <label for="exampleInputEmail1">Karşı Dili</label>
+                        <select name="karsidil"
+                          class="dilSecimi custom-select custom-select bg-primary text-white parca-auto-width">
+                          <option value="">Seçiniz</option>
+                        </select>
+                      </div>
+                      <div class="form-group w-50">
+                        <label for="exampleInputEmail1">Eklenecek maddebaşı</label>
+                        <input type="text" name="karsimadde" id="KarsiMadde" class="klayveInput form-control flex-grow-2 parca"
+                          placeholder="Örn: hakim">
+                      </div>
+                      <div class="form-group d-flex flex-column w-25">
+                        <label for="exampleInputEmail1">Ses Ekle</label><% var initialkarsisesDosyasiID = Math.floor(Math.random() * 26) + Date.now();  %>
+                        <a href="#" class="openfileUpload btn btn-light buton-border-gri" data-toggle="modal" data-accept=".mp3,.wav" data-name="<%=initialkarsisesDosyasiID%>"
+                        data-target="#fileUpload"><i class="fas fa-volume-down mr-2"></i>Yükle</a>
+                        <input type="hidden" data-name="<%=initialkarsisesDosyasiID%>" name="karsisesDosyasi" class="sesDosyasi">
+                      </div>
+                      <div class="form-group w-auto">
+                        <label for="exampleInputEmail1">Diğer yazım şekli</label>
+                        <select name="karsidigeryazim" multiple="multiple" class="digerInput form-control flex-grow-2 parca"
+                          placeholder="Örn: hâkim">
+                          </select>
+                      </div>
+                      <div class="form-group align-items-end d-flex form-group">
+                        <a id="karsiDilEkle" class="btn btn-light buton-border-gri w-40px"><i
+                            class="fas fa-plus mr-2"></i></a>
+                      </div>
+                    </div>
+
+                    <div class="eserSection flex-sira mb-md-1 w-100">
+                      <div class="form-group w-auto">
+                        <label for="eserindili">Eserin Dili</label>
+                        <input type="text" name="eserindili" class="form-control flex-grow-2 parca"
+                          placeholder="Osmanlıca">
+                      </div>
+                      <div class="form-group w-25">
+                        <label for="eserindonemi">Eserin Dönemi</label>
+                        <input type="text" name="eserindonemi" class="form-control flex-grow-2 parca"
+                          placeholder="Ör: Osmanlı dönemi">
+                      </div>
+                      <div class="form-group w-25">
+                        <label for="eserinyili">Eserin Yılı</label>
+                        <input type="text" name="eserinyili" class="form-control flex-grow-2 parca"
+                          placeholder="Ör: 1876">
+                      </div>
+                      <div class="form-group w-25">
+                        <label for="eserinyazari">Eserin Yazarı</label>
+                        <input type="text" name="eserinyazari" class="form-control flex-grow-2 parca"
+                          placeholder="Ör: Ahmet Hamdi">
+                      </div>
+                    </div>
+
+                    <div class="flex-sira  mb-md-3">
+                      <div class="zorunlu-yildiz form-group w-100">
+                        <label for="exampleInputEmail1">Anlamı-Maddebaşı içeriği</label>
+                        <textarea class="form-control"
+                          placeholder="1. Mümtâz adam, feylesof. {mecaz} &#10;2. Felsefe mütehassısı. {felsefe} &#10;3. "
+                          id="editor-id" name="anlam" rows="15"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="sozSection flex-sira mb-md-1 w-100 h-100">
+                      <div class="karsianlamAc form-group w-100">
+                        <div class="btn btn-light buton-border-gri py-4 w-100">KARŞI DİLDE ANLAM İÇERİĞİ EKLEMEK İÇİN TIKLAYIN</div>
+                      </div>
+                      <div class="karsiEditor form-group w-100 h-100">
+                        <label for="exampleInputEmail1">Karşı dil anlamı-maddebaşı içeriği</label>
+                        <textarea class="form-control w-100"
+                          placeholder="1. Mümtâz adam, feylesof. {mecaz} &#10;2. Felsefe mütehassısı. {felsefe} &#10;3. "
+                          id="karsieditor-id" name="karsianlam" rows="15"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="sekilSection flex-sira mb-md-1 w-100">
+                      <div class="form-group w-25">
+                        <label class="sekilSecimi custom-select custom-select bg-primary text-white parca-auto-width">
+                          Şekil 1
+                        </label>
+                      </div>
+                      <div class="form-group w-100">
+                        <input type="text" name="sekilaciklama" class="form-control flex-grow-2 parca"
+                          placeholder="Şekil ile ilgili açıklamaları buraya giriniz">
+                      </div>
+                      <div class="form-group d-flex flex-column w-25"> <% var initialsekilresimID = Math.floor(Math.random() * 26) + Date.now();  %>
+                        <a href="#" class="openfileUpload btn btn-light buton-border-gri" data-toggle="modal" data-accept="image/*" data-name="<%=initialsekilresimID%>"
+                        data-target="#fileUpload"><i class="fas fa-image mr-2"></i>Yükle</a>
+                        <input type="hidden" data-name="<%=initialsekilresimID%>" name="sekilresim">
+                      </div>
+                      <div class="form-group align-items-start d-flex form-group">
+                        <a id="sekilEkle" class="btn btn-light buton-border-gri w-40px"><i
+                            class="fas fa-plus mr-2"></i></a>
+                      </div>
+                    </div>
+
+                    <div class="kokleriSection flex-sira mb-md-1 w-100">
+                      <div class="form-group w-100">
+                        <label for="kokleri" class="w-100">Kökleri (Maddedeki kökleri yalın halde sırasıyla yazıp "enter" tuşuna
+                          basınız)</label>
+                        <select name="kokleri" multiple="multiple"
+                          class="kokleriInput form-control flex-grow-1 parca w-100">
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="detailSection">
+                      <div class="flex-sira mb-md-1">
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Köken Dili</label>
+                          <select name="kokendili"
+                            class="dilSecimi kokenDiliInput form-control flex-grow-2 parca">
+                            <option value="">Seçiniz</option>
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Köken</label>
+                          <input type="text" name="kokeni" class="form-control flex-grow-2 parca" placeholder="Örn: hak">
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Tür</label>
+                          <select name="tur" multiple="multiple" class="turInput form-control flex-grow-2 parca ">
+                            <option value="isim">İsim</option>
+                            <option value="fiil">Fiil</option>
+                            <option value="sıfat">Sıfat</option>
+                            <option value="zarf">Zarf</option>
+                            <option value="ünlem">Ünlem</option>
+                            <option value="bağlaç">Bağlaç</option>
+                            <option value="zamir">Zamir</option>
+                            <option value="edat">Edat</option>
+                            <option value="mecaz">Mecaz</option>
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Alt Tür</label>
+                          <select name="alttur" multiple="multiple" class="altturInput form-control flex-grow-2 parca">
+                            <option value="fail">Fail</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="flex-sira mb-md-1">
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Cinsiyet</label>
+                          <select name="cinsiyet" multiple="multiple"
+                            class="cinsiyetInput form-control flex-grow-2 parca">
+                            <option value="eril">Eril</option>
+                            <option value="dişil">Dişil</option>
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Biçim</label>
+                          <select name="bicim" multiple="multiple" class="bicimInput form-control flex-grow-2 parca">
+                            <option value="teklik">Teklik</option>
+                            <option value="ikilik">İkilik</option>
+                            <option value="çokluk">Çokluk</option>
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Sınıfı</label>
+                          <select name="sinif" multiple="multiple" class="sinifiInput form-control flex-grow-2 parca">
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Transkripsiyon</label>
+                          <select name="transkripsiyon" multiple="multiple"
+                            class="transkripsiyonInput form-control flex-grow-2 parca">
+                          </select>
+                        </div>
+                      </div>
+                      <div class="flex-sira mb-md-1">
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Fonetik</label>
+                          <select name="fonetik" multiple="multiple"
+                            class="fonetikInput form-control flex-grow-2 parca">
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Heceliyazim</label>
+                          <select name="heceliyazim" multiple="multiple"
+                            class="heceliyazimInput form-control flex-grow-2 parca">
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Zıt Anlam</label>
+                          <select name="zitanlam" multiple="multiple"
+                            class="zitanlamInput form-control flex-grow-2 parca">
+                          </select>
+                        </div>
+                        <div class="form-group w-25">
+                          <label for="exampleInputEmail1">Eş Anlam</label>
+                          <select name="esanlam" multiple="multiple"
+                            class="esanlamInput form-control flex-grow-2 parca">
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="eserTxtSection flex-sira mb-md-1 w-100">
+                      <div class="form-group d-flex flex-column w-100">
+                        <a href="#" class="openfileUpload btn btn-light buton-border-gri py-4" data-toggle="modal" data-accept="text/plain, application/msword, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-name="esertxt"
+                        data-target="#fileUpload"><i class="fas fa-file mr-2"></i>ESERİN TELİFİ BULUNMUYORSA .TXT, .DOC, .DOCX, .PDF FORMATINDA YÜKLEMEK İÇİN TIKLAYIN</a>
+                        <input type="hidden" data-name="esertxt" name="esertxt">
+                      </div>
+                    </div>
+
+                    <div class="locationSection flex-sira mb-md-1 w-100">
+                      <div class="form-group d-flex flex-column w-100">
+                        <label for="exampleInputEmail1">Haritadan yerin veya yapının konumunu seçiniz</label>
+                        <input type="text" id="us2-address" placeholder="Arama yapmak için yerin adını yazınız" class="form-control flex-grow-1 parca" style="width: 100%;margin-bottom: 10px;"/>
+                        <div id="locationMap" style="width: 100%; height: 400px;"></div>
+                        <input type="hidden" id="us2-lat" name="latitude" class="latitudeInput"/>
+                        <input type="hidden" id="us2-lon" name="longitude" class="longitudeInput" />
+                      </div>
+                    </div>
+
+                    <div class="tariharaligiSection">
+                      <div class="flex-sira w-100">
+                        <div class="w-100">
+                          <label for="exampleInputEmail1" class="w-100">Etimolojik Seyri</label>
+                        </div>
+                      </div>
+                      <div class="flex-sira mb-md-1">
+                      <div class="tarih-araligi">
+                        <input type="text" name="tarihcesibaslangic" class="form-control" placeholder="1453">
+                        <span class="tilda">~</span>
+                        <input type="text" name="tarihcesibitis" class="form-control" placeholder="1920">
+                      </div>
+                      <div class="form-group w-100 mt-3">
+                        <input type="text" name="tarihcesiadi" class="form-control flex-grow-2 ilk-parca"
+                          placeholder="Adı: Payitaht, dersaadet, asitane">
+                      </div>
+                      <div class="form-group w-100 mt-3">
+                        <input type="text" name="tarihcesihakimiyet" class="form-control flex-grow-1 parca"
+                          placeholder="Hakimiyet: ">
+                      </div>
+                      <div class="form-group w-auto mt-3">
+                        <a id="tariharaligiEkle" class="btn btn-light buton-border-gri w-40px"><i
+                            class="fas fa-plus mr-2"></i></a>
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="flex-sira mb-md-1">
+                      <div class="mt-1 form-group w-50">
+                        <strong>Bu maddeyi düzenleyen:</strong> <a href="javascript:void(0);">
+                          <%= user.name %>
+                        </a>
+                      </div>
+                    </div>
+                  </form>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- sections/_sozlukler.scss -->
+          <div class="col-lg-16 col-md-20 mx-auto">
+            <div class="row justify-content-around align-items-center">
+              <div class="col-20 col-md-10">
+                <p class="text-center">“Kaydet” butonuna bastığınız takdirde <a href="#" data-toggle="modal"
+                    data-target="#icerikEklemeSozlesmesiModal">İçerik Ekleme Sözleşmesini</a> kabul etmiş olursunuz.</p>
+              </div>
+              <div class="col-20 col-md-10 d-flex mb-5">
+                <button id="sendekaydet" class="btn btn-primary flex-1">KAYDET</button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+      <%- include('partials/nasil-eklenir'); -%>
+      <%- include('partials/profile-sidenav'); -%>
+      <kelime-keyboard id="kelime-keyboard" />
+    </main>
+
+    <%- contentFor('footerBlock') %>
+      <!-- fileupload Modal -->
+      <div class="modal fade" tabindex="-1" id="fileUpload">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <form method="POST" action="/file-upload" accept-charset="UTF-8" enctype="multipart/form-data">
+            <div class="modal-header">
+              <h5 class="modal-title">Dosya yüklemek için tıklayınız ya da sürükle bırakın</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input id="thefiles" type="file" name="files" class="ff_fileupload_hidden">
+              <input type="hidden" name="inputToBeUploaded" id="inputToBeUploaded" value=""/>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+      <!-- fileupload Modal ends -->
+      <!-- İçerik Ekleme Sözleşmesi Modal -->
+      <div class="modal fade" tabindex="-1" id="icerikEklemeSozlesmesiModal">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">İçerik Ekleme Sözleşmesi</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Kelime.com adresinde bulunan ve yayınlanan içerikler, telifli ve telifsiz olmak üzere iki kategoride düzenlenmiştir. Telifli olanlar firmamıza ait, telifsiz olanlar ise kullanıcıların telifi bulunmayan materyalleri yüklemesiyle oluşturulmuştur. Çünkü Kelime.com (www.kelime.com) başkalarının fikri mülkiyet haklarına saygı duyar ve kullanıcılarının da aynısını yapmasını bekler. Türkiye Telif Hakları web sitesinde yer alan mevzuat (www.telifhaklari.gov.tr/Mevzuat ) gereğince Kelime.com, telif hakkı iddialarına hızlı bir şekilde yanıt verecektir. Bu web sitesindeki tüm bilgiler iyi niyetle ve yalnızca genel bilgi amaçlı yayınlanmıştır.</p><p>Kelime.com (www.kelime.com) içerisinde bulunan içerikler için sadece barındırma ve depolama hizmeti sağlar. Aynı zamanda depolanan dosyaların içerisinde arama yapılmasına olanak sağlamak için çalışır. Kelime.com, bilgilerin eksiksizliği, güvenilirliği ve doğruluğu konusunda herhangi bir garanti vermez. </p><p>Bu web sitesinde (www.kelime.com) bulduğunuz bilgilere göre yaptığınız herhangi bir işlemin riski tamamen size aittir. www.kelime.com, kullanımıyla bağlantılı herhangi bir kayıp ve / veya zarardan sorumlu olmayacaktır. </p><p>Kelime.com’dan, bu tür harici sitelere giden linklere tıklayarak diğer web sitelerini ziyaret edebilirsiniz. Yararlı ve etik web sitelerine yalnızca kaliteli bağlantılar sağlamaya çalışsak da, bu sitelerin içeriği ve doğası üzerinde hiçbir kontrolümüz yoktur. Diğer web sitelerine verilen bu bağlantılar, bu sitelerde bulunan tüm içerik için bir öneri anlamına gelmez. Site sahipleri ve içeriği önceden haber verilmeksizin değiştirilebilir ve 'kötü' olmuş olabilecek bir bağlantıyı kaldırma fırsatımız olmadan önce gerçekleşebilir.</p><p>Ayrıca, Kelime.com'dan ayrıldığınızda, diğer sitelerin kontrolümüz dışında farklı gizlilik politikalarına ve şartlarına sahip olabileceğini de lütfen unutmayın. Lütfen herhangi bir işe girmeden veya herhangi bir bilgi yüklemeden önce bu sitelerin Gizlilik Politikalarını ve "Hizmet Koşullarını" kontrol ettiğinizden emin olun. </p><p>Web sitemizi kullanarak ve içerik yükleyerek, İçerik ve Dosya Yükleme Sözleşmesini ile Üyelik Sözleşmesini kabul etmiş sayılırsınız. İçerik veya dosya yüklenmesine onay vermeniz durumunda eklenen dosyanın telifinin bulunmadığını ve aksi durumda sorumluluğun yükleyen kişiye (kendinize) ait olduğunu kabul etmiş ve onaylamış olursunuz.</p>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Kapat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%- include('partials/inner-klavye', {active_page: 'sende-ekle'}); -%>
+
+      <!-- Include DOM purify plugin if you need to purify HTML output (needed only if markdown-it HTML input
+   is allowed). This must be loaded before markdown-editor.js. -->
+      <script src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/purify/purify.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT Main Library -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT Abbreviation Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-abbr.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT Subscript Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-sub.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT Superscript Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-sup.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT Underline/Inserted Text Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-ins.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT Mark Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-mark.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT SmartArrows Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-smartarrows.min.js"
+        type="text/javascript"></script>
+      <!-- Markdown IT East Asian Characters Line Break Plugin -->
+      <script
+        src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/markdown-it/markdown-it-cjk-breaks.min.js"
+        type="text/javascript"></script>
+      <!-- Highlight JS Main Plugin Library for code styling -->
+      <script src="https://cdn.jsdelivr.net/gh/kartik-v/krajee-markdown-editor@1.0.0/plugins/highlight/highlight.min.js"
+        type="text/javascript"></script>
+
+      <!-- Krajee Markdown Editor Main Library -->
+      <script src="/assets/js/markdown/markdown-editor.min.js" type="text/javascript"></script>
+      <script src="/assets/js/markdown/tr.locale.js" type="text/javascript"></script>
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      <script type="text/javascript" src="/assets/js/fileupload/jquery.fileupload.js"></script>
+      <script type="text/javascript" src="/assets/js/fileupload/jquery.iframe-transport.js"></script>
+      <script type="text/javascript" src="/assets/js/fileupload/jquery.fancy-fileupload.js"></script>
+      <script type="text/javascript">
+        $(function() {
+          $('#thefiles').FancyFileUpload({
+            maxfilesize : 52428800,
+            edit: false,
+            added : function(e, data) {
+              var pos = data.files[0].name.lastIndexOf('.');
+              var filename = (pos > -1 ? data.files[0].name.substring(0, pos) : data.files[0].name);
+              var fileext = (pos > -1 ? data.files[0].name.substring(pos + 1).toLowerCase() : '');
+              if (!fileext.includes('.')) fileext = '.' + fileext
+              var acceptions = e.target.accept.split(",").map(function(item) {
+                return item.trim();
+              });
+              var found = false;
+              for (var x = 0; x < acceptions.length && !found; x++)
+              {
+                if (acceptions[x] === fileext || acceptions[x] === data.files[0].type || data.files[0].type.match(acceptions[x])?.length > 0)  found = true;
+              }
+
+              if (!found)  {
+                data.ff_info.errors.push('Invalid file extension.');
+                this.find('.ff_fileupload_errors').html(data.ff_info.errors.join('<br>')).removeClass('ff_fileupload_hidden');
+                this.find('button.ff_fileupload_start_upload').remove();
+              } else {
+                    // It is okay to simulate clicking the start upload button.
+                    this.find('.ff_fileupload_actions button.ff_fileupload_start_upload').click();
+              }
+            },
+            uploadcompleted : function(e, data) {
+              // console.log('url:', data.result.url);
+              if (data.result.url) {
+                const toupdateinput = $("#inputToBeUploaded").val();
+                $(`input[data-name='${toupdateinput}']`).val(data.result.url);
+                $(`a[data-name='${toupdateinput}']`).addClass('fileUploaded');
+                $(`<div class="viewUpload btn btn-light" data-name="${toupdateinput}"><a href="#" data-name="${toupdateinput}" class="uploadDelete ma-auto">🗑️</a>Yüklendi<a href="${data.result.url}" target="_blank" class="ma-auto">🔗</a></div>`).insertAfter(`a[data-name='${toupdateinput}']`);
+                data.ff_info.RemoveFile();
+                $('#fileUpload').modal('toggle');
+              }
+            },
+          });
+        });
+      </script>
+      <script type="text/javascript" src='https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCYDaK7tXKLgEGfrjvAMePnChtfIzA4jks'></script>
+      <script src="/assets/js/jquery-locationpicker.js"></script>
+      <script>
+        $('#locationMap').locationpicker({
+          location: {
+            latitude: 39.92890773788595,
+            longitude: 32.85455128463135
+          },
+          enableAutocomplete: true,
+          inputBinding: {
+            latitudeInput: $('#us2-lat'),
+            longitudeInput: $('#us2-lon'),
+            locationNameInput: $('#us2-address')
+        }
+        });
+      </script>
+     <script>
+        $(document).ready(async function () {
+          const resetSendeEkleForm = () => {
+            $("#sendeekleform").trigger('reset');
+            $('.digerInput').each(function () {
+                $(this).val(null).trigger('change');
+              });
+            $('.kokenDiliInput').val(null).trigger('change');
+            $('.turInput').val(null).trigger('change');
+            $('.altturInput').val(null).trigger('change');
+            $('.kokenInput').val(null).trigger('change');
+            $('.kokleriInput').val(null).trigger('change');
+            $('.cinsiyetInput').val(null).trigger('change');
+            $('.sinifiInput').val(null).trigger('change');
+            $('.transkripsiyonInput').val(null).trigger('change');
+            $('.fonetikInput').val(null).trigger('change');
+            $('.heceliyazimInput').val(null).trigger('change');
+            $('.zitanlamInput').val(null).trigger('change');
+            $('.esanlamInput').val(null).trigger('change');
+            $('.telaffuzInput').val(null).trigger('change');
+            $('.bicimInput').val(null).trigger('change');
+            $('.latitudeInput').val(null).trigger('change');
+            $('.longitudeInput').val(null).trigger('change');
+            $('#inputToBeUploaded').val(null).trigger('change');
+            var yukaritop = ($(window).scrollTop() || $("body").scrollTop());
+
+            $(".uploadDelete").each(function () {
+                var inputName = $(this).data('name');
+                $(`input[data-name='${inputName}']`).val(null).trigger('change');
+                $(`a[data-name='${inputName}']`).removeClass('fileUploaded');
+                $(`a[data-name='${inputName}']`).html(`<i class="fas fa-volume-down mr-2"></i>Yükle`);
+                $(`.viewUpload[data-name='${inputName}']`).remove();
+                $(this).remove();
+            });
+          };
+
+          let aktifDiller = await getAktifDiller('array');
+          $(".digeryazimSection").show();
+          $('#karsiDilEkle').show();
+          $(".detailSection").show();
+          $(".eserSection").hide();
+          $(".sekilSection").show();
+          $(".kokleriSection").hide();
+          $(".tariharaligiSection").hide();
+          $(".eserTxtSection").hide();
+          $(".locationSection").hide();
+          $(".karsiAnlamSection").hide();
+          $(".sozSection").hide();
+          $(".karsiEditor").hide();
+
+          $(document).on("click", ".openfileUpload", function () {
+              var inputName = $(this).data('name');
+              var inputAccept = $(this).data('accept');
+              $("#thefiles").attr('accept', inputAccept);
+              $.fn.FancyFileUpload.defaults.accept=inputAccept;
+              $("#inputToBeUploaded").val(inputName);
+              $("#thefiles").data('fancy-fileupload').form.find('input[type=file]').attr('accept', inputAccept);
+          });
+          $(document).on("click", ".uploadDelete", function () {
+              var inputName = $(this).data('name');
+              $(`input[data-name='${inputName}']`).val(null).trigger('change');
+              $(`a[data-name='${inputName}']`).removeClass('fileUploaded');
+              $(`.viewUpload[data-name='${inputName}']`).remove();
+              $(`a[data-name='${inputName}']`).html(`<i class="fas fa-volume-down mr-2"></i>Yükle`);
+              $(this).remove();
+          });
+
+          $(document).on('click', '.karsiDilSil', function () {
+            const silId = $(this).attr('data-id');
+            // console.log('silID:', silId);
+            $(`#${silId}`).remove();
+          });
+
+          $('#karsiDilEkle').click(function () {
+            const silId = Math.floor(Math.random() * 26) + Date.now();
+            $(`
+                  <div id="${silId}" class="karsidilSection flex-sira mb-md-1">
+                      <div class="form-group w-25">
+                        <label for="exampleInputEmail1">Karşı Dili</label>
+                        <select name="karsidil"
+                          class="dilSecimi custom-select custom-select bg-primary text-white parca-auto-width">
+                          <option value="">Seçiniz</option>
+                        </select>
+                      </div>
+                      <div class="form-group w-50">
+                        <label for="exampleInputEmail1">Eklenecek maddebaşı</label>
+                        <input type="text" name="karsimadde" class="form-control flex-grow-2 parca" placeholder="Örn: hakim">
+                      </div>
+                      <div class="form-group d-flex flex-column w-25">
+                        <label for="exampleInputEmail1">Ses Ekle</label>
+                        <a href="#" class="openfileUpload btn btn-light buton-border-gri" data-toggle="modal" data-accept=".mp3, .wav" data-name="${silId}"
+                        data-target="#fileUpload"><i class="fas fa-volume-down mr-2"></i>Yükle</a>
+                        <input type="hidden" name="karsisesDosyasi" data-name="${silId}" class="sesDosyasi">
+                      </div>
+                      <div class="form-group w-auto">
+                        <label for="exampleInputEmail1">Diğer yazım şekli</label>
+                        <select name="karsidigeryazim" multiple="multiple" class="digerInput form-control flex-grow-2 parca"
+                          placeholder="Örn: hâkim">
+                          </select>
+                      </div>
+                      <div class="form-group align-items-end d-flex form-group">
+                          <a data-id="${silId}" class="karsiDilSil btn btn-light buton-border-gri w-40px"><i class="fas fa-minus mr-2"></i></a>
+                      </div>
+                    </div>`).insertAfter('.karsidilSection:last');
+            if (aktifDiller) {
+              aktifDiller.forEach(function (dil) {
+                $(`#${silId} .dilSecimi`).append($('<option>', {
+                  value: dil,
+                  text: getLang(dil)
+                }));
+              });
+            }
+            $('.digerInput').select2({
+              placeholder: "Seç ya da yeni ekle",
+              tags: true,
+              tokenSeparators: [',']
+            });
+          });
+
+          $(document).on('click', '.sekilSil', function () {
+            const silId = $(this).attr('data-id');
+            $(`#${silId}`).remove();
+          });
+
+          $('#sekilEkle').click(function () {
+            const silId = Math.floor(Math.random() * 26) + Date.now();
+            const nextNumber = $('.sekilSecimi').length + 1;
+            $(`
+              <div id="${silId}" class="sekilSection flex-sira mb-md-1 w-100">
+                <div class="form-group w-25">
+                  <label
+                    class="sekilSecimi custom-select custom-select bg-primary text-white parca-auto-width">
+                    Şekil ${nextNumber}
+                </label>
+                </div>
+                <div class="form-group w-100">
+                  <input type="text" name="sekilaciklama" class="form-control flex-grow-2 parca"
+                    placeholder="Şekil ile ilgili açıklamaları buraya giriniz">
+                </div>
+                <div class="form-group d-flex flex-column w-25">
+                  <a href="#" class="openfileUpload btn btn-light buton-border-gri" data-toggle="modal" data-accept="image/*" data-name="${silId}"
+                        data-target="#fileUpload"><i class="fas fa-image mr-2"></i>Yükle</a>
+                  <input type="hidden" data-name="${silId}" name="sekilresim">
+                </div>
+                <div class="form-group align-items-start d-flex form-group">
+                  <a data-id="${silId}" class="sekilSil btn btn-light buton-border-gri w-40px"><i
+                      class="fas fa-minus mr-2"></i></a>
+                </div>
+              </div>
+          `).insertAfter('.sekilSection:last');
+          });
+
+          $(document).on('click', '.tariharaligiSil', function () {
+            const silId = $(this).attr('data-id');
+            $(`#${silId}`).remove();
+          });
+
+          $('#tariharaligiEkle').click(function () {
+            const silId = Math.floor(Math.random() * 26) + Date.now();
+            $(`
+              <div id="${silId}" class="tariharaligiSection flex-sira mb-md-1">
+                <div class="tarih-araligi">
+                  <input type="text" name="tarihcesibaslangic"class="form-control" placeholder="1453">
+                  <span class="tilda">~</span>
+                  <input type="text" name="tarihcesibitis" class="form-control" placeholder="1920">
+                </div>
+                <div class="form-group w-100 mt-3">
+                  <input type="text" name="tarihcesiadi" class="form-control flex-grow-2 ilk-parca" placeholder="Adı: Payitaht, dersaadet, asitane">
+                </div>
+                <div class="form-group w-100 mt-3">
+                  <input type="text" name="tarihcesihakimiyet" class="form-control flex-grow-1 parca" placeholder="Hakimiyet: ">
+                </div>
+                <div class="form-group w-auto mt-3">
+                  <a data-id="${silId}" class="tariharaligiSil btn btn-light buton-border-gri w-40px"><i
+                    class="fas fa-minus mr-2"></i></a>
+                </div>
+              </div>
+          `).insertAfter('.tariharaligiSection:last');
+          });
+
+          $("#editor-id").markdownEditor({
+            defaultMode: 'split',
+            hiddenActions: ['emoji', 'export', 'hint', 'dl', 'footnote', 'codeblock']
+          });
+
+          $('#tipInputField').val('kelime');
+
+          $(document).on("click", ".karsianlamAc", function () {
+              $(".karsiEditor").show();
+              $(this).hide();
+              $("#karsieditor-id").markdownEditor({
+                defaultMode: 'split',
+                hiddenActions: ['emoji', 'export', 'hint', 'dl', 'footnote', 'codeblock']
+              });
+            });
+
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("data-tip") // activated tab
+            resetSendeEkleForm();
+            let placeholder = "1. Mümtâz adam, feylesof. {mecaz} \n2. Felsefe mütehassısı. {felsefe} \n3. ";
+
+            if (target == 'kişi') {
+              placeholder = "Hakkında: Osmanlı İmparatorluğu'nun yedinci padişahı. Tarihî kaynaklarda ismi, Mehmed isimli diğer padişahlarınki gibi, Muhammed şeklinde geçer. İlk olarak 1444-46 yılları arasında kısa bir dönem, daha sonra 1451'den 1481 yılında ölümüne kadar 30 yıl boyunca hüküm sürdü.\n\nEserler:\n\nYapıları:\n\nSözleri:\n\n"
+            }
+
+            if (target == 'eser' || target == 'olay' || target == 'yapı') {
+              placeholder = "Hakkında: Osmanlı İmparatorluğu'nun yedinci padişahı. Tarihî kaynaklarda ismi, Mehmed isimli diğer padişahlarınki gibi, Muhammed şeklinde geçer. İlk olarak 1444-46 yılları arasında kısa bir dönem, daha sonra 1451'den 1481 yılında ölümüne kadar 30 yıl boyunca hüküm sürdü.\n\n";
+            }
+
+            if (target == 'yeradı') {
+              placeholder = "Hakkında: Osmanlı İmparatorluğu'nun yedinci padişahı. Tarihî kaynaklarda ismi, Mehmed isimli diğer padişahlarınki gibi, Muhammed şeklinde geçer. İlk olarak 1444-46 yılları arasında kısa bir dönem, daha sonra 1451'den 1481 yılında ölümüne kadar 30 yıl boyunca hüküm sürdü.\n\n1453 ~ 1920  Adı: Payitah, dersaadet, asitane   Hakimiyet:";
+            }
+
+            if (target == 'söz') {
+              placeholder = "Sözü söyleyen kişi: 2. Abdülhamit Han hazretleri \n\nSözün tamamı;  Ben Bizans İmparatoru Konstantin'den daha az haysiyetli değilim. Biraderim hazretlerine (V. Mehmet Reşat) bağlılığımı arz ediniz. İstanbul'dan çıkmam! Kendisinin de çıkmamasını atalarımızın şerefi adına istirham ederim!\n\nKaynakça: Turgut Özakman, Diriliş-Çanakkale 1915, Bilgi Yayınevi, Ankara, 2007, s. 126"
+            }
+
+            $("#editor-id").attr("placeholder", placeholder);
+            $("#karsieditor-id").attr("placeholder", placeholder);
+
+            if (target === 'kelime' ) {
+              $(".digeryazimSection").show();
+              $('#karsiDilEkle').show();
+              $(".detailSection").show();
+              $(".eserSection").hide();
+              $(".sekilSection").show();
+              $(".kokleriSection").hide();
+              $(".tariharaligiSection").hide();
+              $(".eserTxtSection").hide();
+              $(".locationSection").hide();
+              $(".sozSection").hide();
+            } else if (target === 'tamlama' || target === 'kalıp' || target === 'atasözü' || target === 'deyim') {
+              $(".digeryazimSection").show();
+              $('#karsiDilEkle').show();
+              $(".detailSection").hide();
+              $(".eserSection").hide();
+              $(".sekilSection").show();
+              $(".kokleriSection").show();
+              $(".tariharaligiSection").hide();
+              $(".eserTxtSection").hide();
+              $(".locationSection").hide();
+              $(".sozSection").hide();
+            } else if (target === 'kişi' || target === 'olay') {
+              $('#karsiDilEkle').show();
+              $(".digeryazimSection").show();
+              $(".detailSection").hide();
+              $(".eserSection").hide();
+              $(".sekilSection").hide();
+              $(".kokleriSection").hide();
+              $(".tariharaligiSection").hide();
+              $(".eserTxtSection").hide();
+              $(".locationSection").hide();
+              $(".sozSection").hide();
+            } else if(target === 'eser') {
+              $('#karsiDilEkle').show();
+              $(".digeryazimSection").show();
+              $(".detailSection").hide();
+              $(".eserSection").show();
+              $(".sekilSection").hide();
+              $(".kokleriSection").hide();
+              $(".tariharaligiSection").hide();
+              $(".eserTxtSection").show();
+              $(".locationSection").hide();
+              $(".sozSection").hide();
+            } else if(target === 'yapı') {
+              $('#karsiDilEkle').show();
+              $(".digeryazimSection").show();
+              $(".detailSection").hide();
+              $(".eserSection").hide();
+              $(".sekilSection").hide();
+              $(".kokleriSection").hide();
+              $(".tariharaligiSection").hide();
+              $(".eserTxtSection").hide();
+              $(".locationSection").show();
+              $(".sozSection").hide();
+            } else if(target === 'yeradı') {
+              $('#karsiDilEkle').show();
+              $(".digeryazimSection").show();
+              $(".detailSection").hide();
+              $(".eserSection").hide();
+              $(".sekilSection").hide();
+              $(".kokleriSection").hide();
+              $(".tariharaligiSection").show();
+              $(".eserTxtSection").hide();
+              $(".locationSection").show();
+              $(".sozSection").hide();
+            } else if(target === 'söz') {
+              $('#karsiDilEkle').hide();
+              $(".digeryazimSection").show();
+              $(".detailSection").hide();
+              $(".eserSection").hide();
+              $(".sekilSection").hide();
+              $(".kokleriSection").hide();
+              $(".tariharaligiSection").hide();
+              $(".eserTxtSection").hide();
+              $(".locationSection").hide();
+              $(".sozSection").show();
+            }
+
+            $('#tipInputField').val(target);
+          });
+
+          if (aktifDiller) {
+            aktifDiller.forEach(function (dil) {
+              $('.dilSecimi').append($('<option>', {
+                value: dil,
+                text: getLang(dil)
+              }));
+            });
+          }
+
+          const multiselects = ['.digerInput', '.kokleriInput', '.kokenDiliInput', '.turInput', '.altturInput', '.kokenInput', '.cinsiyetInput', '.sinifiInput', '.transkripsiyonInput', '.fonetikInput', '.heceliyazimInput', '.zitanlamInput', '.esanlamInput', '.bicimInput'];
+          multiselects.forEach(element => {
+            $(element).select2({
+              placeholder: "Seç ya da yeni ekle",
+              tags: true,
+              tokenSeparators: [',']
+            });
+          });
+
+          $.validator.setDefaults({
+            ignore: [],
+          });
+
+          $.validator.addMethod("karsidilRule", function (value, element) {
+              var karsimaddeFlag = [];
+              var karsidilFlag = [];
+              $("input[name='karsimadde']").each(function(){
+                if ($(this).val()) {
+                  karsimaddeFlag.push(true);
+                } else {
+                  karsimaddeFlag.push(false);
+                }
+              });
+             $("select[name='karsidil']").each(function(){
+                if ($(this).val()) {
+                  karsidilFlag.push(true);
+                } else {
+                  karsidilFlag.push(false);
+                }
+              });
+              // console.log('karsimaddeFlag:', !karsimaddeFlag.includes(false), 'karsidilFlag:', karsidilFlag.includes(false));
+              if (!karsimaddeFlag.includes(false) && karsidilFlag.includes(false)) {
+                return false;
+              } else {
+                return true;
+              }
+          }, siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!");
+
+          $("#sendeekleform").validate({
+            ignore: 'input[type=hidden], .select2-input, .select2-focusser',
+            rules: {
+              anlam: {
+                required: true,
+              },
+              madde: {
+                required: true,
+              },
+              dil: {
+                required: true,
+              },
+              "karsidil": {
+                karsidilRule: true,
+              },
+            },
+            messages: {
+              anlam: {
+                required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+              },
+              madde: {
+                required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+              },
+              dil: {
+                required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+              },
+            },
+          });
+
+          $("#sendekaydet").on("click", function () {
+            var karsidigeryazimPost = [];
+            $('select[name="karsidigeryazim"]').each(function() {
+              const val = $(this).val();
+              karsidigeryazimPost.push({name: 'karsidigeryazim', value: val.join(',')});
+            });
+            const isvalid = $("#sendeekleform").valid();
+            var post_vars = $('form#sendeekleform').serializeArray();
+            const found = post_vars.filter((v)=> v.name !== 'karsidigeryazim');
+            const payload = found.concat(karsidigeryazimPost);
+            if (isvalid) {
+              const self = this;
+              $(this).prop("disabled", true);
+              $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+              setTimeout(() => {
+                $(this).html("KAYDET");
+              }, 1000);
+              $.ajax({
+                url: "/sende-ekle",
+                method: "post",
+                data: payload,
+                success: function (response) {
+                  Swal.fire({
+                    title: "Ok!",
+                    text: response,
+                    icon: "success",
+                    heightAuto: false,
+                  });
+                  $(self).prop("disabled", false);
+                  resetSendeEkleForm();
+                },
+                error: function (err) {
+                  Swal.fire({
+                    title: "Hata!",
+                    text: err.responseJSON.message,
+                    icon: "error",
+                    confirmButtonText: "ok",
+                    heightAuto: false,
+                  });
+                  $(self).prop("disabled", false);
+                },
+              });
+            } else {
+              Swal.fire({
+                title: "Hata!",
+                text: "Lütfen zorunlu alanları doldurunuz!",
+                icon: "error",
+                confirmButtonText: "ok",
+                heightAuto: false,
+              });
+            }
+          });
+        });
+      </script>

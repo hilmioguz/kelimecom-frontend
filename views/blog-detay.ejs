@@ -1,0 +1,215 @@
+<%- contentFor('headerBlock') %>
+<link href="../assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header>
+    <%- include('partials/menu'); -%>
+    <div class="header-top-img">
+        <img src="../assets/img/blog-img.jpg">
+    </div>
+</header>
+<main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+                <div class="blog-detay-baslik">
+                  <h1>Osmanlı zamanında kaleme alınmış en iyi 10 sözlük</h1>
+                  <div class="blog-detay-baslik__yazar">
+                    <a href="#" class="yorum-yanit-button">By Admin Test</a>
+                  </div>
+                </div>
+                <div class="blog-ana-metin">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
+                  </p>
+                  <p>
+                    Vluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+                  </p>
+
+                  <h2>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,.
+                  </h2>
+
+                  <p>
+                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                  </p>
+
+                </div>
+
+                <div class="blog-makale-paylas">
+                  <h4 class="text-center">Bu makaleyi paylaş</h4>
+                  <div class="card-group paylasma-card">
+                    <a href="#" class="card bg-facebook">
+                      <div class="card-body">
+                        <div class="paylasma-card__icon">
+                          <i class="fab fa-facebook-square"></i>
+                        </div>
+                        <div class="paylasma-card__yazi">
+                          <span class="paylasma-card__isim">Facebook</span>
+                          <span class="paylasma-card__rakam">294k</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="card bg-google">
+
+                      <div class="card-body">
+                        <div class="paylasma-card__icon">
+                          <i class="fab fa-google-plus-g"></i>
+                        </div>
+                        <div class="paylasma-card__yazi">
+                          <span class="paylasma-card__isim">Google+</span>
+                          <span class="paylasma-card__rakam">2.3k</span>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="card bg-twitter">
+
+                      <div class="card-body">
+                        <div class="paylasma-card__icon">
+                          <i class="fab fa-twitter"></i>
+                        </div>
+                        <div class="paylasma-card__yazi">
+                          <span class="paylasma-card__isim">Twitter</span>
+                          <span class="paylasma-card__rakam">354k</span>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="blog-yorum-ekle">
+                  <h4>Yorum ekle</h4>
+                  <div class="blog-yorum-ekle__form">
+                    <form>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <input type="text" class="form-control" placeholder="Full Name">
+                        </div>
+                        <div class="col">
+                          <input type="email" class="form-control" placeholder="Email Address">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <textarea class="form-control" name="" id="" rows="6" placeholder="Your Comment"></textarea>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col ">
+                          <button class="btn btn-info btn-lg ml-auto yorum-button" type="submit">Gönder</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="blog-yorumlari">
+                  <h4>24 Yorum Yapıldı</h4>
+                  <div class="media kullanici-yorumu">
+                    <img src="https://randomuser.me/api/portraits/women/37.jpg" class="mr-3 yorum-avatar">
+                    <div class="media-body">
+                      <h5 class="mt-0">Barbara Johnson</h5>
+                      <p>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,in faucibus.
+                      </p>
+                      <a href="#" class="yorum-yanit-button" data-toggle="modal" data-target="#cevaplaModal" role="button">Cevapla</a>
+                    </div>
+                  </div>
+                  <div class="media kullanici-yorumu">
+                    <img src="https://randomuser.me/api/portraits/women/3.jpg" class="mr-3 yorum-avatar">
+                    <div class="media-body">
+                      <h5 class="mt-0">Barbara Johnson</h5>
+                      <p>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,in faucibus.
+                      </p>
+                      <a href="#" class="yorum-yanit-button" data-toggle="modal" data-target="#cevaplaModal" role="button">Cevapla</a>
+                    </div>
+                  </div>
+                  <div class="media kullanici-yorumu">
+                    <img src="https://randomuser.me/api/portraits/men/9.jpg" class="mr-3 yorum-avatar">
+                    <div class="media-body">
+                      <h5 class="mt-0">Barbara Johnson</h5>
+                      <p>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,in faucibus.
+                      </p>
+                      <a href="#" class="yorum-yanit-button" data-toggle="modal" data-target="#cevaplaModal" role="button">Cevapla</a>
+                    </div>
+                  </div>
+                  <div class="media kullanici-yorumu">
+                    <img src="https://randomuser.me/api/portraits/men/3.jpg" class="mr-3 yorum-avatar">
+                    <div class="media-body">
+                      <h5 class="mt-0">Barbara Johnson</h5>
+                      <p>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,in faucibus.
+                      </p>
+                      <a href="#" class="yorum-yanit-button" data-toggle="modal" data-target="#cevaplaModal" role="button">Cevapla</a>
+                    </div>
+                  </div>
+                  <div class="media kullanici-yorumu">
+                    <img src="https://randomuser.me/api/portraits/women/21.jpg" class="mr-3 yorum-avatar">
+                    <div class="media-body">
+                      <h5 class="mt-0">Barbara Johnson</h5>
+                      <p>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,in faucibus.
+                      </p>
+                      <a href="#" class="yorum-yanit-button" data-toggle="modal" data-target="#cevaplaModal" role="button">Cevapla</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col">
+                        <nav class="sozluk-pagination">
+                            <ul class="pagination pagination-lg">
+                                <li class="page-item active"><span class="page-link">1</span></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ANA İÇERİK SONU -->
+
+        </div>
+    </div>
+    <%- include('partials/visitblog'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>
+<!-- Cevapla Modal -->
+<div class="modal fade" id="cevaplaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cevap Yazın</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="">
+            <div class="form-group">
+                <label>Cevabınızı Yazın</label>
+                <textarea class="form-control" rows="3"></textarea>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            <button type="button" class="btn btn-primary">Gönder</button>
+        </div>
+        </div>
+    </div>
+</div>
+<!-- Cevapla Modal Sonu -->
+
+
+

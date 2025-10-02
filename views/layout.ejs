@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="<%- meta.siteLang %>">
+<head>
+  <script>
+    const siteLang = `<%= meta.siteLang %>`;
+  </script>
+<%- include('partials/header', {meta: locals.meta ? locals.meta:null}); -%>
+<%- defineContent('headerBlock') %>
+</head>
+<body>
+<div id="metaHolder" stlye="display:none" data-meta="<% if (meta) { %><%= JSON.stringify({...meta, isLoggedin: user ? true: false, userId: user ? user.id : null}) %><% } %>"></div>
+<%- body %>
+<%- include('partials/footer', {meta: locals.meta ? locals.meta:null}); -%>
+<% function isitInside(item, userId) {
+  // console.log('item:xxxxxxxxx', item, userId);
+  if (item & typeof item === 'array' && item.find(userId)) {
+    return true;
+  }
+  return false;
+} %>
+
+<%- include('partials/script'); -%>
+<%- defineContent('footerBlock') %>
+</body>
+</html>

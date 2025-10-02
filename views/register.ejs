@@ -1,0 +1,901 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com Giriş</title>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/login-assets/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/login-assets/css/fontawesome-all.min.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/login-assets/css/iofrm-style.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/login-assets/css/iofrm-theme3.css"
+/>
+<style>
+  .form-content label.error {
+    color: #ad4a01 !important;
+  }
+</style>
+<%- contentFor('body') %>
+<div class="form-body" class="container-fluid">
+  <div class="website-logo">
+    <a href="/">
+      <div class="logo">
+        <img src="/assets/img/logo.svg" class="logo-size" />
+      </div>
+    </a>
+  </div>
+  <div class="row">
+    <div class="img-holder">
+      <div class="bg"></div>
+      <div class="info-holder"></div>
+    </div>
+    <div class="form-holder">
+      <div class="form-content">
+        <div class="form-items">
+          <div class="page-links">
+            <a href="/login"><%- __('login_') %></a
+            ><a href="/register" class="active"><%- __('register_') %></a>
+          </div>
+          <% if (institutionName) { %>
+          <div class="alert alert-info alert-dismissible fade show with-icon" role="alert">
+            <%= institutionName %> kurumu için kayıt oluyorsunuz.
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <% } %>
+          <div
+            class="alert alert-warning alert-dismissible fade show with-icon"
+            role="alert"
+          >
+          <%- __('register_msg') %>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <form
+            id="register-form"
+            method="post"
+            autocomplete="off"
+            action="javascript:;"
+          >
+            <input type="hidden" name="inst_id" value="<%= inst_id %>" />
+            <input
+              class="form-control"
+              type="text"
+              name="name"
+              autocomplete="name"
+              placeholder="<%- __('name_surname') %>"
+              required
+            />
+            <input
+              class="form-control"
+              type="text"
+              name="email"
+              placeholder="<%- __('email') %>"
+              required
+              value="<%= username %>"
+            />
+            <input
+              class="form-control"
+              type="password"
+              name="password"
+              id="password"
+              autocomplete="new-password"
+              placeholder="<%- __('password') %>"
+              required
+            />
+            <input
+              class="form-control"
+              type="password"
+              name="password2"
+              autocomplete="new-password"
+              placeholder="<%- __('password2') %>"
+              required
+            />
+            <div style="font-size: small">
+              <%- __('register_terms') %>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="form-button">
+                <button id="register-button" class="ibtn"><%- __('register_') %></button>
+              </div>
+            </div>
+          </form>
+          <div class="other-links d-flex align-items-center">
+            <span><%- __('social_register') %> </span
+            ><a href="#"><i class="fab fa-facebook-f"></i></a
+            ><a href="/auth/google"><i class="fab fa-google"></i></a
+            ><a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- contentFor('footerBlock') %>
+<script type="text/javascript">
+$(document).ready(function () {
+  const filedrequired = `<%- __('field_required') %>`;
+  const invalidemail = `<%- __('invalid_email') %>`;
+  const giristext = `<%- __('login_') %>`;
+  const errortext = `<%- __('error') %>`;
+  const wronglogin= `<%- __('wrong_login') %>`;
+  const registertext = `<%- __('register') %>`;
+  const atleastcriter = `<%- __('atleast_criter') %>`;
+  const invalidemailcriter = `<%- __('invalid_email_criter') %>`;
+  const minlengthcriter = `<%- __('minlength') %>`;
+  const minlengthchar = `<%- __('minlengthcharacter') %>`;
+  const notmatch = `<%- __('passwordnotmatched') %>`;
+  const successheader = `<%- __('success') %>`;
+  const successmessage = `<%- __('register_success_msg') %>`;
+
+  $.validator.addMethod(
+    "regex",
+    function (value, element, regexp) {
+      if (regexp.constructor != RegExp) regexp = new RegExp(regexp);
+      else if (regexp.global) regexp.lastIndex = 0;
+      return this.optional(element) || regexp.test(value);
+    },
+    atleastcriter
+  );
+
+  $.validator.addMethod(
+    "validEmail",
+    function (value, element) {
+      if (value.length > 1) {
+        if (
+          /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+            value
+          )
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    },
+    invalidemailcriter
+  );
+
+  $("#register-form").validate({
+    rules: {
+      name: {
+        required: true,
+        minlength: 3,
+      },
+      email: {
+        required: true,
+        email: true,
+        validEmail: true,
+      },
+      password: {
+        required: true,
+        minlength: 8,
+        regex: "[^wd]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))",
+      },
+      password2: {
+        required: true,
+        minlength: 8,
+        equalTo: "#password",
+        regex: "[^wd]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))",
+      },
+    },
+    messages: {
+      name: {
+        required: filedrequired,
+        minlength: minlengthcriter,
+      },
+      email: {
+        required: filedrequired,
+        email: invalidemail,
+      },
+      password: {
+        required: filedrequired,
+        minlength: minlengthchar,
+      },
+      password2: {
+        required: filedrequired,
+        minlength: minlengthchar,
+        equalTo: notmatch,
+      },
+    },
+  });
+
+  $("button#register-button").on("click", function () {
+    if ($("#register-form").valid()) {
+      $(this).prop("disabled", true);
+      $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+      const that = this;
+      $.ajax({
+        url: "/register",
+        method: "post",
+        data: $("#register-form").serialize(),
+        success: function (result) {
+          if (typeof result.errors == "undefined") {
+            Swal.fire({
+              title: successheader,
+              text: successmessage,
+              type: "success",
+              heightAuto: false,
+            }).then(() => {
+              window.location = "/";
+            });
+          } else {
+            let err = "";
+            $(that).prop("disabled", false);
+            $(that).html(registertext);
+            result.errors.forEach(function (e) {
+              // console.log(e.text);
+              err += e.text + "\n";
+              Swal.fire({
+                title: errortext,
+                text: err.message,
+                type: "warning",
+                heightAuto: false,
+              });
+            });
+          }
+        },
+        error: function (errors) {
+          $(that).prop("disabled", false);
+          $(that).html(registertext);
+          Swal.fire({
+            title: errortext,
+            text: errors.responseJSON.message,
+            type: "warning",
+            heightAuto: false,
+          });
+        },
+      });
+    }
+  });
+});
+</script>
+<!-- Uyelik sozlesmesi Modal -->
+<div
+  class="modal fade"
+  id="uyesozlesmeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel"><%- __('terms_of_membership')  %> </h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Kapat"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="blog-ana-metin">
+          <p>
+            Hiperlink Eğitim İletişim Yayın Gıda Sanayi ve Pazarlama Tic. Ltd.
+            Şti.’nin (Kısaca Şirket) olarak sahip olduğumuz Sözlükler Veritabanı
+            http://www.kelime.com (Kısaca Kelime.com olarak anılacaktır) üye ve
+            içerik oluşturan bireyler (kısaca kullanıcı olarak anılacaktır)
+            sitesini ziyaretiniz ve Kelime.com içeriğini kullanımınız aşağıdaki
+            kullanım şartlarına tabidir:
+          </p>
+          <h5>KULLANIM HAKKINDA</h5>
+          <p>
+            Kelime.com adresinde yer alan hizmetler ve içeriklerden şahsi
+            kullanımınız için faydalanmanız gerekmektedir. Kelime.com tarafından
+            sunulan hizmetlerin ve içeriğin Hiperlink LTD. ŞTİ’den yazılı izin
+            alınmadığı müddetçe ticari amaçla kullanılması yasaktır.
+            Kelime.com'a çeşitli yazılımlar veya aletler kullanarak; izinsiz
+            giriş yapma, veri değiştirme veya başka işlemlerle sitenin
+            işleyişine müdahale etme veya engelleme, sitenin işleyişini kasıtlı
+            olarak yavaşlatma, virüs vs. zararlı içerik yüklemek suretiyle
+            kelime.com'a zarar verme girişiminde bulunduğunuz takdirde Hiperlink
+            LTD. ŞTİ'nin yasal yollara başvurma hakkı saklıdır. İş bu kelime.com
+            markası tescilli ve Hiperlink LTD. ŞTİ'nin kullanımında olup, aksi
+            yazılı olarak belirtilmedikçe üçüncü kişilerce kullanılamaz.
+          </p>
+          <h5>İÇERİK HAKKINDA</h5>
+          <p>
+            Kelime.com'da yer alan içeriğin doğru ve/veya güncel olduğu hiçbir
+            şekilde iddia veya garanti edilmemektedir. Aksine, kullanıcılar
+            tamamen gerçekdışı içerik dahi üretebilirler. Kelime.com'da yer alan
+            içeriğe aşağıda 'hukuka aykırı içerik ve şikayet hakkında' kısmında
+            belirtilen haller dışında müdahale edilmediğinden, Kelime.com'da yer
+            alan herhangi bir dosya, belge, bilgi, yorum, öneri, tecrübe
+            paylaşımı ve benzeri içeriğin referans alınması nedeniyle
+            oluşabilecek (dolaylı veya doğrudan) maddi ve/veya manevi herhangi
+            bir kaybınızdan sorumlu olmadığımızı belirtmek isteriz.
+            Kelime.com'da yer alan bağlantılara/yönlendirmelere (link) ilişkin
+            hiçbir sorumluluğumuz bulunmamaktadır. Kelime.com, bağlantı ve
+            yönlendirmelerin içeriğini kontrol etmediği gibi, içeriğin
+            doğruluğu, yönlendirilen adreste virüs, trojan, phishing ve benzeri
+            zararlı bir unsur olmadığı veya yönlendirilen sitenin hukuka uygun
+            olduğu gibi veya benzeri hiçbir bir garanti vermemektedir.
+          </p>
+          <h5>YETİŞKİN İÇERİK HAKKINDA</h5>
+          <p>
+            Kelime.com içeriği ve dosyaları detaylı olarak önceden firma
+            yetkilileri tarafından kontrol edilmiyor olması nedeniyle 18
+            yaşından küçüklere uygun olmayabilir. Çocuklarınızın gelişimini
+            olumsuz etkileyecek içeriklerden uzak durmasını sağlayabileceğiniz
+            filtre yazılımları güvenli internet paketleri bulunmaktadır, bunları
+            kullanmanızı tavsiye ederiz. İnternet'in çocuklarca güvenli
+            kullanımı konusunda bilgilendirme için: www.guvenliweb.org.tr
+          </p>
+          <h5>HUKUKA AYKIRI İÇERİK VE ŞİKAYET HAKKINDA</h5>
+          <p>
+            Kelime.com, Hiperlink Eğitim İletişim Yayın Gıda Sanayi ve Pazarlama
+            Tic. Ltd. Şti. (Hiperlink LTD. ŞTİ.) ait olup, 5651 sayılı kanun
+            çerçevesinde yer sağlayıcı sıfatı'yla
+            (http://www.tib.gov.tr/tr/fby_kendie.html) hizmet vermektedir.
+            Kelime.com'da kullanıcılar tarafından oluşturulan içerikler herhangi
+            bir ön incelemeye tabi olmaksızın ve doğrudan kullanıcılar
+            tarafından yayına alınmaktadır. Tarafımıza başvurulmadığı müddetçe,
+            yayınlanan içeriğin hukuka uygunluğunu denetleme yükümlülüğümüz
+            bulunmamaktadır. Ancak, Kelime.com yer sağladığı içeriğin hukuka
+            uygunluğunu sağlamaya özen göstermekte, bu nedenle yapılan her
+            başvuruyu dikkatle değerlendirmektedir. Bir dosyada yer alan
+            materyaller, yazılar, yorumlar genelde farklı kullanıcılara ait
+            olmaktadır. Bu nedenle, dosya içeriğinde yer alan her bir yazı ve
+            içerik ayrı ayrı şikayet edilebilmektedir. Bunun haricinde, sitede
+            yer alan iletişim sayfasından, mail adresimizden
+            (info[at]hiperlink.com.tr) veya +90 212 293 07 05 no.lu telefondan
+            da bize ulaşabilirsiniz. Şikayetleriniz kişisel haberleşme
+            niteliğinde olmayıp, şikayetiniz ve iletişim bilgileriniz gerekli
+            görüldüğü takdirde yayınlanabilir, üçüncü kişilerle ve/veya yasal
+            mercilerle paylaşılabilir. Bu nedenle şikayetlerinizde ifşa
+            edilmesini istemediğiniz beyanlarda bulunmamanızı tavsiye ederiz.
+          </p>
+          <h5>TELİF HAKLARI VE ALINTI HAKKINDA</h5>
+          <p>
+            Kelime.com tarafından işlenmiş eserlerin sözleşme gereğince maddenin
+            tamamı alıntı ve kopyalama yapılamaz. Ancak kaynak gösterilerek
+            maddebaşının bir kısmı alıntı ve kopyalama yapılabilir. Kelime.com,
+            bir derleme eser olup, derleme esere (içerik) ve site kodlarına
+            ilişkin tüm haklar (kopyalama, çoğaltma, işleme, yayma) Hiperlink
+            LTD. ŞTİ'ye aittir. İçeriğe ilişkin kullanıcılar ile Kelime.com
+            arasında yapılmış sözleşme hükümleri saklıdır. Kelime.com içeriğini,
+            içeriği değiştirmemek, ilgili kullanıcıya ve Kelime.com'a aktif link
+            vererek atıfta bulunmak ve ticari amaç gütmeden kullanmak kaydıyla
+            kısmen alıntılamanız mümkündür ancak tüm bu kurallara uyulsa dahi
+            alıntılama eserin, konularının veya başlıklarının tümünü
+            kapsamayacak ve tam içeriğe ulaşmak için www.kelime.com adresinin
+            ziyaret edilmesi ihtiyacını ortadan kaldırmayacak düzeyde olmalıdır.
+            Aksi yönde açık yazılı izin olmadığı müddetçe Kelime.com içeriğinin
+            kısmen veya tamamen ticari amaçla ve/veya reklam ve benzeri gelir
+            elde edecek şekilde kullanılması yasaktır. Hiperlink LTD. ŞTİ
+            dilediği zaman, dilediği kişi veya kurumun yukarıdaki kurallara
+            uyarak dahi alıntı yapmasını engelleme hakkı saklıdır.
+          </p>
+          <h5>İÇERİK VE MADDE OLUŞTURMA</h5>
+          <p>
+            Kelime.com adresinde bulunan ve yayınlanan içerikler/sözlükler
+            telifi elimizde bulunan sözlüklerin aktarımıyla oluşturulmuştur.
+            Ayrıca kullanıcıların telifi bulunmayan eser/görüş veya kendi
+            fikirlerini madde olarak eklemesiyle oluşturulmaktadır. Çünkü Kelime
+            (www.kelime.com) başkalarının fikri mülkiyet haklarına saygı duyar
+            ve kullanıcılarının da aynısını yapmasını bekler. <br /><br />
+            Türkiye Telif Hakkı web sitesinde www.telifhaklari.gov.tr/Mevzuat
+            gereğince Kelime.com, telif hakkı iddialarına hızlı bir şekilde
+            yanıt verecektir. Bu web sitesindeki tüm bilgiler iyi niyetle ve
+            yalnızca genel bilgi amaçlı yayınlanmıştır. Kelime.com
+            (www.kelime.com) içerisinde bulunan eserler sadece barındırma ve
+            depolama hizmeti sağlar. Aynı zamanda depolanan dosyaların
+            içerisinde arama yapılmasına olanak sağlamak için çalışır.
+            Kelime.com, bilgilerin eksiksizliği, güvenilirliği ve doğruluğu
+            konusunda herhangi bir garanti vermez. <br /><br />
+            Bu web sitesinde (www.kelime.com) bulduğunuz bilgilere göre
+            yaptığınız herhangi bir işlemin riski tamamen size aittir.
+            www.kelime.com, kullanımıyla bağlantılı herhangi bir kayıp ve / veya
+            zarardan sorumlu olmayacaktır. <br /><br />
+            Kelime.com'dan, bu tür harici sitelere giden linklere tıklayarak
+            diğer web sitelerini ziyaret edebilirsiniz. Yararlı ve etik web
+            sitelerine yalnızca kaliteli bağlantılar sağlamaya çalışsak da, bu
+            sitelerin içeriği ve doğası üzerinde hiçbir kontrolümüz yoktur.
+            Diğer web sitelerine verilen bu bağlantılar, bu sitelerde bulunan
+            tüm içerik için bir öneri anlamına gelmez. Site sahipleri ve içeriği
+            önceden haber verilmeksizin değiştirilebilir ve 'kötü' olmuş
+            olabilecek bir bağlantıyı kaldırma fırsatımız olmadan önce
+            gerçekleşebilir. Ayrıca, Kelime.com'dan ayrıldığınızda, diğer
+            sitelerin kontrolümüz dışında farklı gizlilik politikalarına ve
+            şartlarına sahip olabileceğini de lütfen unutmayın. Lütfen herhangi
+            bir siteye girmeden veya herhangi bir bilgi yüklemeden önce bu
+            sitelerin Gizlilik Politikalarını ve "Hizmet Koşullarını" kontrol
+            ettiğinizden emin olun. Web sitemizi kullanarak ve içerik
+            oluşturarak, İçerik Ekleme Sözleşmesini ile Üyelik Sözleşmesini
+            kabul etmiş sayılırsınız. Dosya yüklenmesine onay vermeniz durumunda
+            eklenen dosyanın telifinin bulunmadığını ve aksi durumda
+            sorumluluğun yükleyen kişide (kendinize) ait olduğunu kabul etmiş ve
+            onaylamış olursunuz.
+          </p>
+          <h5>GİZLİLİK HAKKINDA</h5>
+          <p>
+            Kelime.com'da bulunduğunuz süre boyunca 'cookie' olarak da
+            adlandırılan çerezlerin ve buna benzer unsurların bilgisayarınıza
+            yerleştirilmesi söz konusu olabilir. Çerezler basit metin
+            dosyalarından ibaret olup, kimlik ve sair özel bilgiler içermez, bu
+            nevi kişisel bilgi içermemekle beraber, oturum bilgileri ve benzeri
+            veriler saklanır ve sizi tekrar tanımak ve benzeri hizmetler için
+            kullanılabilir. Bu konuda daha fazla bilgiyi
+            www.allaboutcookies.org, en.wikipedia.org/wiki/http_cookie ve
+            tr.wikipedia.org/wiki/çerez_(internet) adreslerinden
+            edinebilirsiniz. (verilen linklerden ulaşacağınız içeriğin
+            güvenilirliğine ilişkin sorumluluğumuz bulunmamaktadır.)
+            Kelime.com'u ziyaretiniz esnasında ip adresiniz ve bilgisayarınız
+            aracılığıyla toplanabilen diğer veriler Kelime.com tarafından
+            adınıza kaydedilmektedir.
+          </p>
+          <h5>KELİME.COM'UN HAK VE YÜKÜMLÜLÜKLERİ</h5>
+          <p>
+            Kelime.com kullanım koşullarını önceden bildirmeksizin
+            değiştirebilir. Bu nedenle, kullanım koşullarını ve en alt kısımda
+            (footer) yer alan "şartlar" sayfasındaki sözleşme ve
+            politikalarımızı belirli aralıklarla incelemenizi öneririz.
+            Hiperlink LTD. ŞTİ, kelime.com'u oluşturan tüm unsurları önceden
+            haber vermeksizin değiştirme, sona erdirme, yenilerini ekleme,
+            ücretlendirme haklarını saklı tutmaktadır. <br /><br />
+            Hiperlink LTD. ŞTİ, gerekli gördüğü takdirde belli kişilerin,
+            kurumların, ip numaralarının veya ip bloklarının Kelime.com'a
+            erişimini geçici veya kalıcı olarak durdurma hakkını saklı tutar.
+            Sitenin virüs ve sair zararlı içerik barındırmaması için özen sarf
+            edilmekle birlikte, gelişen teknoloji, teknik sorun ve diğer
+            nedenlerle bilgisayarınıza virüs, trojan gibi zararlı yazılımların
+            bulaşması ihtimali bulunmaktadır. <br /><br />
+            Bu gibi risklere karşı antivirüs programları ve benzeri uygulamalar
+            kullanmanızı tavsiye ederiz. Sitemizde gezinmeniz dolayısıyla
+            karşılaşabileceğiniz yazılımsal ve donanımsal dahil olmak üzere
+            hiçbir zarara ilişkin sorumluluk kabul etmemekteyiz. Bu nedenlerle
+            sitemizden talepte bulunmayacağınızı peşinen kabul etmektesiniz.<br /><br />
+
+            Bu sayfa son olarak 03.10.2021 tarihinde güncellenmiştir.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          data-dismiss="modal"
+        >
+          Kapat
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Uyelik sozlesmesi Modal Sonu -->
+<!-- kvkk sozlesmesi Modal -->
+<div
+  class="modal fade"
+  id="kvkkModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">
+          KİŞİSEL VERİLERİN KORUNMASI VE İŞLENMESİNE DAİR POLİTİKA
+        </h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Kapat"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="blog-ana-metin">
+          <p>
+            <h5>1. AMAÇ </h5>
+            <p>Bu politikanın amacı, Hiperlink Eğitim İletişim Yayın Gıda
+            Sanayi ve Pazarlama Tic. Ltd. Şti.’nin (Hiperlink) ilgili kişilere
+            ait kişisel verilerin işlenmesini ve korunmasını sağlamak için
+            yönetim talimatları, prosedür şartları ve teknik bir politika
+            oluşturmaktır. </p>
+            <h5>2. KAPSAM</h5>
+            <p>Bu politikanın kapsamında, Hiperlink'in
+            hizmet verdiği tüm kullanıcılar ve çalışanları bulunmaktadır.
+            Politika, Hiperlink tarafından toplanan ve kaydedilen tüm kişisel
+            verilerin işlenmesi ve korunmasına yönelik yürütülen faaliyetlerde
+            uygulanmaktadır. Bu politika, Hiperlink bünyesinde bulunan herkesin
+            bilmesinin ve sürekli olarak uymasının beklendiği temel kontrol
+            tedbirlerini de tanımlamaktadır.</p>
+            <h5>3. TANIM ve KISALTMALAR </h5>
+            <p>Bu bölümde
+            politikada geçen özel terim ve deyimler, kavramlar, kısaltmalar vb.
+            kısaca açıklanır.
+            <div class="m-3">
+            <h6>3.1. Hiperlink:</h6> Hiperlink Eğitim İletişim Yayın Gıda Sanayi ve Pazarlama Tic. Ltd. Şti. <br/><br />
+            <h6>3.2. Açık Rıza:</h6> Belirli bir konuya ilişkin, bilgilendirilmeye ve özgür iradeye dayanarak
+            açıklanan ve veri işleme amacıyla sınırlı olarak verilen onay. <br/><br />
+            <h6>3.3. Anonim Hale Getirme:</h6> Kişisel verilerin, başka verilerle
+            eşleştirilerek dahi hiçbir surette kimliği belirli veya
+            belirlenebilir bir gerçek kişiye ilişkilendirilemeyecek hale
+            getirilmesi. <br/><br />
+            <h6>3.4. Hiperlink Çalışanı:</h6> Hiperlink personeli. <br/><br />
+            <h6>3.5. Hizmet Sağlayıcısı:</h6> Hiperlink'in hizmet aldığı ve/veya verdiği
+            şirket (tedarikçi, taşeron, müşteri vb.) personeli. <br/><br />
+            <h6>3.6. Kişisel Veri Sahibi (İlgili Kişi):</h6> Kişisel verisi işlenen gerçek kişi.<br/><br />
+            <h6>3.7. Kişisel Veri:</h6> Kimliği belirli veya belirlenebilir gerçek kişiye
+            ilişkin her türlü veri. Hiperlink'in çalışma süreçlerinde bu veriler
+            üyelik bilgileri, ödünç iade, uzatma, yayın talep, danışma soru ve
+            cevapları, dilekçe ile bildirilen her türden soru, görüş, öneri ve
+            diğer ilgili verileri ifade eder. <br/><br />
+            <h6>3.8. Özel Nitelikli Kişisel Veri:</h6>
+            Öğrenildiği takdirde ilgili kişinin mağdur olmasına veya ayrımcılığa
+            maruz kalmasına neden olabilecek nitelikteki bilgiler. <br/><br />
+            <h6>3.9. Kişisel Verilerin İşlenmesi:</h6> Kişisel verilerin tamamen veya kısmen otomatik
+            olan ya da herhangi bir veri kayıt sisteminin parçası olmak kaydıyla
+            otomatik olmayan yollarla elde edilmesi, kaydedilmesi, depolanması,
+            muhafaza edilmesi, değiştirilmesi, yeniden düzenlenmesi,
+            açıklanması, aktarılması, devralınması, elde edilebilir hale
+            getirilmesi, sınıflandırılması ya da kullanılmasının engellenmesi
+            gibi veriler üzerinde gerçekleştirilen her türlü işlem. <br/><br />
+            <h6>3.10. Veri İşleyen:</h6> Veri sorumlusunun verdiği yetkiye dayanarak veri sorumlusu
+            adına kişisel verileri işleyen gerçek veya tüzel kişidir. <br/><br />
+            <h6>3.11. Veri Sorumlusu:</h6> Kişisel verilerin işleme amaçlarını ve vasıtalarını
+            belirleyen, veri kayıt sisteminin kurulmasında ve yönetilmesinden
+            sorumlu gerçek veya tüzel kişidir. <br/><br />
+            <h6>3.12. Politika:</h6> Hiperlink'in Kişisel Verilerin Korunması ve İşlenmesine Dair Firma Politikası.
+            </div>
+            </p>  
+            <h5>4. HUKUKİ YÜKÜMLÜLÜKLER </h5>
+            <p>
+            <div class="m-3">
+              <strong>4.1</strong> Aydınlatma yükümlülüğü Hiperlink,
+            kişisel verilerin toplanması sırasında, ilgili kişiyi aydınlatmak ve
+            bu kapsamda ilgili kişiye aşağıdaki hususlarda bilgi vermekle
+            yükümlüdür:<br/><br />
+            <ul style="list-style-type: disc;">
+              <li>Veri sorumlusunun ve varsa temsilcisinin kimliği,</li>
+              <li>Kişisel verilerin hangi amaçla işleneceği, </li>
+              <li>İşlenen kişisel verilerin kimlere ve hangi amaçla aktarılabileceği, </li>
+              <li>Kişisel verileri toplanmanın hukuki sebebi, </li>
+              <li>İlgili kişinin hakları.</li>
+            </ul>
+
+            Hiperlink aydınlatma yükümlülüğü kapsamında; farklı araçlar ile
+            ilgili kişileri kişisel verilerinin işlenmesine ilişkin
+            bilgilendirecektir. Ayrıca Hiperlink kamuoyuna açık politikaların
+            kişisel veri sahipleri tarafından anlaşılabilir olmasına önem
+            vermektedir. Hiperlink'in Internet sayfalarında ifade edilen
+            hususlara ilişkin bilgiler yer almaktadır. <br/><br />
+            <strong>4.2</strong> Bilgilendirme
+            yükümlülüğü Hiperlink söz konusu haklara ilişkin iletilen talepleri
+            değerlendirerek, İlgili kişi ya da kişileri bilgilendirmekle yükümlü
+            olup söz konusu bilgilendirme beş (5) iş günü içinde
+            gerçekleştirilecektir. Söz konusu talepler, ilgili kişi ya da
+            kişiler tarafından yazılı olarak Hiperlink'e iletilmelidir.
+            Hiperlink, ilgili kişi ya da kişilere başvuru konusunda daha fazla
+            olanak sağlamaya çalışır. <br/><br />
+
+            <strong>4.3</strong> Veri güvenliğini sağlama yükümlülüğü
+            Hiperlink, veri sorumlusu sıfatıyla, basılı ya da elektronik ortamda
+            barındırdığı tüm kullanıcı ve işlem verilerinin güvenliğini
+            sağlamada birincil sorumluluğa sahiptir. <br/><br />
+          </div>
+        </p>
+        <h5>5. KİŞİSEL VERİLERİN
+          SINIFLANDIRILMASI</h5>
+          <p>
+            <div class="m-3">
+
+              <strong>5.1</strong> Kişisel veriler Kişisel veriler, kimliği
+            belirli veya belirlenebilir gerçek kişiye ilişkin her türlü bilgiyi
+            ifade eder. Bu bağlamda, kişinin verilerinin belli veya
+            belirlenebilir olması (bir başka bilgi ile bir araya getirildiğinde
+            kişiye ulaşılması) gerekmektedir. Bir kişinin adı, soyadı, doğum
+            tarihi ve yeri, kimlik, sosyal güvenlik numarası, telefon numarası,
+            adresi, görüntüleri, ödeme bilgileri, sağlık bilgileri ve benzeri
+            bilgiler kişisel veri tanımına girmektedir. <br/><br />
+
+            <strong>5.2</strong> Özel nitelikli
+            kişisel veriler Özel nitelikli kişisel veriler; öğrenildiği taktirde
+            ilgili kişinin mağdur olmasına veya ayrımcılığa maruz kalmasına
+            neden olabilecek nitelikteki bilgilerdir. Kişilerin ırkı, etnik
+            kökeni, siyasi düşüncesi, felsefi inancı, dini, mezhebi veya diğer
+            inançları, kılık ve kıyafeti, dernek, vakıf ya da sendika üyeliği,
+            sağlığı, cinsel hayatı, ceza mahkumiyeti ve güvenlik tedbirleriyle
+            ilgili verileri ile biyometrik ve genetik verileri bu veri türüne
+            örneklerdir. Hiperlink, özel nitelikli kişisel verilerin ilgilinin
+            açık rızası olmaksızın edinilmesini, işlenmesini ve paylaşımını
+            gerçekleştirmez. <br/><br />
+            </div>
+          </p>
+          <h5>6. KİŞİSEL VERİLERİN İŞLENMESİ POLİTİKASI</h5>
+            <p>
+              <div class="m-3">
+            <strong>6.1</strong> Kişisel verilerin işlenmesine ilişkin uyulacak ilkeler Hiperlink
+            topladığı tüm kişisel verileri, hukuka ve dürüstlük kurallarına
+            uygun, doğru ve gerektiğinde güncel, belirli, açık ve meşru amaçlar
+            güderek, amaçla bağlantılı, sınırlı ve ölçülü biçimde işlemekle
+            sorumludur. Bu demektir ki; <br/><br />
+            <ul style="list-style-type: disc;">
+            <li>Hiperlink kişisel verilerin işlenmesi
+              sırasında kanunların ve diğer hukuki düzenlemelerin öngördüğü
+              ilkelere uygun şekilde hareket etme mecburiyetindedir. </li>
+            <li>Hiperlink
+              dürüstlük kurallarına uygun olmanın gereği kişisel verilerin
+              işlenmesi sırasında şeffaf olmalı, bilgilendirme ve aydınlatma
+              yükümlülüğüne uymalıdır. </li>
+            <li>Hiperlink kişisel verilerin meşru ve
+              hukuka uygun sebeplerle, yani ancak yasal olarak açıkça belirli ve
+              hukuka uygun olan sınırlı amaçlarla işlemelidir. </li>
+            <li>Hiperlink kişisel
+              verileri yürütmekte olduğu faaliyetlere bağlı olarak işlemelidir.</li>
+            <li>Hiperlink kişisel verileri gerekli olduğu ölçüde işlemelidir. Bu
+              kapsamda orantılık ilkesi dikkate alınmalıdır ve kişisel veriler
+              amacın gerektirdiği dışında kullanılmamalıdır. Ayrıca amaca ulaşmayı
+              sağlayacak ölçü aşılarak ihtiyaç olmayan veya ihtiyaç duyulmayan
+              kişisel verilerin işlenmesinden kaçınılmalıdır.</li>
+              <li>Hiperlink kişisel verileri, işlendikleri amaç için gerekli olan süre kadar muhafaza
+                etmelidir ve bu sürenin sona ermesine rağmen, herhangi bir gerekçe
+                ile bu verileri anonim hale getirmeden saklamamalıdır.
+              </li>
+            </ul>
+            <strong>6.2</strong>
+            Hiperlink'nin kişisel verileri işleme amaçları <br/><br />
+            <ul style="list-style-type: disc;">
+            <li>Kişisel ve iletişim
+              verileri: Ad- soyad, telefon, e-posta bilgileri siteye kullanıcı
+              kayıt ve iletişim amaçlı kullanılmaktadır.</li>
+            <li>"Bize ulaşın" sayfa
+              verileri: Soru ve cevaplarının kayıt altında tutulması ve kullanıcı
+              ihtiyaç duyduğunda geçmişe yönelik bilgilere yeniden ulaşım
+              sağlaması için saklanmaktadır.</li>
+            <li>Web sitesi gezinim verileri ve
+              diğer veriler: Kullanıcıların ilgi alanlarını tanımlayarak toplanan
+              verilerin iş geliştirme, bilgi hizmeti pazarlama, iletişim gibi
+              operasyonel faaliyetlerin yürütülmesi ve geliştirilmesi ile birlikte
+              kullanıcı deneyimini arttırarak daha iyi hizmet vermek için
+              kullanılmaktadır.</li>
+            <li>Sosyal ağ bilgileri: Kullanıcıların mevcut
+              sosyal ağ hesapları ile siteye daha kolay erişim sağlamaları ve bu
+              doğrultuda toplanan verilerin iş geliştirme, bilgi hizmeti
+              pazarlama, iletişim gibi operasyonel faaliyetlerin yürütülmesi ve
+              geliştirilmesi ile birlikte kullanıcı deneyimini arttırarak daha iyi
+              hizmet vermek için kullanılmaktadır.</li>
+            <li>Konum verileri: Kullanıcı
+              www.hiperlink.com.tr web sitesindeyken kullanıcıların hassas veya
+              yaklaşık konumları ile ilgili verileri kapsar. Kullanıcı özelinde
+              lokasyon bazlı tanıtım ve bilgilendirme yapılabilmektedir. Yukarıda
+              ifade edilen veri bazlı amaçlar dışında genel olarak aşağıda
+              belirtilen hususlar içinde veri toplanmaktadır.</li>
+            <li>Hiperlink
+              müşterilerine e-posta göndermek,</li>
+            <li>Hiperlink müşterilerine bülten
+              göndermek ya da bildirimlerde bulunmak,</li>
+            <li>Hiperlink kullanıcılarının
+              sorularını cevaplamak ve etkin bir kullanıcı hizmeti sunmak,</li>
+            <li>Hiperlink müşterilerine yeni hizmetler hakkında bilgi vermek,</li>
+            <li>Hiperlink tarafından doğrudan bilgi hizmeti pazarlaması yapmak,</li>
+            <li>Hiperlink kullanıcıları ile gerektiğinde iletişime geçmek. </li>
+            </ul>
+
+            <strong>6.3</strong>
+            Kişisel verilerin hukuka uygun olarak işlenmesinin sağlanması <br /><br/>
+            - Hiperlink, kişisel verilerin hukuka ve dürüstlük ilkesine uygun
+            olarak işlenmesi için aşağıdaki teknik tedbirleri almak,
+
+            <ul style="list-style-type: disc;">
+            <li>Kişisel
+              verilerin depolanacağı veri taban(lar)ının güvenliğini sağlamak için
+              teknik altyapıyı oluşturmak,</li>
+            <li>Oluşturulan teknik alt yapının ve
+              süreçlerin denetlenmesini sağlamak,</li>
+            <li>Alınan teknik önlemlerin ve
+              denetim süreçlerinin raporlanmasına ilişkin prosedürler belirlemek
+              ile yükümlüdür.</li>
+            </ul>
+            - Hiperlink, kişisel verilerin hukuka uygun olarak
+            işlenmesi için aşağıdaki idari tedbirleri almak,
+            <ul style="list-style-type: disc;">
+            <li>Hiperlink
+              çalışanlarını kişisel verilerin hukuka uygun bir şekilde korunması
+              ve işlenmesine ilişkin bilgilendirmek ve eğitmek,</li>
+            <li>Hiperlink
+              birlikte çalıştığı veri işleyicilerinin ve ortaklarının kişisel
+              verilerin işlenmesi faaliyetlerini denetlemek ile yükümlüdür.</li>
+          </ul>
+            </div>
+            </p>
+            <h5>7. KİŞİSEL VERİLERİN AKTARILMASI POLİTİKASI</h5>
+            <p>
+              <div class="m-3">
+
+             <strong>7.1</strong> Yurtiçinde kişisel verilerin aktarımı: Hiperlink tarafından kullanıcılarına ait kişisel
+            veriler ve özel nitelikli veriler ilgili kişinin açık rızası olmadan
+            başka gerçek veya tüzel kişilere aktarılamaz. Ancak kanunların
+            zorunlu kıldığı durumlarda ilgilinin açık rızası olmadan da veriler
+            mevzuatta öngörülen şekil ve sınırlara bağlı olarak yetkili kılınan
+            idari veya adli kurum veya kuruluşa aktarılabilir. Hiperlink,
+            kişisel verileri hukuka ve dürüstlük ilkesine uygun olarak ve
+            gerekli tüm güvenlik önlemlerini alarak Türkiye Cumhuriyeti ve Kuzey
+            Kıbrıs Türk Cumhuriyeti'nde bulunan üçüncü kişi ya da kurumlara
+            aktarabilir. <br /><br />
+
+            <strong>7.2</strong> Yurt dışına kişisel verilerinizin aktarımı:
+            Hiperlink, kişisel verileri Türkiye Cumhuriyeti ve Kuzey Kıbrıs Türk
+            Cumhuriyeti'nde üçüncü kişi ya da kurumlara aktarabileceği gibi,
+            Türkiye Cumhuriyeti ve Kuzey Kıbrıs Türk Cumhuriyeti'nde işlenerek
+            veya Türkiye Cumhuriyeti ve Kuzey Kıbrıs Türk Cumhuriyeti dışında
+            işlenip muhafaza edilmek üzere, yurt dışına da aktarabilir. İlgili
+            kanunlarda belirtilen kişisel verilerin aktarımına ilişkin açık
+            rızanın aranmadığı istisnai durumlarda, rızasız işlenme ve aktarma
+            şartlarına ek olarak verinin aktarılacağı ülkede yeterli korumanın
+            bulunması şartı aranmaktadır.
+            </div>
+            </p>
+
+           <h5> 8. KİŞİSEL VERİLERİN GÜVENLİĞİ
+            POLİTİKASI </h5>
+            <p>
+              <div class="m-3">
+                <strong>8.1</strong> Hiperlink'in veri güvenliğine ilişkin yükümlülükleri
+            Veri sorumlusu sıfatıyla Hiperlink veri güvenliğine ilişkin
+            yükümlülükleri şu şekildedir: • Kişisel verilerin; - Hukuka aykırı
+            işlenmesini önlemek, - Hukuka aykırı erişimini önlemek, -
+            Muhafazasını sağlamak için her türlü teknik ve idari tedbir almak, •
+            Kuruluşu içinde gerekli denetimleri yapmak veya yaptırmak, • Kendisi
+            adına kişisel verileri işleyen kişilerin veya organlarında görev
+            alan yetkililerin görevlerinden ayrılsalar dahi, görevleri sırasında
+            öğrendikleri kişisel verileri kanun hükümlerine aykırı olarak
+            başkasına açıklamaması ve işleme amacı dışında kullanmaması için
+            gerekli önlemleri alır, • İşlenen kişisel verilerin hukuka aykırı
+            olarak başkaları tarafından ele geçirilmesi halinde ilgilisine
+            bildirmektir. <br /><br />
+
+            <strong>8.2</strong> Hiperlink'in veri güvenliğine ilişkin alınan
+            tedbirler Kişisel verilerin güvenliğine ilişkin yükümlülüklerini
+            yerine getirilmesi açısından ve güvenliğin risk teşkil ettiği
+            durumlarda hızlı bir şekilde hareket edilmesi adına, Hiperlink
+            aşağıda sıralanmış olan tedbirleri alır: <br /><br />
+            <div class="m-3">
+
+            <strong>8.2.1.</strong> Kişisel verilere
+            hukuka aykırı erişimi engellemek için alınan teknik ve idari
+            tedbirler Kişisel verinin işlenmesi, aktarılması ve muhafaza
+            edilmesine ilişkin ilgili bölümlerde alınması gereken teknik ve
+            idari tedbirler sayılmıştır. Hiperlink bu tedbirleri eksiksiz olarak
+            almak ve hukuka aykırı erişimi engellemekle yükümlü olduğu halde;
+            yine de üçüncü kişilerin kişisel verilere hukuka aykırı erişimi söz
+            konusu olmuş ise; kişisel verilerin korunmasına ilişkin ilgili
+            mevzuata uygun şekilde ilgililerin zarar görmemesi için teknik ve
+            idari tüm tedbirleri alır. <br /><br />
+
+            <strong>8.2.2.</strong> Kişisel verilerin korunması
+            konusunda alınan tedbirler ve bunların denetimi Hiperlink, verdiği
+            yetkiye dayanarak onun adına kişisel verileri işleyen gerçek veya
+            tüzel kişileri kişisel verilerin hukuka uygun bir şekilde
+            korunmasına ilişkin bilgilendirmek ve farkındalık yaratmak; aynı
+            zamanda bu kişilerle akdedilen sözleşmeler çerçevesinde kişisel
+            verilerinin hukuka uygun şekilde korunmasına yönelik hükümler
+            belirlemekle yükümlüdür. <br /><br />
+
+            <strong>8.2.3.</strong> Kişisel verilerin yetkisiz bir
+            şekilde ifşası durumunda alınacak tedbirler Hiperlink, kişisel
+            verilerin yetkisiz bir şekilde ifşasının engellenmesine yönelik
+            tedbirler almakla ve buna ilişkin iç politika oluşturmakla
+            yükümlüdür. Buna ek olarak, söz konusu durumlarda Hiperlink, veri
+            sorumlusu olarak, kişisel verileri yetkisiz bir şekilde ifşa edilen
+            kişileri bilgilendirmekle yükümlüdür.
+            </div>
+            </div>
+            </p>
+
+            <h5>9. İLGİLİ KİŞİNİN HAKLARI</h5>
+            <p>
+              <div class="m-3">
+            <strong>9.1</strong>
+            Kişisel verilere erişim hakkı İlgili kişilerin bir ücrete tabi
+            olmadan kişisel verilerine erişim hakkı bulunmaktadır. Bu nedenle
+            Hiperlink ilgili kişiye şu hakları önceden ve süresiz olarak tanır:
+            • Kişisel verilerinin işlenip işlenmediğini öğrenme • Kişisel
+            verileri işlenmişse buna ilişkin bilgi talep etme • Kişisel
+            verilerinin işlenme amacını ve bunların amacına uygun kullanılıp
+            kullanılmadığını öğrenme • Yurt içinde veya yurt dışında kişisel
+            verilerin aktarıldığı üçüncü kişileri bilme isteğinde bulunma
+            hakkı <br /><br />
+
+            <strong>9.2</strong> Kişisel verilerini değiştirme veya sildirme hakkı: İlgili
+            kişilerin bir ücrete tabi olmadan kişisel verilerini değiştirme veya
+            sildirme hakkı bulunmaktadır. Hiperlink ilgili kişiye şu hakları
+            önceden ve süresiz olarak tanır: • Kişisel verilerinin eksik veya
+            yanlış işlenmiş olması halinde bunların düzeltilmesini isteme •
+            Kişisel verilerinin işlenmesini gerektiren sebeplerin ortadan
+            kalkması halinde kişisel verilerin silinmesini veya yok edilmesini
+            isteme • Yukarıda bahsedilen düzeltme, silme veya yok etme
+            işlemlerinin kişisel verilerinin aktarıldığı üçüncü kişilere
+            bildirilmesini isteme • İşlenen verilerin münhasıran otomatik
+            sistemler vasıtasıyla analiz edilmesi suretiyle aleyhe bir sonuç
+            ortaya çıkmasına itiraz etme <br /><br />
+
+            <strong>9.3</strong> İlgilinin başvurusu ve başvurunun
+            değerlendirilmesi: İlgili kişiler Hiperlink tarafından işlenen
+            kişisel verilere en kısa sürede erişimi sağlamak adına ve yukarıda
+            belirtilen hakların kullanılmasına yönelik Hiperlink'e talepte
+            bulunabileceklerdir. Hiperlink bu erişim taleplerini karşılamak
+            adına gerekli başvuru kanallarını oluşturur. Başvurular beş (5) iş
+            günlük süre içerisinde cevaplandırılır. Bu sürenin başlayabilmesi
+            için ilgili kişi veya kurum tarafından yapılan talepler yazılı
+            şekilde Hiperlink'e ıslak imza ile bildirilmeli ve ayrıca veri
+            sahibinin kimliğini tespit edici belgelerde eksiksiz bir şekilde
+            eklenmelidir. İlgili kişi veya kurum tarafından yapılan talepler
+            veri sorumlusu temsilcisi tarafından kabul veya gerekçesi
+            açıklanarak reddedilir ve yazılı veya elektronik ortamda cevap
+            bildirilir. Başvurunun kabul edilmesi halinde Hiperlink tarafından
+            gereği yerine getirilir. Başvurunun Hiperlink tarafından
+            reddedilmesi, verilen cevabın yetersiz bulunması veya süresinde
+            cevap verilmemesi hallerinde; ilgili kişi veya kurumun cevabı
+            öğrendiği tarihten itibaren 30 gün ve her halde başvuru tarihinden
+            itibaren 60 gün içinde Hiperlink'e şikayet hakkı bulunmaktadır.
+            </div>
+            </p>
+            <h5>10.
+              DOKÜMANIN YAYINLANMASI VE SAKLANMASI</h5>
+            <p> İşbu veri politikası kurumsal
+            aydınlatma yükümlülüğü ile birlikte kişisel verileri bulunan
+            kullanıcılara bildirilecek ve Hiperlink web sitesinde
+            yayınlanacaktır.
+          </p>
+          <h5>
+            11. POLİTİKA DEĞİŞİKLİĞİ HALİNDE BİLDİRİM</h5>
+            <p>
+            Hiperlink'in kurumsal çalışma ve kararları doğrultusunda kişisel
+            verilerin korunması ve işlenmesi politikasında değişiklik yapılması
+            durumunda işbu durum, verileri kayıt altına alınan tüm
+            kullanıcılarımıza kayıt oldukları yol ile bildirilecektir. </p>
+            <h5>12.
+            YÜRÜRLÜK</h5> <p>İşbu politika metni Hiperlink kurucu ortaklarınca kabul
+            edildiği tarihte yürürlüğe girer ve Hiperlink'in web sitesinden
+            kaldırılana kadar yürürlükte kalmaya devam eder. </p>
+
+            <h5>13. YÜRÜTME</h5> <p>Bu
+            yönetmelik hükümlerini Hiperlink kurucu ortakları yürütür.</p>
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          data-dismiss="modal"
+        >
+          Kapat
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- kvkk sozlesmesi Modal Sonu -->

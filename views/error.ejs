@@ -1,0 +1,69 @@
+<%- contentFor('headerBlock') %>
+
+    <style>
+        html, body {
+            height: 100% !important;
+            font-size: 20px !important;
+        }
+        a {
+            color: #5d3424;
+            font-weight: bold;
+        }
+        body.error-page {
+            background-image: url('/assets/img/404-error-bg.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+			margin: 0;
+        }
+
+        .error-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            background-image: url('/assets/img/404-sincap.png');
+            background-position: right bottom;
+            background-repeat: no-repeat;
+            background-size: 40% auto;
+        }
+
+        .error-items {
+            text-align: center;
+            max-width: 400px;
+            font-style: italic;
+            color: #5d3424;
+            margin-left: 15vw;
+        }
+
+        .error-items img {
+            max-width: 250px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width:767px) {
+            .error-wrapper {
+                background-image: none;
+                justify-content: center;
+            }
+
+            .error-items {
+                width: 100%;
+                margin: 0;
+            }
+
+            p {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+    </style>
+<%- contentFor('body') %>
+<body class="error-page">
+    <div class="error-wrapper">
+        <div class="error-items">
+            <img src="/assets/img/404-logo.png">
+            <p>Buralarda işe yarar pek birşey yok gibi. İsterseniz <a href="/">kelime.com</a> adresine tıklayarak anasayfaya gidebilir ya da sosyal medya hesaplarımız (<a href="https://www.facebook.com/kelimecom" target="_blank">facebook</a>, <a href="https://twitter.com/kelime_com" target="_blank">twitter</a> ve <a href="https://www.instagram.com/kelime_com/" target="_blank">instagram</a>) üzerinden gelişmeleri ve kampanyaları anlık olarak takip edebilirsiniz</p>
+        </div>
+    </div>
+</body>

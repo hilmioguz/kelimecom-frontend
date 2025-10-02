@@ -1,0 +1,146 @@
+version: '3'
+
+services:
+  apiend:
+    build: ${PWD:-.}/apiend/.
+    image: apiend
+    restart: always
+    environment:
+      - MONGODB_URL=mongodb://monster:S4n4n3123A@mongodb:27027/kelimecomdb?authSource=admin
+      - REDIS_URL=redis://redisdb
+    ports:
+      - '5001:5001'
+    depends_on:
+      - mongodb
+      - redisdb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2048m"
+    volumes:
+      - ./apiend:/usr/src/apiend/
+      - apinodemodules:/usr/src/apiend/node_modules
+    networks:
+      - kelime-network
+
+  backend:
+    build: ${PWD:-.}/backend/.
+    image: backend
+    restart: always
+    environment:
+      - MONGODB_URL=mongodb://monster:S4n4n3123A@mongodb:27027/kelimecomdb?authSource=admin
+      - REDIS_URL=redis://redisdb
+    ports:
+      - '5002:5002'
+    depends_on:
+      - mongodb
+      - redisdb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2048m"
+    volumes:
+      - ./backend:/usr/src/backend/
+      - backendnodemodules:/usr/src/backend/node_modules
+    networks:
+      - kelime-network
+
+  frontend:
+    build: ${PWD:-.}/frontend/.
+    command: yarn watch
+    image: frontend
+    restart: always
+    environment:
+      - MONGODB_URL=mongodb://monster:S4n4n3123A@mongodb:27027/kelimecomdb?authSource=admin
+      - REDIS_URL=redis://redisdb
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mongodb
+      - redisdb
+      - apiend
+      #- statsend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2048m"
+    volumes:
+      - ./frontend:/usr/src/frontend/
+      - frontnodemodules:/usr/src/frontend/node_modules
+    networks:
+      - kelime-network
+
+  mongodb:
+    image: mongo:4.4.5
+    command: mongod --port 27027
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: monster
+      MONGO_INITDB_ROOT_PASSWORD: S4n4n3123A
+    ports:
+      - '27027:27027'
+    volumes:
+      - kelime-dbdata:/data/db
+    logging:
+      driver: none
+    networks:
+      - kelime-network
+  
+  redisdb:
+    image: redis
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    restart: always
+    environment:
+      - REDIS_PASSWORD=R3d1sP3SS
+    volumes:
+      - kelime-redisdb:/data
+    ports:
+      - '6379:6379'
+    logging:
+      driver: none
+    networks:
+      - kelime-network
+    expose:
+      - 6379
+
+  # statsend:
+  #   build: ${PWD:-.}/statsend/.
+  #   image: statsend
+  #   ports:
+  #     - "5003:3000"
+  #   environment:
+  #     DATABASE_URL: postgresql://monster:St4tsP3SS!.@postgres:5432/kelimecom
+  #     DATABASE_TYPE: postgresql
+  #     HASH_SALT: 07dbb6e6832da0841dd79701200e4b179f1a94a7b3dd26f612817f3c03117434
+  #   depends_on:
+  #     - postgres
+  #   restart: always
+  #   networks:
+  #     - kelime-network
+
+  # postgres:
+  #   image: postgres:12-alpine
+  #   environment:
+  #     POSTGRES_DB: kelimecom
+  #     POSTGRES_USER: monster
+  #     POSTGRES_PASSWORD: St4tsP3SS!.
+  #   volumes:
+  #     - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
+  #     - kelimestats-db-data:/var/lib/postgresql/data
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - kelime-network
+
+volumes:
+  kelime-dbdata:
+  kelime-redisdb:
+  frontnodemodules:
+  apinodemodules:
+  backendnodemodules:
+  # kelimestats-db-data:
+
+networks:
+  kelime-network:
+    driver: bridge

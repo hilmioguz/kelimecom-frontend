@@ -1,0 +1,70 @@
+<%- contentFor('headerBlock') %>
+<link href="/assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+    <section class="alt-nav">
+        <div class="container">
+          <div class="row">
+            <div class="col mx-auto">
+              <ul>
+                <li><a href="/hakkimizda"><%- __('hakkimizda')  %></a></li>
+                <li><a href="#" class="active"><%- __('intitutions')  %></a></li>
+                <li><a href="/projetarihcesi"><%- __('history_project')  %></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </section>
+    <div class="header-top-img">
+        <img src="/assets/img/kurumlar.jpg">
+    </div>
+  </header>
+  <main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+                <div class="alt-sayfa-baslik">
+                  <h1><%- __('corporateinstituions')  %></h1>
+                  <h2><%- __('corporateinstituionsdesc')  %></h2>
+                </div>
+
+                <div class="blog-ana-metin">
+                  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mb-4">
+                  <% if (kurumlar) { %>
+                    <% kurumlar.map((kurum) => { %>
+                      <div class="col mb-3">
+                        <div class="card ekip-card">
+                          <div class="card-body">
+                            <% if (kurum.logoImage) { %> <img src="<%= kurum.logoImage %>" class="ekip-foto"> <% } else { %> <img src="/assets/img/kurumlar/default.jpg" class="ekip-foto"> <% } %>
+                            <h4><a href="https://www.<%= kurum.mail_suffix %>/" target="_blank" class="stretched-link"><%= kurum.institution_name %></a></h4>
+                            <h6><%= kurum.status.toUpperCase() === 'ABONE' ? __('subscriber'):__('trial') %>  |  <%- __('finished')  %>: <%= new Date(kurum.endDate).toLocaleDateString(meta.siteLang,{
+                              month: 'long',
+                              year: 'numeric',
+                            }) %></h6>
+                          </div>
+                        </div>
+                      </div>
+
+                  <%  }) } %>
+                      </div>
+                  <div class="alt-sayfa-baslik">
+                    <h1 class="koyu-turuncu"><%- __('corporatesolutions')  %></h1>
+                  </div>
+                  <div class="blog-ana-metin mb-5">
+                    <p><%- __('corporatesolutionsdesc')  %>
+                    </p>
+                  </div>
+                </div>
+            </div>
+            <!-- ANA İÇERİK SONU -->
+        </div>
+    </div>
+    <%- include('partials/sozlukmu-yazdiniz'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>

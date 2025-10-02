@@ -1,0 +1,19 @@
+<section id="madde-anlamlarinda-arama" data-total=null data-madde="<%= meta.sonucKelime %>" data-page="1" <% if(active_page === 'kelime') {%> data-lang="<%= meta.sonucFiltreDil %>"<%}%>>
+    <div class="ara-baslik">
+        <span><%= meta.sonucTitleDil %> <%- __('search_definition')%> <span class="text-gri">(-)</span></span>
+    </div>
+    <div id="madde-anlamlarinda-arama-sonucu">
+        <div class="kx-card kx-card__simple">
+            <div class="skeleton-effect-wave p-4">
+                <p style="width: 15%;" class="skeleton-block"></p>
+                <p style="width: 25%;" class="skeleton-block"></p>
+                <p style="width: 100%" class="skeleton-block"></p>
+                <p style="width: 100%" class="skeleton-block"></p>
+                <p style="width: 40%;" class="skeleton-block"></p>
+            </div>
+        </div>
+    </div>
+    <div class="yukleniyor" id="madde-anlamlarinda-arama-dahafazla">
+        <span><%- __('show_more')%></span>
+    </div>
+</section>

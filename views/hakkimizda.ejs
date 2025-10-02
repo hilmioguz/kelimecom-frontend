@@ -1,0 +1,212 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+    <section class="alt-nav">
+        <div class="container">
+          <div class="row">
+            <div class="col mx-auto">
+              <ul>
+                <li><a href="#" class="active"><%- __('hakkimizda')  %></a></li>
+                <li><a href="/abonelerimiz"><%- __('intitutions')  %></a></li>
+                <!-- <li><a href="#">Kullanım Klavuzu</a></li>
+                <li><a href="#">Basında Biz</a></li>
+                <li><a href="#">Özel Logolar</a></li> -->
+                <li><a href="/projetarihcesi"><%- __('history_project')  %></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </section>
+    <div class="header-top-img">
+        <img src="/assets/img/hakkimizda.jpg">
+    </div>
+  </header>
+  <main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+                <div class="alt-sayfa-baslik">
+                  <h1 class="koyu-turuncu"><%- __('whatis_kelime')  %> </h1>
+                </div>
+                <div class="blog-ana-metin mb-2">
+                  <%- __('history_msg') %>
+                  <%- __('history_msg1') %>
+                </div>
+                <div class="alt-sayfa-baslik">
+                  <h1 class="koyu-turuncu"><%- __('join_us') %></h1>
+                </div>
+                <div class="blog-ana-metin mb-2">
+                  <p>
+                    <%- __('join_us_msg') %> </a>
+                  </p>
+                </div>
+                <div class="alt-sayfa-baslik">
+                  <h1 class="koyu-turuncu"><%- __('kurumsal') %></h1>
+                </div>
+                <div class="blog-ana-metin mb-5">
+                  <p><%- __('kurumsal_msg') %></p>
+                </div>
+                <!-- <div class="alt-sayfa-baslik">
+                  <h1 class="koyu-turuncu">Ekibimiz</h1>
+                  <h2>Kelime.com'ı inşa eden kurucu ve ekip arkadaşlarımız</h2>
+                </div>
+                <div class="blog-ana-metin">
+                  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mb-4">
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Mehmet Saraçoğulları</a></h4>
+                          <h6>WEB GELİSTİRME VS.VS.</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Mehmet Saraçoğulları</a></h4>
+                          <h6>WEB GELİSTİRME VS.VS.</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Mehmet Saraçoğulları</a></h4>
+                          <h6>WEB GELİSTİRME VS.VS.</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Mehmet Saraçoğulları</a></h4>
+                          <h6>WEB GELİSTİRME VS.VS.</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Mehmet Saraçoğulları</a></h4>
+                          <h6>WEB GELİSTİRME VS.VS.</h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Mehmet Saraçoğulları</a></h4>
+                          <h6>WEB GELİSTİRME VS.VS.</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <h4 class="text-muted">BİZE KATILIN (KARİYER)</h4>
+                      <p class="text-muted">
+                        Türkiye'nin en büyük online kütüphane platformlarının kurucusu olan Hiperlink çatısı altında yer alan Kelime.com Sözlük Veritabanını birlikte inşa ediyoruz. Bu ekipte sen de yerini alarak hemen işe başla. <a href="#">Formu doldurmak için tıklayın.</a>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <div class="alt-sayfa-baslik">
+                        <h1 class="koyu-turuncu">Çözüm Ortaklarımız</h1>
+                        <h2>Kuruluşundan itibaren bize çözüm sunan markalar</h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mb-4">
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Hiperlink</a></h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Ankos</a></h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Oklavye</a></h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Eosmanlıca</a></h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Hiperlink</a></h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="card ekip-card">
+                        <div class="card-body">
+                          <img src="/assets/img/kaan-karakas-ekip-2.jpg" class="ekip-foto">
+                          <h4><a href="#" class="stretched-link">Hiperlabs</a></h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      <h4 class="text-muted">KURUMSAL ÇÖZÜMLER</h4>
+                      <p class="text-muted">
+                        Türkiye'nin ve Dünyanın ilk online e-sözlük veritabanı olan Kelime.com ilk çıktığı günden itibaren büyük ilgi ve teveccühe mazhar olmuştur. Kelime.com geliştirdiği kurumsal paket ile Devlet Üniversiteleri, Kolejler, Özel Okullar ve Vakıflara esnek çözümler sunarak sözlük ve sözlükçülük mesleğine yeni bir soluk getiriyor. Talepler doğrultusunda kurumsal ihtiyaçların giderilmesi için isteğe göre plan sunuyor ve kaliteli bir sözlük veritabanı oluşturuyoruz. Hazırlamış olduğumuz sistem ile masa başından veya mobil uygulama ile rahat bir kullanım imkanı sağlayacağız. Soru sormak için <a href="#">iletişim</a> sayfasından bize ulaşabilirsiniz.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- <div class="row">
+                    <div class="col">
+                      <div class="gradient-bg p-3 text-center text-white rounded">
+                        FORMU DOLDURARAK KURUMUNUZA KELİMEX'İ TAVSİYE EDEBİLİRSİNİZ.
+                      </div>
+                    </div>
+                  </div> -->
+                </div> -->
+
+            </div>
+            <!-- ANA İÇERİK SONU -->
+
+        </div>
+    </div>
+    <%- include('partials/sozlukmu-yazdiniz'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>

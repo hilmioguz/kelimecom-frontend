@@ -1,0 +1,87 @@
+<footer class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-16 mx-auto">
+                <div class="footer-ust">
+                    <ul class="footer-linkler">
+                        <li><a href="/hakkimizda" <% if (meta && meta.menuId ==='hakkimizda') { %>  class="active" <% } %>><%- __('hakkimizda') %></a></li>
+                        <li><a href="/abonelerimiz" <% if (meta && meta.menuId ==='abonelerimiz') { %>  class="active" <% } %>><%- __('intitutions') %></a></li>
+                        <li><a href="/projeler" <% if (meta && meta.menuId ==='projeler') { %>  class="active" <% } %>><%- __('projects') %></a></li>
+                        <% if (user){ %>
+                        <li><a href="/sende-ekle" <% if (meta && meta.menuId ==='sende-ekle') { %>  class="active" <% } %>><%- __('uaddtoo2') %></a></li>
+                        <% } %>
+                        <!--<li><a href="/paketler" <% if (meta && meta.menuId ==='paketler') { %>  class="active" <% } %>>Paketler</a></li> -->
+                        <li><a href="/sartlar" <% if (meta && meta.menuId ==='sartlar') { %>  class="active" <% } %>><%- __('terms') %></a></li>
+                        <!-- <li><a href="/mobil" <% if (meta && meta.menuId ==='mobil') { %>  class="active" <% } %>>Mobil</a></li> -->
+                        <li><a href="/iletisim" <% if (meta && meta.menuId ==='iletisim') { %>  class="active" <% } %>><%- __('iletisim') %></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-16 mx-auto">
+                <div class="footer-alt">
+                    <a href="./"><img src="/assets/img/logo-beyaz.svg" class="footer-logo"></a>
+                    <p class="copyright"><%- __('copyright', new Date().getFullYear()) %></p>
+                    <ul class="footer-social">
+                        <li><a href="https://www.facebook.com/kelimecom" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://twitter.com/kelime_com" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="https://linkedin.com/company/kelimecom" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                        <li><a href="https://www.instagram.com/kelime_com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                    <div class="kredi-kart">
+                        <img src="/assets/img/visa.svg" class="mr-1">
+                        <img src="/assets/img/mastercard.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+<!-- Uyeol Modal -->
+<div class="modal fade" id="uyeolModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ücretsiz Kayıt Ol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Sayfaların içeriğini görüntülüyebilmek ve Kelime.com'un tüm özelliklerinden faydalanmak için giriş yapmanız gerekmektedir.</p>
+                <p>Kurumunuz abone ise kurumsal e-postanız ile kayıt olunuz; değilse <a href="/register"> ücretsiz kayıt</a> oluşturarak yıl sonuna kadar içeriklerden sınırsız şekilde yararlanabilirsiniz.</p>
+                <p>Kurumunuzun aboneliğini öğrenmek için <a href="/abonelerimiz">abone kurumlar</a> listesine göz atınız.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="/login" class="btn btn-secondary btn-block" role="button">Giriş Yap</a>
+                <a href="/register" class="btn btn-primary btn-block" role="button">Kayıt Ol</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Uyeol Modal Sonu -->
+<!-- Limited Uye Modal -->
+<div class="modal fade" id="limitedModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Üzgünüz!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Üyelik paketinize ait tüm limitleri tükettiğiniz için, bu konu ile ilgili bir işlem gerçekleştirememekteyiz.</p>
+                <p>Limitinizi artırmak ve Kelime.com'un tüm özelliklerinden faydalanmak için paketinizi yükseltmeniz gerekmektedir.</p>
+                <p>Kurumsal bir üyelik edinerek, sınırsız işlemler gerçekleştirebilirsiniz. Kurumunuzun aboneliğini öğrenmek için <a href="/abonelerimiz">abone kurumlar</a> listesine göz atınız.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript;void(0)" class="btn btn-primary btn-block" data-dismiss="modal" aria-label="Kapat" role="button">Tamam</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Limited Uye Modal Sonu -->

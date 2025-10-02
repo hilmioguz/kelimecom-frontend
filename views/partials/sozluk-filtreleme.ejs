@@ -1,0 +1,265 @@
+<div class="sozluk-filtreleme">
+  <nav id="mainSozlukMenu" class="link-bar">
+    <div id="autoSozlukNav" class="context-bar">
+      <% if (sozlukler && sozlukler.length > 0) {
+        sozlukler.map((sozluk) => { %>
+      <a href="/kelime/<%= encodeURIComponent(meta.sonucKelime) %>/<% if (sozluk.code.toLowerCase() == meta.sonucFiltreSozluk) {%><%= meta.sonucKelimeId %><%} else {%><%= meta.sonucKelimeId.split("-")[0] + '-000000000000000000000000' %><% } %>/<%= sozluk.lang.toLowerCase()%>/<%= meta.sonucFiltreTip %>/<%= sozluk.code.toLowerCase() %>" class="context-bar-link <% if (sozluk.code.toLowerCase() == meta.sonucFiltreSozluk) {%> active<%}%><% if (kelime && kelime.sozlukler && kelime.sozlukler.length && kelime.sozlukler.find((s)=> s.name === sozluk.name)) {%> selected<%}%>" data-keyword="<%= sozluk.code.toLowerCase() %>"><%- sozluk.name %></a>
+      <% })
+    }%>
+    </div>
+    <div id="autoSozlukNavMore" class="auto-nav-more grouped dropdown">
+      <a class="grouped-link"><i class="fas fa-ellipsis-h menu-goster"></i></a>
+      <div id="autoSozlukNavMoreList" class="auto-nav-more-list dropdown-content"></div>
+    </div>
+  </nav>
+  <div class="filtreleme-buton">
+    <a href="#" role="button" data-toggle="modal" data-target="#sozlukFiltrelemeModal"><span>FİLTRELEME</span> <i class="fas fa-filter"></i></a>
+  </div>
+</div>
+<div class="modal fade filtreleme-modal-v2" id="sozlukFiltrelemeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="filtre-modal-eyebrow py-1">
+        Bu premium bir özelliktir
+      </div>
+      <div class="filtre-modal-action-bar py-2 px-3">
+        <button type="button" class="close ml-auto" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="filtre-modal-body">
+        <div class="filtre-modal-header">
+          <div class="filtre-modal-header-title">Sözlükleri Filtrele</div>
+          <div class="d-flex align-items-center">
+            <span class="text-muted" id="sozlukInfoText">Toplam (11) Sözlük</span> <button class="btn btn-link" id="sozlukHepsiSec">hepsini seç</button>
+          </div>
+        </div>
+        <div class="filtre-modal-main">
+          <form class="filtre-form">
+            <div class="sozluk-siralama mb-4">
+            </div>
+          </form>
+        </div>
+
+        <div class="filtre-modal-footer">
+          <div class="filtre-modal-footer-actions">
+            <button type="button" data-dismiss="modal">Filtreyi Uygula</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var sunucuSozlukler = <%- JSON.stringify(sozlukler) %>;
+  var sunucuKelime = <%- JSON.stringify(kelime) %>;
+  var sunucuMeta = <%- JSON.stringify(meta) %>;
+
+  if (!sessionStorage.getItem("sessionDictionaries")) {
+    sessionStorage.setItem("sessionDictionaries", JSON.stringify(sunucuSozlukler));
+  }
+  sessionStorage.setItem("sunucuKelime", JSON.stringify(sunucuKelime));
+  sessionStorage.setItem("sunucuMeta", JSON.stringify(sunucuMeta));
+
+  $(document).ready(async function() {
+
+    function setDictsLayouts() {
+      //sozluk filtrele modalı
+      let aktifDictionaries = sessionStorage.getItem("sessionDictionaries")
+      if (aktifDictionaries) {
+        aktifDictionaries = JSON.parse(aktifDictionaries)
+        if (aktifDictionaries && aktifDictionaries.length) {
+          let temp = "";
+          // console.log('Sessin sozuluk diziliyor..!')
+          aktifDictionaries.forEach(function(sozluk) {
+            // .log('sozluk code:', sozluk.code)
+            temp += `<div class="custom-control custom-checkbox" id="_${sozluk.code}">
+          <input type="checkbox" class="custom-control-input" id="id_${sozluk.code}" ${sozluk.isActive ? 'checked' : ''} >
+          <label class="custom-control-label" for="id_${sozluk.code}">
+          <div class="title mr-3">${sozluk.name}</div>
+          <div class="adet"></div>
+          <span class="sort-handle"></span>
+          </label></div>`;
+          });
+          if ($(".sozluk-siralama")) {
+            $(".sozluk-siralama").html(temp);
+          }
+          var contentSozlukBar = $("#autoSozlukNav");
+          let sunucuKelime = sessionStorage.getItem("sunucuKelime");
+          let sunucuMeta = sessionStorage.getItem("sunucuMeta");
+          if (sunucuKelime) {
+            sunucuKelime = JSON.parse(sunucuKelime)
+          }
+          if (sunucuMeta) {
+            sunucuMeta = JSON.parse(sunucuMeta)
+          }
+          if (sunucuMeta) {
+            let sozlukTemp = "";
+            contentSozlukBar.html(sozlukTemp);
+            aktifDictionaries.forEach(function(sozluk) {
+              if (sozluk.isActive) {
+                sozlukTemp += `<a href="/kelime/${encodeURIComponent(sunucuMeta.sonucKelime)}/${(sozluk.code.toLowerCase() == sunucuMeta.sonucFiltreSozluk) ? sunucuMeta.sonucKelimeId:sunucuMeta.sonucKelimeId.split("-")[0] +'-000000000000000000000000'}/${sozluk.lang.toLowerCase()}/${sunucuMeta.sonucFiltreTip}/${sozluk.code.toLowerCase()}" class="context-bar-link ${(sozluk.code.toLowerCase() == sunucuMeta.sonucFiltreSozluk) ? 'active':''} ${(sunucuKelime && sunucuKelime.sozlukler && sunucuKelime.sozlukler.length && sunucuKelime.sozlukler.find((s)=> s.name === sozluk.name)) ? 'selected': ''}" data-keyword="${sozluk.code.toLowerCase()}">${sozluk.name}</a>`
+              }
+
+            });
+            contentSozlukBar.html(sozlukTemp);
+            autoNavMoreSozluk();
+          }
+        }
+      } else {
+        console.log('Session sozuluk yok daha!!!!!')
+      }
+    }
+
+    // sozlukler menu layout and click func starts
+    $("#autoSozlukNavMore").click(function(e) {
+      e.stopPropagation();
+      $("#autoSozlukNavMoreList").slideToggle(200);
+    });
+
+    $(document).click(function() {
+      if ($("#autoSozlukNavMoreList")) {
+        $("#autoSozlukNavMoreList").slideUp(200);
+      }
+    });
+
+    $("#autoSozlukNav").on("click", "a.context-bar-link", function() {
+      linkClickSozluk.call(this);
+    });
+
+    $("#autoSozlukNavMoreList").on("click", "a.context-bar-link", function() {
+      linkClickSozluk.call(this);
+    });
+
+    $(function() {
+      $(".sozluk-siralama").sortable({
+        update: function(event, ui) {
+          saveDictionarySessionStorage();
+        },
+      });
+      $('#sozlukHepsiSec').click(function() {
+        $('form.filtre-form .sozluk-siralama input:checkbox').each(function() {
+          $(this).prop('checked', true);
+        })
+        saveDictionarySessionStorage();
+      });
+    });
+
+    function linkClickSozluk() {
+      $("#autoSozlukNav").children().removeClass("active");
+      $("#autoSozlukNavMoreList").children().removeClass("active");
+      this.classList.add("active");
+      updateSozluk();
+      secilenSozluk = $(this).attr("data-keyword");
+      if (secilenSozluk) {
+        // console.log("secilen Sozluk:", secilenSozluk);
+        sessionStorage.setItem("secilenSozluk", secilenSozluk);
+        // sessionStorage.setItem('cozumleyiciSecilenSozluk', secilenSozluk);
+      }
+    }
+
+    function updateSozluk() {
+      let isinside = false;
+      let selected = "";
+      if ($("#autoSozlukNav").children().hasClass("active")) {
+        isinside = false;
+      } else if ($("#autoSozlukNavMoreList").children().hasClass("active")) {
+        isinside = true;
+        selected = $("#autoSozlukNavMoreList a.active").text();
+      }
+      if (isinside) {
+        $("#autoSozlukNavMore a")
+          .html(selected + ' <i class="fas fa-ellipsis-h"></i>')
+          .addClass("active");
+      } else {
+        $("#autoSozlukNavMore a").removeClass("active");
+      }
+    }
+
+    async function autoNavMoreSozluk() {
+      const mainSozlukMenu = $("#mainSozlukMenu"); // 874
+      const autoSozlukNav = $("#autoSozlukNav"); // 1025
+      const autoSozlukNavMore = $("#autoSozlukNavMore");
+      const autoSozlukNavMoreList = $("#autoSozlukNavMoreList");
+      const $menuWidthS = mainSozlukMenu.width() - 340;
+      const $autoNavWidthS = autoSozlukNav.width();
+      var c = 0
+      if ($(window).width() > 320) {
+        // GET MENU AND NAV WIDTH
+        if ($autoNavWidthS > $menuWidthS) {
+          autoSozlukNav.children(`a:last-child`).prependTo(autoSozlukNavMoreList);
+          autoNavMoreSozluk();
+        } else {
+          const $autoNavMoreFirst = autoSozlukNavMoreList
+            .children("a:first-child")
+            .width();
+
+          if ($autoNavWidthS + Math.abs($autoNavMoreFirst) < $menuWidthS) {
+            autoSozlukNavMoreList.children("a:first-child").appendTo(autoSozlukNav);
+          }
+        }
+        if (autoSozlukNavMoreList.children().length > 0) {
+          autoSozlukNavMore.show();
+        } else {
+          autoSozlukNavMore.hide();
+        }
+      }
+      //updateSozluk();
+    }
+
+    $(window).resize(autoNavMoreSozluk);
+    // sozluk menu layout and click func ends
+    // $(window).ready(autoNavMoreSozluk);
+
+    async function saveDictionarySessionStorage() {
+      var sozlukSirasi = $(".sozluk-siralama").sortable("toArray");
+      if (sozlukSirasi) {
+        let tempAktif = []
+        let tempPasif = []
+        await Promise.all(sozlukSirasi.map(d => {
+          const e = `#id${d}`
+          if ($(e).is(':checked')) {
+            tempAktif.push(d.replace(/_/g, ""))
+          } else {
+            tempPasif.push(d.replace(/_/g, ""))
+          }
+        }))
+        let finalDictionaries = []
+        if ((tempAktif && tempAktif.length) || (tempPasif && tempPasif.length)) {
+          let sessionDictionaries = sessionStorage.getItem("sessionDictionaries");
+          sessionDictionaries = JSON.parse(sessionDictionaries)
+          if (sessionDictionaries && sessionDictionaries.length) {
+            const filterIndex = sozlukSirasi.reduce((acc, filterObj, index) => {
+              acc[filterObj.replace(/_/g, "")] = index;
+              return acc;
+            }, {})
+            finalDictionaries = sessionDictionaries
+              .map((sozluk) => {
+                const $sozluk = sozluk
+                if (tempAktif.includes(sozluk.code)) {
+                  $sozluk.isActive = true
+                }
+                if (tempPasif.includes(sozluk.code)) {
+                  $sozluk.isActive = false
+                }
+                return $sozluk
+              })
+              .sort((a, b) => {
+                return filterIndex[a.code] - filterIndex[b.code]
+              });
+          }
+        }
+        sessionStorage.setItem("sessionDictionaries", JSON.stringify(finalDictionaries));
+        setTimeout(() => {
+          setDictsLayouts();
+        }, 500);
+      }
+    }
+
+    $(document).on("change", ".sozluk-siralama input:checkbox", function() {
+      saveDictionarySessionStorage();
+    });
+
+    setDictsLayouts();
+  });
+</script>

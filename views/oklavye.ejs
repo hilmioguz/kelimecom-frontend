@@ -1,0 +1,81 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com projeler | Sözlükler Veritabanı</title>
+<link href="/assets/css/style.css" rel="stylesheet" />
+
+<%- contentFor('body') %>
+<header class="mb-2">
+  <%- include('partials/menu'); -%>
+
+  <section class="alt-nav">
+    <div class="container">
+      <div class="row">
+        <div class="col mx-auto">
+          <ul>
+            <li><a href="/projeler">Hiperkitap</a></li>
+            <li><a href="/projeler/eosmanlica">Eosmanlıca</a></li>
+            <li><a href="/projeler/wikilala">Wikilala</a></li>
+            <li><a href="/projeler/oklavye" class="active">Oklavye</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="header-top-img">
+    <img src="/assets/img/projeler-bg.jpg" />
+  </div>
+</header>
+<main role="main" class="alt-sayfa">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- ANA İÇERİK BASLANGICI -->
+      <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+        <div class="alt-sayfa-baslik">
+          <h1>Oklavye</h1>
+        </div>
+        <div class="blog-ana-metin">
+          <p>
+            Hiperlink tarafından kullanıma sunulan oKlavye, rahat ve kullanışlı
+            klavye uygulamalarındandır. Oklavye sizin yazma tarzınızı öğrenerek
+            kelime önerilerinde bulunur. Bu sayede daha hızlı ve kolay
+            yazabilirsiniz. Oklavye ile klavye değiştirmeye gerek kalmadan
+            Osmanlıca, Farsça ve Arapçayı rahatça yazabilirsiniz.
+          </p>
+
+          <h2>KLAVYE ÖZELLİKLERİNE GÖZ ATIN</h2>
+
+          <ul style="list-style-type: disc">
+            <li>Basit kurulum ve kolay kullanım,</li>
+            <li>Türkçe, Osmanlıca, Farsça ve Arapça Dil desteği,</li>
+            <li>Yapay zeka destekli metin düzeltme ve kelime önerme,</li>
+            <li>
+              Türkçe, Osmanlıca, Arapça ve Farsça için (her biri için takribi
+              100.000 kelimelik) kelime tahmin sözlüğü,
+            </li>
+            <li>Kendinizi Emojiler ile ifade edin 😎</li>
+            <li>SGöz zevkinize uygun birbirinden farklı temalar,</li>
+            <li>Diller arasında kolay geçiş yapın,</li>
+            <li>Tuşların boyutunu dilediğiniz gibi kişiselleştirin</li>
+          </ul>
+
+          <h2 class="koyu-turuncu mt-4">DESTEKLEDİĞİ DİLLER (ŞİMDİLİK)</h2>
+          <p>Türkçe, Osmanlıca, Arapça, Farsça</p>
+          <p>
+            <i>Erişim linki:</i>
+            <a href="http://www.oklavye.com" target="_blank"
+              >Oklavye Hakkında daha fazlasını öğrenin</a
+            ><br /><br />
+            <i>Android:</i>
+            <a href="https://www.kisa.link/Po4x" target="_blank"
+              >Oklavye Android Uygulamasını indirin</a
+            ><br /><br />
+          </p>
+        </div>
+      </div>
+      <!-- ANA İÇERİK SONU -->
+    </div>
+  </div>
+  <%- include('partials/sozlukmu-yazdiniz'); -%> <%-
+  include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>

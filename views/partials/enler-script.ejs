@@ -1,0 +1,72 @@
+<script>
+  var ensonArananlarFormatter = (data) => {
+    let temp = '';
+    let tempmobil = '';
+      data.forEach((l)=> {
+        temp += `<div class="ticker--item"><a href="/arama/${encodeURIComponent(l._id)}">${l._id}</a></div>`;
+        tempmobil += `<a href="/arama/${encodeURIComponent(l._id)}>" class="badge badge-warning">${l._id}</a>`;
+      });
+      $('#enSonArananlar').html(temp);
+      $('#enSonArananlarMobil').html(tempmobil);
+  };
+  var encokArananlarFormatter = (data) => {
+    let temp = '';
+    let tempmobil = '';
+      data.forEach((l)=> {
+        temp += `<div class="ticker--item"><a href="/arama/${encodeURIComponent(l._id)}">${l._id}</a></div>`;
+        tempmobil += `<a href="/arama/${encodeURIComponent(l._id)}" class="badge badge-warning">${l._id}</a>`;
+      });
+      $('#enCokArananlar').html(temp);
+      $('#enCokArananlarMobil').html(tempmobil);
+  };
+
+  var skelotontemplateLoading = () => {
+      const temp = `
+        <div class="skeleton-effect-wave d-flex">
+            <span style="width: 100px;" class="skeleton-block m-2"></span>
+            <span style="width: 70px;" class="skeleton-block m-2"></span>
+            <span style="width: 120px;" class="skeleton-block m-2"></span>
+            <span style="width: 60px;" class="skeleton-block m-2"></span>
+        </div>
+      `;
+      $('#enSonArananlar').html(temp);
+      $('#enSonArananlarMobil').html(temp);
+      $('#enCokArananlar').html(temp);
+      $('#enCokArananlarMobil').html(temp);
+  };
+
+    $('#statsByLang').on('click', 'a', async function() {
+        $('#statsByLang a').removeClass('active');
+        $(this).addClass('active');
+        const lang = $(this).attr('data-lang');
+        skelotontemplateLoading();
+        $.ajax({
+          url: "/getstats?lang=" + lang,
+          method: "get",
+          success: function (response) {
+            const { latest, most } = response;
+            ensonArananlarFormatter(latest);
+            encokArananlarFormatter(most);
+          },
+          error: function (err) {
+            console.log(JSON.stringify(err.message));
+          },
+        });
+
+    });
+    $(document).ready(function () {
+      skelotontemplateLoading();
+        $.ajax({
+          url: "/getstats?lang=tumu",
+          method: "get",
+          success: function (response) {
+            const { latest, most } = response;
+            ensonArananlarFormatter(latest);
+            encokArananlarFormatter(most);
+          },
+          error: function (err) {
+            console.log(JSON.stringify(err.message));
+          },
+        });
+    });
+  </script>

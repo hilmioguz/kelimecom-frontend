@@ -1,0 +1,154 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com Giriş</title>
+<link rel="stylesheet" type="text/css" href="/login-assets/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/login-assets/css/fontawesome-all.min.css">
+<link rel="stylesheet" type="text/css" href="/login-assets/css/iofrm-style.css">
+<link rel="stylesheet" type="text/css" href="/login-assets/css/iofrm-theme3.css">
+<style>
+    .form-content label.error {
+      color: #ad4a01!important;
+    }
+</style>
+<%- contentFor('body') %>
+<div class="form-body" class="container-fluid">
+    <div class="website-logo">
+        <a href="/">
+            <div class="logo">
+                <img class="logo-size" src="/assets/img/logo.svg" alt="">
+            </div>
+        </a>
+    </div>
+    <div class="row">
+        <div class="img-holder">
+            <div class="bg"></div>
+            <div class="info-holder">
+
+            </div>
+        </div>
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <div class="page-links">
+                        <a href="./login" class="active"><%- __('login_') %></a><a href="./register"><%- __('register_') %></a>
+                    </div>
+                    <form id="login-form" method="post" action="javascript:;">
+                        <input class="form-control" type="text" name="email" placeholder="<%- __('email') %>" autocomplete="current-email" required>
+                        <input class="form-control" type="password" name="password" placeholder="<%- __('password') %>" autocomplete="current-password" required>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="form-button">
+                                <button id="login-button" type="button" class="ibtn"><%- __('login_') %></button>
+                            </div>
+                            <a href="/forgot-password" style="font-size: 13px;"><%- __('forgot_password') %></a>
+                        </div>
+                    </form>
+                    <div class="other-links d-flex align-items-center">
+                        <span><%- __('social_login') %></span><a href="#"><i class="fab fa-facebook-f"></i></a><a href="/auth/google"><i class="fab fa-google"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- contentFor('footerBlock') %>
+<script>
+$(document).ready(function () {
+    const filedrequired = `<%- __('field_required') %>`;
+    const invalidemail = `<%- __('invalid_email') %>`;
+    const giristext = `<%- __('login_') %>`;
+    const errortext = `<%- __('error') %>`;
+    const wronglogin= `<%- __('wrong_login') %>`;
+    const atleastcriter = `<%- __('atleast_criter') %>`;
+    const invalidemailcriter = `<%- __('invalid_email_criter') %>`;
+  $("#login-form").validate({
+    rules: {
+      email: {
+        required: true,
+        email: true,
+        validEmail: true,
+      },
+      password: {
+        required: true,
+      },
+    },
+    messages: {
+      email: {
+        required: filedrequired,
+        email: invalidemail,
+      },
+      password: {
+        required: filedrequired,
+      },
+    },
+  });
+
+  $("#login-button").on("click", function () {
+    if ($("#login-form").valid()) {
+      const self = this;
+      $(this).prop("disabled", true);
+      $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+      setTimeout(() => {
+        $(this).html(giristext);
+      }, 1000);
+      $.ajax({
+        url: "/login",
+        method: "post",
+        data: $("form#login-form").serialize(),
+        success: function (response) {
+          if (response == "success") {
+            window.location = "/";
+          } else {
+            Swal.fire({
+              title: errortext,
+              text: wronglogin,
+              icon: "error",
+              confirmButtonText: "ok",
+              heightAuto: false,
+            });
+            $(self).prop("disabled", false);
+          }
+        },
+        error: function (err) {
+          Swal.fire({
+            title: errortext,
+            text: err.responseText,
+            icon: "error",
+            confirmButtonText: "ok",
+            heightAuto: false,
+          });
+          $(self).prop("disabled", false);
+        },
+      });
+    }
+  });
+
+  $.validator.addMethod(
+    "regex",
+    function (value, element, regexp) {
+      if (regexp.constructor != RegExp) regexp = new RegExp(regexp);
+      else if (regexp.global) regexp.lastIndex = 0;
+      return this.optional(element) || regexp.test(value);
+    },
+    atleastcriter
+  );
+
+  $.validator.addMethod(
+    "validEmail",
+    function (value, element) {
+      if (value.length > 1) {
+        if (
+          /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+            value
+          )
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    },
+    invalidemailcriter
+  );
+});
+</script>

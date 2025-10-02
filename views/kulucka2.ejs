@@ -1,0 +1,250 @@
+<%- contentFor('headerBlock') %>
+<link href="/assets/css/style.css" rel="stylesheet">
+<style type="text/css">
+.set-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 50px;
+}
+@media (max-width: 991px) {
+  .set-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .set-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 575px) {
+  .set-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.set-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 30px;
+}
+.set-card button {
+  min-width: 70%;
+  color: #fff;
+  cursor: pointer;
+}
+.set-card button.btn-success {
+  background-color: #22b14c;
+  border-color: #22b14c;
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+.set-card button.btn-secondary {
+  background-color: #c3c3c3;
+  border-color: #c3c3c3;
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+.set-card button.btn-warning {
+  background-color: #eebc34;
+  border-color: #eebc34;
+}
+.set-card button.btn-warning:hover {
+  color: #fff;
+  opacity: 0.8;
+}
+
+.set-card__title {
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.set-card__text {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #858585;
+  margin-bottom: 30px;
+}
+</style>
+<%- contentFor('body') %>
+<header>
+    <%- include('partials/menu'); -%>
+</header>
+  <main role="main">
+    <section class="degrade-desen-bg">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+                    <div class="cozumleyici-nedir">
+                        <h1><%= dictionary.name %></h1>
+                        <p><%= dictionary.desc %></p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal Penceresi -->
+    <div class="modal modal-tip-1 fade" id="teslimSuresiModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Dikkat! Teslim süreniz toplam 10 gündür.</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Merhaba <% if (user) { %><%= user.name %> <%}%>, <br>
+              Çeviri süreniz toplam 10 gündür. 10 gün sonunda bitirdiğiniz dosyayı 'teslim et' butonuna tıklayarak
+              süreci sonlandırmanız gerekmektedir. Aksi halde bu set başka kullanıcımıza gönderilebilir.
+            </p>
+            <p class="mb-1"><strong>Başlamadan yapılması istenenler:</strong></p>
+            <p>1- Osmanlıca kelimeleri yazarken kullanmanız gereken klavye. <a href="https://drive.google.com/drive/folders/11SSoj50mgclHt8QCy2t7E0Z4SVB7VaqQ?usp=sharing" target="_blank">İndirmek ve
+              kurmak için linke tıklayınız.</a></p>
+            <p>2- Çeviri yaparken günümüz Türkçesi aktarım kurallarına uymanız gerekmektedir. <a href="https://drive.google.com/file/d/1EX03zBLgrtHXAQPBiTMJ8Zf7KBrb9UMt/view?usp=sharing" target="_blank">Kuralları görmek için
+              tıklayınız.</a></p>
+            <p>3- Çeviri sırasında topluluğumuzdan destek almak için telegram grubumuza katılabilirsiniz. <a
+                href="https://t.me/kelimecom" target="_blank">Telegram grubumuz için tıklayınız.</a></p>
+          </div>
+          <input type="hidden" name="selectedSet" id="selectedSet" value=""/>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="anladimButton">Anladım, devam et</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Penceresi Sonu -->
+    <!-- Teslim Süresi Modal Sonu -->
+    <section class="standard-padding">
+      <div class="container">
+            <div class="set-grid">
+              <% if (setler.data && setler.data.length) {
+                setler.data.forEach((set) => { %>
+                  <div class="set-card">
+                    <div class="set-card__title"><%= set.name %></div>
+                    <div class="set-card__text">(<%= set.totalPages %> Sayfa)</div>
+                    <!--
+                    user.id: <%= user.id%>
+                    user.assignedSet: <%=user.assignedSet ? user.assignedSet.id : ''%>
+                    user.canDoKulucka: <%= user.canDoKulucka%>
+                    user.canDoKuluckaModerate: <%= user.canDoKuluckaModerate%>
+                    set.id: <%=set.id%>
+                    set.userAssigned : <%=set.userAssigned ? set.userAssigned.id:'-'%>
+                    set.controlAssigned: <%=set.controlAssigned ? set.controlAssigned.id:'-'%>
+                    set.isDelivered: <%=set.isDelivered%>
+                    set.isControlled: <%=set.isControlled%>
+                    dictId: <%= dictionary.id%>
+                    -->
+                    <% if (!user.canDoKulucka && !user.canDoKuluckaModerate) { %>
+                      <button class="btn btn-success" disabled>Sadece onaylılar</button>
+                    <% } else {
+                        if (set.isCompleted) { %>
+                            <button class="btn btn-success" disabled>Bitti</button>
+                        <% } else {
+                            if (set.userAssigned && set.userAssigned.id) {
+                                if (user.canDoKulucka && !user.canDoKuluckaModerate) {
+                                    if (user.assignedSet && user.assignedSet.id === set.id) {
+                                        if (!set.isDelivered) { %>
+                                            <button class="btn btn-info" onclick="window.location='/kulucka/<%=dictionary.id%>/set/<%=set.id%>'">Çeviriye Devam</button>
+                                        <% } else { %>
+                                            <button class="btn btn-info" disabled>Bitirdin</button>
+                                        <% }
+                                    } else { %>
+                                        <button class="btn btn-secondary" disabled>Alındı</button>
+                                    <% }
+                                }
+                                if (!user.canDoKulucka && user.canDoKuluckaModerate) {
+                                    if (user.assignedSet) {
+                                        if (user.assignedSet && user.assignedSet.id === set.id) {
+                                            if (user.id === set.controlAssigned.id) {
+                                                if (set.isControlled) { %>
+                                                    <button class="btn btn-info" disabled>Kontrolü Bitirdin</button>
+                                                <% } else { %>
+                                                    <button class="btn btn-info" onclick="window.location='/kulucka-eklediklerim/<%=set.id%>'">Kontrole Devam </button>
+                                                <% }
+                                            }
+                                        } else { %>
+                                          <button class="btn btn-secondary" disabled>Alındı</button>
+                                        <% }
+                                    } else {
+                                      if(set.isDelivered) {
+                                        if(!set.controlAssigned) { %>
+                                            <button class="btn btn-danger" data-setid="<%=set.id%>" data-dictid="<%=dictionary.id%>" data-toggle="modal" data-target="#teslimSuresiModal">Kontrole Başla</button>
+                                        <% } else { %>
+                                          <button class="btn btn-info" disabled>Başkası Kontrölde</button>
+                                        <% }
+                                      } else { %>
+                                        <button class="btn btn-warning" disabled>Teslim edilmedi</button>
+                                       <% }
+                                    }
+                                }
+                            } else {
+                                if (user.assignedSet && user.assignedSet.id) { %>
+                                    <button class="btn btn-secondary" disabled>Başka Set Alınamaz</button>
+                                <% } else {
+
+                                  if (user.canDoKulucka && !user.canDoKuluckaModerate) {
+                                  %>
+                                    <button class="btn btn-warning" data-setid="<%=set.id%>" data-dictid="<%=dictionary.id%>" data-toggle="modal" data-target="#teslimSuresiModal">Çeviriye Başla</button>
+                                  <% } else {
+                                  %>
+                                  <button class="btn btn-secondary" disabled>Kuluçka aşmasında</button>
+                                  <%
+                                  }
+                              }
+                            }
+                        }
+                    } %>
+                  </div>
+                <% })
+              } %>
+            </div>
+      </div>
+    </section>
+    <%- include('partials/kulucka-nedir'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>
+
+<!-- Hakkında Modal -->
+<div class="modal fade" id="hakkindaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hakkında</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Modal yazıları...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#mySelect').on('change', function (e) {
+            var id = $(this).val();
+            $('a[href="' + id + '"]').tab('show');
+        });
+        $('#teslimSuresiModal').on('show.bs.modal', function(e) {
+          var setid = e.relatedTarget.dataset.setid;
+          var dictid = e.relatedTarget.dataset.dictid;
+          // Do some stuff w/ it.
+          $("#selectedSet").val( '/kulucka/' + dictid + '/set/' + setid );
+        });
+        $('#anladimButton').on('click', function (e) {
+          window.location = $("#selectedSet").val();
+        });
+    });
+</script>

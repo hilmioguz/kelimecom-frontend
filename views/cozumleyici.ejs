@@ -1,0 +1,163 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+<%- contentFor('body') %>
+<main role="main">
+  <section class="index-hero">
+      <%- include('partials/menu'); -%>
+      <div class="container masaustu-ortala">
+          <div class="row">
+              <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+                <% if (abonekurum) { %>
+                    <div class="intro__corporate kurumbadge badge--corporate">
+                        <div class="badge__img"><img src="<%= abonekurum.logoImage %>"></div><span class="badge__text"><%= abonekurum.institution_name %></span>
+                    </div>
+                    <% } %>
+                  <div class="vh-spacer-wrapper">
+
+                    <div class="cozumleyici-nedir padding-100">
+                        <h1><%- __('cozumleyici_nedir') %></h1>
+                        <p><%- __('cozumleyici_nedir_msg') %></p>
+                    </div>
+                    <%- include('partials/dil-sec'); -%>
+                      <div class="main-search">
+                          <div class="input-group input-group-lg" style="background-color: #fff;">
+                              <div class="input-group-prepend" id="cozumleyiciSearchIcon">
+                                  <span class="input-group-text"><img src="/assets/img/search.svg" class="arama-buyutec"></span>
+                              </div>
+                              <input type="text" id="cozumleyiciAramaKutusu"
+                              dir="auto" class="form-control ana-arama-kutusu input" style="height: 65px;" autocomplete="off">
+                          </div>
+                          <button class="btn btn-text" id="smart-keyboard-toggle"><i class="fas fa-keyboard"></i></button>
+                          <div id="arama-onerileri"></div>
+
+                          <div class="search-alt-yazi">
+                            <a href="https://www.hiperkitap.com" target="_blank"><span>Hiperkitap;</span> <%- __('hiperkitap') %></a>
+                            <a href="https://www.wikilala.com" target="_blank"><span>Wikilala;</span> <%- __('wikilala') %></a>
+                            <a href="https://www.oklavye.com" target="_blank"><span>oKlavye;</span> <%- __('oklavye') %></a>
+                        </div>
+                      </div>
+
+                  </div>
+
+                  <div class="kelimex-ile-yapabilecekleriniz">
+                    <div class="yapabilecekleriniz-baslik">
+                        <%- __('abilities')  %>
+                    </div>
+                    <div class="yapabilecekleriniz-baslik hidden-mobile">
+                        <%- __('trysamples')  %>
+                    </div>
+                    <div class="aciklama">
+                        <%- __('cozumleyici_acıklama')  %>
+                    </div>
+                    <div class="ornek">
+                        <a href="/cozumleyici?aranan=kad%3Fr">kad<span style="color:#000;font-weight:700;">?</span>r</a>
+                        <a href="javascript:void(0)" onclick="searchAppend('?')" style="color:#000;font-weight:700;">?</a>
+                    </div>
+                    <div class="aciklama">
+                        <%- __('cozumleyici_acıklama2')  %>
+                    </div>
+                    <div class="ornek">
+                        <a href="/cozumleyici?aranan=gel%2A">gel<span style="color:rgb(255, 0, 0);font-weight:700;">*</span></a>
+                        <a href="javascript:void(0)" onclick="searchAppend('*')" style="color:rgb(255, 0, 0);font-weight:700;">*</a>
+                    </div>
+                    <div class="aciklama">
+                        <%- __('cozumleyici_acıklama3')  %>
+                    </div>
+                    <div class="ornek">
+                        <a href="/cozumleyici?aranan=k%5Ba%2Ce%2C%C4%B1%5Dl%3F">k
+                            <span class="yesil">[</span>
+                            <span style="color: #4e4e4e;">a,e,ı</span>
+                            <span class="yesil">]</span>l
+                            <span style="color:#000;font-weight:700;">?</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="searchAppend('[]')" style="color:#0fa400;font-weight:700;white-space:nowrap;">[ ]</a>
+                    </div>
+                    <div class="aciklama">
+                        <%- __('cozumleyici_acıklama4')  %>
+                    </div>
+                    <div class="ornek">
+                        <a href="/cozumleyici?aranan=zafe%2A_isim">zafe<span style="color:rgb(255, 0, 0);font-weight:700;">*</span><span style="color:#0000ff;font-weight:700;">_isim</span></a>
+                        <a href="javascript:void(0)" onclick="searchAppend('_')" style="color:#0000ff;font-weight:700;">_</a>
+                    </div>
+
+                </div>
+              </div>
+          </div>
+
+      </div>
+  </section>
+  <section class="standard-padding" style="display: none;" id="cozumleyiciSonuc">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-16 mx-auto">
+                <div class="section-baslik"><%- __('result_for')  %></div>
+                <div class="section-alt-baslik" id="sonucMeta">
+                    <%- __('totalfound') %>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-lg-16 mx-auto">
+                <div class="cozumleyici-sonuc-overflow">
+                    <nav id="mainDilMenu2" class="link-bar">
+                        <div id="autoDilNav2" class="context-bar">
+                        </div>
+                        <div id="autoDilNavMore2" class="auto-nav-more grouped dropdown">
+                          <a class="grouped-link"><i class="fas fa-ellipsis-h menu-goster"></i></a>
+                          <div id="autoDilNavMoreList2" class="auto-nav-more-list dropdown-content"></div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4 pb-4">
+            <div class="col-lg-16 mx-auto" id="cozumleyici-arama">
+                <div class="acaba-sunlari-mi-demek-istediniz" id="cozumleyici-arama-sonucu">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include('partials/enler'); -%>
+  <section class="py-5 gradient-bg kelimex-nedir">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-16 mx-auto">
+                <h2 class="text-white text-center mb-5"><%- __('whatis_cozumleyici')  %></h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-16 mx-auto">
+                <div class="row">
+                    <div class="col-20 col-md-12 kelimex-yazi">
+                        <p class="lead text-white"><%- __('whatis_cozumleyici_msg')  %></p>
+                    </div>
+                    <div class="col-20 col-md-8">
+                        <div class="kelimex-video">
+                            <a data-fancybox="video" data-width="640" data-height="360"
+                                href="https://www.youtube.com/embed/z8PmpBk60xg?autoplay=1">
+                                <img class="card-img img-fluid shadow" src="/assets/img/video-bg.png" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include('partials/profile-sidenav'); -%>
+<kelime-keyboard id="kelime-keyboard" />
+</main>
+
+<%- contentFor('footerBlock') %>
+<%- include('partials/sozluk-filtre-modal'); -%>
+<%- include('partials/dil-filtre-modal'); -%>
+<%- include('partials/sanal-klavye', {active_page: 'cozumleyici'}); -%>
+<%- include('partials/enler-script'); -%>
+<script>
+  var searchAppend = (char) => {
+    $("#cozumleyiciAramaKutusu").val(function() {
+      return this.value + char;
+    });
+  }
+</script>

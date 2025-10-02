@@ -1,0 +1,493 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet" />
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+<style>
+  .dropzone {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+  }
+  .dropzone .dz-error-message {
+    display: none;
+  }
+  .dropzone .dz-details {
+    display: none;
+  }
+  .dropzone .dz-image img {
+    width: 150px;
+    height: 150px;
+  }
+  .error {
+      color: red !important;
+  }
+</style>
+<%- contentFor('body') %>
+<header class="mb-0"><%- include('partials/menu'); -%></header>
+<main role="main" class="alt-sayfa">
+  <section class="degrade-desen-bg">
+    <div class="container">
+      <div class="row py-5">
+        <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+          <div class="cozumleyici-nedir">
+            <h1>Ayarlar Sayfası</h1>
+            <p>Hesap ayarlarını dilediğiniz gibi düzenleyebilirsiniz. Tek dikkat etmeniz gereken nokta yeri şifre belirlerken en az 8 veya daha fazla harf, rakam ve sembolü karışık olarak kullanmanız.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row hidden-mobile">
+        <div class="col">
+          <!-- sections/_sozlukler.scss -->
+          <ul class="nav justify-content-center nav-tabs sozluk-tab-linkler">
+            <li class="nav-item">
+              <a class="nav-link active" id="hesap1-tab" data-toggle="tab" href="#hesap1">Hesap Ayarları</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="hesap2-tab" data-toggle="tab" href="#hesap2">Parola Değiştir</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="hesap4-tab" data-toggle="tab" href="#hesap4">Gizlilik Ayarları</a>
+            </li>
+          </ul>
+          <!-- sections/_sozlukler.scss -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="standard-padding">
+    <div class="container">
+      <div class="row hidden-desktop">
+        <div class="col-md-20 mx-auto my-2">
+          <form>
+            <select id="mySelect" class="custom-select">
+              <option value="#hesap1">Hesap Ayarları</option>
+              <option value="#hesap2">Parola Değiştir</option>
+              <option value="#hesap4">Gizlilik Ayarları</option>
+            </select>
+          </form>
+        </div>
+      </div>
+      <!-- sections/_sozlukler.scss -->
+      <div class="tab-content sozluk-tab-icerikler p-md-5">
+        <div class="tab-pane fade show active" id="hesap1">
+          <div class="row">
+            <div class="col-lg-16 col-md-20 mx-auto">
+              <!-- Form -->
+              <form id="ayarlar-form" method="post" autocomplete="off" action="javascript:;">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Ad Soyad</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="name" value="<%= user.name%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">E-Posta Adresi</label>
+                  <div class="col-sm-16">
+                    <span class="form-control"><%= user.email%></span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Rumuz</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="nickname" value="<%= user.nickname%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Cep No</label>
+                  <div class="col-sm-16">
+                    <input type="tel" class="form-control" name="phoneNumber" value="<%= user.phoneNumber%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Şehir</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="city" value="<%= user.city%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Profil Mesajı</label>
+                  <div class="col-sm-16">
+                    <textarea rows="3" class="form-control" name="profileMessage" value="<%= user.profileMessage %>"><%= user.profileMessage %></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">facebook.com/</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="facebook" value="<%= user.facebook%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">twitter.com/</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="twitter" value="<%= user.twitter%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">instagram.com/</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="instagram" value="<%= user.instagram%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">linkedin.com/</label>
+                  <div class="col-sm-16">
+                    <input type="text" class="form-control" name="linkedin" value="<%= user.linkedin%>" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Profil Resmi</label>
+                  <div class="col-sm-16">
+                    <div id="profilResim" class="dropzone w-50">
+                      <div class="dz-message needsclick">
+                        <!--begin::Info-->
+                        <div class="ms-4">
+                          <h6 class="fs-7 fw-bolder text-gray-900 mb-1">Dosyayı buraya bırakın veya yüklemek için tıklayın.</h6>
+                        </div>
+                        <!--end::Info-->
+                      </div>
+                    </div>
+                    <input type="hidden" class="custom-file-input" id="userPicture" name="picture" value="<%= user.picture %>" name="picture" lang="tr" />
+                  </div>
+                </div>
+                <div class="form-group row form-butonlari">
+                  <div class="col-sm-16 flex-on-mobil text-center">
+                    <button type="submit" id="updateProfile" class="btn btn-primary px-5">Değişiklikleri Kaydet</button>
+                  </div>
+                </div>
+              </form>
+              <!-- Form -->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="hesap2">
+          <div class="row">
+            <div class="col-lg-16 col-md-20 mx-auto">
+              <!-- Form -->
+              <form id="sifre-form" method="post" autocomplete="off" action="javascript:;">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Mevcut Şifre</label>
+                  <div class="col-sm-16">
+                    <input type="password" name="oldpassword" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Yeni Şifre</label>
+                  <div class="col-sm-16">
+                    <input type="password" id="newpassword" name="newpassword" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Yeni Şifre Tekrar</label>
+                  <div class="col-sm-16">
+                    <input type="password" id="newpassword2" name="newpassword2" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="form-group row form-butonlari">
+                  <div class="col-sm-16 flex-on-mobil text-center">
+                    <button type="submit" id="editpass-button" class="btn btn-primary px-5">Değişiklikleri Kaydet</button>
+                  </div>
+                </div>
+              </form>
+              <!-- Form -->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="hesap4">
+          <div class="row">
+            <div class="col-lg-16 col-md-20 mx-auto">
+              <!-- Form -->
+              <form id="gizlilik-form" method="post" autocomplete="off" action="javascript:;" class="bildirim-ayarlari-form">
+                <div class="custom-control custom-checkbox">
+                  <input id="saveHistory" name="saveHistory" type="checkbox" class="custom-control-input" <%- user.saveHistory ? 'checked': null %> >
+                  <label for="saveHistory" class="custom-control-label"
+                    >Profilimi herkese açık hale getir <br />
+                    <span class="label-span">Başkalarının profilini bulmasına ve takip etmesine izin ver. Bu sayede sen de başkalarını takip edebilirsin. Bu seni herkese açık puan tablolarına kaydeder.</span>
+                  </label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="hidden" name="name" class="form-control" value="<%= user.name %>" />
+                  <input type="hidden" name="gizlilik" class="form-control" value="true" />
+                  <input id="publicProfile" type="checkbox" name="publicProfile" class="custom-control-input" <%- user.publicProfile ? 'checked':null %>>
+                  <label for="publicProfile" class="custom-control-label"
+                    >Arama geçmişimi kaydet <br />
+                    <span class="label-span">Arama geçmişinizi kayıt altına alınmasına izin ver. Bu sayede daha önce aradığın kelimeleri istediğin zaman rahatça listeleyebilirsiniz.</span></label
+                  >
+                </div>
+                <div class="form-group row form-butonlari">
+                  <div class="col-sm-16 flex-on-mobil text-center">
+                    <button type="submit" id="updateGizlilik" class="btn btn-primary px-5">Değişiklikleri Kaydet</button>
+                  </div>
+                </div>
+              </form>
+              <!-- Form -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- sections/_sozlukler.scss -->
+    </div>
+  </section>
+  <%- include('partials/visitblog'); -%> <%- include('partials/profile-sidenav'); -%>
+</main>
+<%- contentFor('footerBlock') %>
+<script>
+  $(document).ready(function () {
+    const filedrequired = `<%- __('field_required') %>`;
+    const filerequired = `<%- __('field_required') %>`;
+    const errortext = `<%- __('error') %>`;
+    const atleastcriter = `<%- __('atleast_criter') %>`;
+    const minlengthcriter = `<%- __('minlength') %>`;
+    const minlengthchar = `<%- __('minlengthcharacter') %>`;
+    const notmatch = `<%- __('passwordnotmatched') %>`;
+    const formatnotmatch = `<%- __('formatnotmatch') %>`;
+    const successheader = `<%- __('success') %>`;
+    const successmessage = `<%- __('guncelleme') %>`;
+
+    let myDropzone = new Dropzone('div#profilResim', {
+      url: '/file-upload',
+      thumbnailWidth: 150,
+      thumbnailHeight: 150,
+      acceptedFiles: 'image/png, image/jpeg, image/jpg, image/webp',
+      paramName: 'file', // The name that will be used to transfer the file
+      maxFiles: 1,
+      maxFilesize: 2,
+      disablePreviews: false,
+      addRemoveLinks: true,
+      init: function () {
+        let myDropzone = this;
+
+        // If the thumbnail is already in the right size on your server:
+        let mockFile = { name: 'Filename', size: 12345 };
+        let callback = null; // Optional callback when it's done
+        let crossOrigin = null; // Added to the `img` tag for crossOrigin handling
+        let resizeThumbnail = false; // Tells Dropzone whether it should resize the image first
+        myDropzone.displayExistingFile(mockFile, '<%= user.picture %>', callback, crossOrigin, resizeThumbnail);
+
+        this.on('success', function (file, serverResponse) {
+          // Called after the file successfully uploaded.
+          $('#userPicture').val(serverResponse.url);
+        });
+      }
+    });
+    $('#mySelect').on('change', function (e) {
+      var id = $(this).val();
+      $('a[href="' + id + '"]').tab('show');
+    });
+    $('.dz-remove').on('click', function (e) {
+      $('#userPicture').val('');
+    });
+    $.validator.addMethod(
+      'regex',
+      function (value, element, regexp) {
+        if (regexp.constructor != RegExp) regexp = new RegExp(regexp);
+        else if (regexp.global) regexp.lastIndex = 0;
+        return this.optional(element) || regexp.test(value);
+      },
+      atleastcriter
+    );
+
+    const v = $('#ayarlar-form').validate({
+      rules: {
+        name: {
+          required: true,
+          minlength: 5
+        },
+        nickname: {
+          required: true,
+          minlength: 3,
+          regex: '^[A-Za-z0-9]+([A-Za-z0-9]*|[._-]?[A-Za-z0-9]+)*$'
+        }
+      },
+      messages: {
+        name: {
+          required: filerequired,
+          minlength: minlengthcriter
+        },
+        nickname: {
+          required: filerequired,
+          minlength: minlengthchar,
+          regex: formatnotmatch
+        }
+      },
+      submitHandler: function(form) {
+            v.resetForm();
+            form.reset();
+        }
+        });
+
+    $('#updateProfile').on('click', function (e) {
+      if ($('#ayarlar-form').valid()) {
+        $(this).prop('disabled', true);
+        $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+        const that = this;
+        $.ajax({
+          url: '/ayarlar',
+          method: 'post',
+          data: $('#ayarlar-form').serialize(),
+          success: function (result) {
+            if (typeof result.errors == 'undefined') {
+              Swal.fire({
+                title: successheader,
+                text: successmessage,
+                type: 'success',
+                heightAuto: false
+              }).then(() => {
+                $(that).prop('disabled', false);
+                $(that).html('Değişiklikleri Kaydet');
+                setTimeout(() => window.location.reload(), 900);
+              });
+            } else {
+              let err = '';
+              $(that).prop('disabled', false);
+              $(that).html('Değişiklikleri Kaydet');
+              result.errors.forEach(function (e) {
+                // console.log(e.text);
+                err += e.text + '\n';
+                Swal.fire({
+                  title: errortext,
+                  text: err.message,
+                  type: 'warning',
+                  heightAuto: false
+                });
+              });
+            }
+          },
+          error: function (errors) {
+            $(that).prop('disabled', false);
+            $(that).html('Değişiklikleri Kaydet');
+            Swal.fire({
+              title: errortext,
+              text: errors.responseJSON.message,
+              type: 'warning',
+              heightAuto: false
+            });
+          }
+        });
+      }
+    });
+
+    const p = $('#sifre-form').validate({
+      rules: {
+        oldpassword: {
+          required: true
+        },
+        newpassword: {
+          required: true,
+          minlength: 8,
+          regex: '[^wd]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))'
+        },
+        newpassword2: {
+          required: true,
+          minlength: 8,
+          equalTo: '#newpassword',
+          regex: '[^wd]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))'
+        }
+      },
+      messages: {
+        oldpassword: {
+          required: filerequired,
+          minlength: minlengthcriter
+        },
+        newpassword: {
+          required: filerequired,
+          minlength: minlengthchar,
+          regex: formatnotmatch
+        },
+        newpassword2: {
+          required: filerequired,
+          minlength: minlengthchar,
+          equalTo: notmatch,
+          regex: formatnotmatch
+        }
+      },
+      submitHandler: function(form) {
+            p.resetForm();
+            form.reset();
+        }
+    });
+    $('#editpass-button').on('click', function () {
+      if ($('#sifre-form').valid()) {
+        $(this).prop('disabled', true);
+        $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+        const that = this;
+        $.ajax({
+          url: '/edit-password',
+          method: 'post',
+          data: $('form#sifre-form').serialize(),
+          success: function (result) {
+            Swal.fire({
+              title: successheader,
+              text: result,
+              type: 'success',
+              heightAuto: false
+            }).then(() => {
+              setTimeout(() => window.location.reload(), 900);
+            });
+          },
+          error: function (err) {
+            $(this).html('Değişiklikleri Kaydet');
+            $(that).prop('disabled', false);
+            Swal.fire({
+              title: errortext,
+              text: err.responseJSON.message,
+              type: 'warning',
+              heightAuto: false
+            });
+          }
+        });
+      }
+    });
+
+    $('#updateGizlilik').on('click', function (e) {
+      if ($('#gizlilik-form').valid()) {
+        $(this).prop('disabled', true);
+        $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+        const that = this;
+        $.ajax({
+          url: '/ayarlar',
+          method: 'post',
+          data: $('#gizlilik-form').serialize(),
+          success: function (result) {
+            if (typeof result.errors == 'undefined') {
+              Swal.fire({
+                title: successheader,
+                text: successmessage,
+                type: 'success',
+                heightAuto: false
+              }).then(() => {
+                $(that).prop('disabled', false);
+                $(that).html('Değişiklikleri Kaydet');
+                setTimeout(() => window.location.reload(), 900);
+              });
+            } else {
+              let err = '';
+              $(that).prop('disabled', false);
+              $(that).html('Değişiklikleri Kaydet');
+              result.errors.forEach(function (e) {
+                // console.log(e.text);
+                err += e.text + '\n';
+                Swal.fire({
+                  title: errortext,
+                  text: err.message,
+                  type: 'warning',
+                  heightAuto: false
+                });
+              });
+            }
+          },
+          error: function (errors) {
+            $(that).prop('disabled', false);
+            $(that).html('Değişiklikleri Kaydet');
+            Swal.fire({
+              title: errortext,
+              text: errors.responseJSON.message,
+              type: 'warning',
+              heightAuto: false
+            });
+          }
+        });
+      }
+    });
+  });
+</script>

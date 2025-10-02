@@ -1,0 +1,202 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+    <div class="header-top-img harita">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.7585357588914!2d28.893607951819583!3d41.00865797919903!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cabb05413e899f%3A0x68b4e1a838119228!2sHiperlink%20E%C4%9Fitim%20%C4%B0leti%C5%9Fim%20Yay.%20San.%20Ve%20Paz.%20Tic.%20Ltd.%20%C5%9Eti.!5e0!3m2!1str!2str!4v1595170208809!5m2!1str!2str" width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+      </div>
+  </header>
+  <main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+                <div class="alt-sayfa-baslik">
+                  <h1 class="koyu-turuncu"><%- __('officeaddress') %></h1>
+                  <h2><%- __('officeaddress_desc') %></h2>
+                </div>
+                <div class="blog-ana-metin">
+                  <h2>HİPERLİNK EĞİTİM İLETİŞİM YAYIN <br>
+                  GIDA SANAYİ VE PAZARLAMA TİC. LTD. ŞTİ.</h2>
+                  <address>
+                    <p><i class="fas fa-location-arrow koyu-turuncu mr-2"></i> <span class="koyu-turuncu"><%- __('address') %>: </span>Tozkoparan Mah. Haldun Taner Sok. Alparslan İş Merkezi No:27 Daire:21 Merter, Güngören, İSTANBUL</p>
+                    <p><i class="fas fa-phone koyu-turuncu mr-2"></i> <span class="koyu-turuncu"><%- __('telephone') %>:</span> 0212 293 07 05</p>
+                    <p><i class="fas fa-fax koyu-turuncu mr-2"></i> <span class="koyu-turuncu"><%- __('fax') %>:</span> 0212 293 56 58</p>
+                    <p><i class="fas fa-envelope koyu-turuncu mr-2"></i> <span class="koyu-turuncu"><%- __('email') %>:</span> <a href="mailto:info@hiperlink.com.tr">info@hiperlink.com.tr</a></p>
+                  </address>
+
+                  <div class="alt-sayfa-baslik">
+                    <h1 class="koyu-turuncu"><%- __('contact_form') %></h1>
+                    <h2 class="text-muted"><%- __('contact_form_desc') %></h2>
+                  </div>
+
+                  <div class="blog-ana-metin">
+                    <p class="siyah">
+                      <%- __('contact_form_desc2') %>
+                    </p>
+                    <p>
+                      <i class="fas fa-chevron-right koyu-turuncu mr-2"></i> <%- __('contact_form_desc3') %> <br>
+                      <i class="fas fa-chevron-right koyu-turuncu mr-2"></i><%- __('contact_form_desc4') %> <br>
+                      <i class="fas fa-chevron-right koyu-turuncu mr-2"></i><%- __('contact_form_desc5') %> <br>
+                    </p>
+                  </div>
+                  <div class="iletisim-formu">
+                    <form id="iletisim-form" method="post" autocomplete="off" action="javascript:;">
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label"><%- __('contact_name_surname') %></label>
+                        <div class="col-sm-15">
+                          <input type="text" class="form-control" name="adisoyadi" placeholder="<%- __('contact_name_surname_p') %>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label"><%- __('contact_email') %></label>
+                        <div class="col-sm-15">
+                          <input type="email" class="form-control" name="email" placeholder="<%- __('contact_email_desc') %>" required>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label"><%- __('contact_subject') %></label>
+                        <div class="col-sm-15">
+                          <select class="custom-select custom-select-sm" name="konu">
+                            <option value="<%- __('contact_subject1') %>" selected><%- __('contact_subject1') %></option>
+                            <option value="<%- __('contact_subject2') %>"><%- __('contact_subject2') %></option>
+                            <option value="<%- __('contact_subject3') %>"><%- __('contact_subject3') %></option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label"><%- __('contact_head') %></label>
+                        <div class="col-sm-15">
+                          <input type="text" class="form-control" name="baslik" placeholder="<%- __('contact_head_desc') %>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label"><%- __('contact_message') %></label>
+                        <div class="col-sm-15">
+                          <textarea class="form-control" rows="10" name="mesaj" placeholder="<%- __('contact_message_desc') %>" required></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-5 col-form-label"><%- __('contact_31') %></label>
+                        <div class="col-sm-15">
+                          <input type="text" class="form-control" placeholder="<%- __('contact_31_desc') %>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-sm-5 ml-auto">
+                          <button type="submit" id="iletisim-submit" class="btn btn-outline-primary btn-block"><%- __('contact_send') %></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+            <!-- ANA İÇERİK SONU -->
+        </div>
+    </div>
+    <%- include('partials/visitblog'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+<%- contentFor('footerBlock') %>
+<script>
+$(document).ready(function () {
+  $.validator.addMethod(
+    "validEmail",
+    function (value, element) {
+      if (value.length > 1) {
+        if (
+          /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(
+            value
+          )
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    },
+    "Geçerli bir eposta adresi giriniz"
+  );
+
+  $("#iletisim-form").validate({
+    rules: {
+      mesaj: {
+        required: true,
+        minlength: 20,
+      },
+      email: {
+        required: true,
+        email: true,
+        validEmail: true,
+      },
+    },
+    messages: {
+      mesaj: {
+        required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+        minlength: "minimum 20 karakter",
+      },
+      email: {
+        required: siteLang === 'en' ? "This field is required!":"Bu alan zorunlu!",
+        email: "Geçersiz e-posta!",
+      },
+    },
+  });
+
+  $("#iletisim-submit").on("click", function () {
+    if ($("#iletisim-form").valid()) {
+      $(this).prop("disabled", true);
+      $(this).html('<i class="fa fa-spinner fa-spin fa-lg fa-fw"></i>');
+      const that = this;
+      $.ajax({
+        url: "/iletisim",
+        method: "post",
+        data: $("#iletisim-form").serialize(),
+        success: function (result) {
+          if (typeof result.errors == "undefined") {
+            Swal.fire({
+              title: "Teşekkürler!",
+              text: "Mesajınızı gönderildi.",
+              type: "success",
+              heightAuto: false,
+            });
+            $(that).prop("disabled", false);
+            $(that).html("MESAJI GÖNDER");
+            $(':input','#iletisim-form')
+            .not(':button, :submit, :reset, :hidden')
+            .val('');
+          } else {
+            let err = "";
+            $(that).prop("disabled", false);
+            $(that).html("MESAJI GÖNDER");
+            result.errors.forEach(function (e) {
+              err += e.text + "\n";
+              Swal.fire({
+                title: "HATA!",
+                text: err.message,
+                type: "warning",
+                heightAuto: false,
+              });
+            });
+          }
+        },
+        error: function (errors) {
+          $(that).prop("disabled", false);
+          $(that).html("MESAJI GÖNDER");
+          Swal.fire({
+            title: "HATA!",
+            text: errors.responseJSON,
+            type: "warning",
+            heightAuto: false,
+          });
+        },
+      });
+
+    }
+  });
+
+});
+</script>

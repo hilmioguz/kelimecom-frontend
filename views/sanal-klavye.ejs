@@ -1,0 +1,196 @@
+<%- contentFor('headerBlock') %>
+<title>Kelime.com ödeme | Sözlükler Veritabanı</title>
+<link href="assets/css/style.css" rel="stylesheet">
+<script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+<%- contentFor('body') %>
+<header>
+    <%- include('partials/menu'); -%>
+</header>
+
+<main role="main">
+    <section class="degrade-desen-bg">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+                    <div class="cozumleyici-nedir">
+                        <h1>KELİMEX SANAL KLAVYE</h1>
+                        <p>Türkçe, İngilizce, Arapça, Farsça, Fransızca, Almanca, İtalyanca, Rusça, Çince ve Osmanlıca Sanal Klavye istediğiniz dilde rahatça yazı yazın, kaydedin ve yazıcıdan çıktı alın.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row hidden-mobile">
+                <div class="col">
+                    <!-- sections/_sozlukler.scss -->
+                    <ul class="nav justify-content-center nav-tabs sozluk-tab-linkler">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#sk-1">Türkçe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-2">Osmanlıca</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-3">İngilizce</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-4">Arapça</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-5">Almanca</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-6">Fransızca</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-7">Farsça</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-8">Rusça</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-9">Cince</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#sk-10">Rusça</a>
+                        </li>
+                    </ul>
+                    <!-- sections/_sozlukler.scss -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="standard-padding">
+        <div class="container">
+            <div class="row mb-1">
+                <div class="col-lg-16 mx-auto">
+                    <div class="section-baslik">Kelime.com Veritabanında Bulunan Tüm Eserler</div>
+                    <div class="section-alt-baslik">Bu eserlerden birini satın alarak bir taşla iki kuş vurun...</div>
+                </div>
+            </div>
+            <div class="row hidden-desktop">
+                <div class="col-md-16 mx-auto my-2">
+                    <form>
+                        <select id='mySelect' class="custom-select">
+                            <option value='#sk-1'>Türkçe</option>
+                            <option value='#sk-2'>İngilizce</option>
+                            <option value='#sk-3'>Osmanlıca</option>
+                            <option value='#sk-4'>Fransızca</option>
+                            <option value='#sk-5'>Arapça</option>
+                            <option value='#sk-6'>Almanca</option>
+                            <option value='#sk-7'>Almanca</option>
+                            <option value='#sk-8'>Almanca</option>
+                            <option value='#sk-9'>Almanca</option>
+                            <option value='#sk-10'>Almanca</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <!-- sections/_sozlukler.scss -->
+            <div class="tab-content sozluk-tab-icerikler p-5">
+                <div class="tab-pane fade show active" id="sk-1">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            <textarea name="editor1"></textarea>
+                            <script>
+                                    CKEDITOR.replace( 'editor1' );
+                            </script>
+
+                <input class="input" placeholder="Tap on the virtual keyboard to start" />
+                <div class="simple-keyboard"></div>
+
+
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-primary mr-2">PAYLAŞ</button>
+                                <button class="btn btn-outline-primary mr-2">YAZDIR</button>
+                                <button class="btn btn-primary">KAYDET</button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sk-2">
+                  <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            ...
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="bk-3">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            ...
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sk-4">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            ...
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sk-5">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            ...
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sk-6">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            ...
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="sk-7">
+                    <div class="row">
+                        <div class="col-lg-16 col-md-20 mx-auto">
+                            ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- sections/_sozlukler.scss -->
+        </div>
+    </section>
+    <section class="py-5 gradient-bg kelimex-nedir">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-16 mx-auto">
+                    <h2 class="text-white text-center mb-5">Kelime.com Sanal Klavye Nedir?</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-16 mx-auto">
+                    <div class="row">
+                        <div class="col-20 col-md-12 kelimex-yazi">
+                            <p class="lead text-white">Yukarıda bulunan eserlerden birini veya birkaçını satın aldığınız takdirde paket içerisinden çıkan Kelime.com Aktivasyon Kartı üzerinde yazan komutlar ile Kelime.com'a  tam paket erişim sağlayabilirsiniz. Mobil latformlardan uygulamayı indirebilirsiniz.
+                                Detaylı bilgi için ise videoyu izleyebilirsiniz.</p>
+                        </div>
+                        <div class="col-20 col-md-8">
+                            <div class="kelimex-video">
+                                <a data-fancybox="video" data-width="640" data-height="360"
+                                    href="https://www.youtube.com/embed/z8PmpBk60xg?autoplay=1">
+                                    <img class="card-img img-fluid shadow" src="/assets/img/video-bg.png" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- contentFor('footerBlock') %>
+<script>
+    $(document).ready(function(){
+        $('#mySelect').on('change', function (e) {
+            var id = $(this).val();
+            $('a[href="' + id + '"]').tab('show');
+        });
+    });
+</script>

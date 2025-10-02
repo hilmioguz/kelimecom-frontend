@@ -1,0 +1,374 @@
+/*
+  Project Name: Kelime Keyboard
+  Author: Mert Donmezyurek
+  Author URL: https://mertdy.com
+  Date: 11 Jan 2021
+*/
+
+@font-face {
+  font-family: 'Adobe Arabic Bold';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Adobe Arabic Bold'), url('./AdobeArabic.otf') format('truetype');
+}
+#smart-keyboard-toggle {
+  z-index: 3;
+  margin: 0 auto;
+  display: block;
+}
+#smart-keyboard-toggle i {
+  font-size: 24px;
+  color: #a7a7a7;
+}
+#smart-keyboard-toggle i.active {
+  background-image: -moz-linear-gradient(0deg, #eebc34 1%, #f8690d 100%);
+  background-image: -webkit-linear-gradient(0deg, #eebc34 1%, #f8690d 100%);
+  background-image: -ms-linear-gradient(0deg, #eebc34 1%, #f8690d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+kelime-keyboard {
+  display: none;
+  z-index: 3045803459803;
+  position: absolute;
+  max-width: 600px;
+  width: 100%;
+  bottom: 0px;
+  right: 0px;
+}
+.kelime-keyboard-container {
+  background-color: #ececec;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.kelime-keyboard-toolbar {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #707070;
+  display: flex;
+  justify-content: space-around;
+  cursor: move;
+  align-items: center;
+  height: 25px;
+}
+
+select.kelime-keyboard-selector {
+  margin: 5px 5px;
+  border: 0;
+  font-size: 16px;
+  border-radius: 0;
+  background-color: transparent;
+  color: #707070;
+  cursor: pointer;
+
+  /* change select arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 12px;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='grey' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: calc(100% + 5px);
+  background-position-y: -5px;
+}
+select.kelime-keyboard-selector:focus,
+select.kelime-keyboard-selector:active {
+  outline: 0;
+  border-bottom-color: red;
+}
+
+.kelime-keyboard-detail-text {
+  font-size: 15px;
+  font-weight: lighter;
+  margin-left: 10px;
+}
+
+.kelime-keyboard-close-button {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #999;
+  margin: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.simple-keyboard {
+  /* max-width: calc(100% - 10px); */
+}
+
+.simple-keyboard.hg-theme-default.customTheme {
+  background-color: #ececec;
+}
+
+.simple-keyboard.hg-theme-default.arabicTheme {
+  background-color: #ececec;
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 25px;
+}
+
+.simple-keyboard.hg-layout-default .hg-button {
+  /* border: 1px solid #666; */
+  color: #474747;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-red {
+  background: rgb(255, 0, 0, 0.7);
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-top-buttons {
+  border: 1px solid #eee;
+  color: #555555;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-question-mark {
+  background: rgb(236, 227, 146);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-asterisk {
+  background: rgb(252, 158, 158);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-equal {
+  background: rgb(169, 216, 208);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-addChar {
+  background: rgb(109, 222, 134);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-removeChar {
+  background: rgb(108, 223, 132);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-moveLeft {
+  background: rgb(133, 196, 203);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-moveRight {
+  background: rgb(133, 196, 203);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-square-brackets {
+  background: rgb(152, 216, 152);
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hg-icon {
+  max-width: 4em;
+}
+
+@media screen and (max-width: 600px) {
+  .simple-keyboard {
+    font-size: 0.8rem;
+  }
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+}
+.simple-keyboard.hg-theme-default { overflow: visible; }
+.simple-keyboard .hg-button { position: relative; }
+.simple-keyboard .hg-button:before {
+    background: #333;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px 2px rgba(0, 0, 0, .1);
+    color: #fff;
+    font-size: 13px;
+    padding: 5px 10px;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    text-align: center;
+    transform: scaleY(0) translateY(100%);
+    transform-origin: bottom;
+    transition: all .2s ease-in-out;
+    white-space: nowrap;
+    z-index: 9;
+}
+.simple-keyboard .hg-button:after {
+    border: 6px solid;
+    border-color: #333 transparent transparent;
+    position: absolute;
+    bottom: calc(100% - 2px);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: all .3s ease-in-out;
+    z-index: 10;
+}
+
+.simple-keyboard .hg-button:hover:before {
+    transform: scaleY(100%) translateY(0);
+}
+
+.simple-keyboard .hg-button:hover:after {
+    transform: scaleY(100%);
+}
+
+/* tooltip */
+.simple-keyboard .hg-button:before { font-family: Arial, Helvetica, sans-serif; }
+
+/* activate the tooltip for a button */
+.simple-keyboard.hg-lang-tr .hg-button[data-skbtn="a"]:after { content: '' }
+.simple-keyboard.hg-lang-tr .hg-button[data-skbtn="a"]:before { content: '[a, b, c]' }
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ٱ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ٱ"]:before {
+  content: '[ا,أ,آ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* activate the tooltip for a button */
+.simple-keyboard.hg-lang-tr .hg-button[data-skbtn="a"]:after { content: '' }
+.simple-keyboard.hg-lang-tr .hg-button[data-skbtn="a"]:before { content: '[a, b, c]' }
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ٱ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ٱ"]:before {
+  content: '[ا,أ,آ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ﯩ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ﯩ"]:before {
+  content: '[ب,پ,ت,ث,ن,ی,ئ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ٿ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ٿ"]:before {
+  content: '[ت,ث,ن,ئ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڀ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڀ"]:before {
+  content: '[ي,ب,پ,ی]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڇ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڇ"]:before {
+  content: '[ج,چ,ح,خ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڐ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڐ"]:before {
+  content: '[د,ذ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڙ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڙ"]:before {
+  content: '[ر,ز,ژ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ݜ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ݜ"]:before {
+  content: '[س,ش]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڞ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڞ"]:before {
+  content: '[ص,ض]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڟ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڟ"]:before {
+  content: '[ط,ظ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڠ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڠ"]:before {
+  content: '[ع,غ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڤ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڤ"]:before {
+  content: '[ف,ق]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڮ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ڮ"]:before {
+  content: '[ك,ک,گ,ڭ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ۋ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ۋ"]:before {
+  content: '[و,ؤ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* osmanlıca harfler için tooltip */
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ۂ"]:after { content: '' }
+.simple-keyboard.hg-lang-osk .hg-button[data-skbtn="ۂ"]:before {
+  content: '[ھ,ە,ة,ۀ]';
+  font-family: 'Adobe Arabic Bold', Arial, Helvetica, sans-serif;
+  font-size: 28px;
+}
+
+/* özel butonlar için tooltip */
+.simple-keyboard .hg-button[data-skbtn="{questionMark}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{questionMark}"]:before { content: 'Bu harfi okuyamıyorum' }
+
+
+.simple-keyboard .hg-button[data-skbtn="{asterisk}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{asterisk}"]:before { content: 'Kaç harf var bilmiyorum' }
+
+
+.simple-keyboard .hg-button[data-skbtn="{equal}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{equal}"]:before { content: 'Şu harf de olabilir' }
+
+
+.simple-keyboard .hg-button[data-skbtn="{addChar}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{addChar}"]:before { content: 'Yeni kutucuk ekle' }
+
+
+.simple-keyboard .hg-button[data-skbtn="{removeChar}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{removeChar}"]:before { content: 'Bu kutucuğu kaldır' }
+
+
+.simple-keyboard .hg-button[data-skbtn="{moveLeft}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{moveLeft}"]:before { content: 'Soldaki karaktere/kutuya geç' }
+
+
+.simple-keyboard .hg-button[data-skbtn="{moveRight}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{moveRight}"]:before { content: 'Sağdaki karaktere/kutucuğa geç' }
+
+
+/* .simple-keyboard .hg-button[data-skbtn="{squareBrackets}"]:after { content: '' }
+.simple-keyboard .hg-button[data-skbtn="{squareBrackets}"]:before { content: 'Şu harf de olabilir'  */

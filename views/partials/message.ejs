@@ -1,0 +1,10 @@
+<header>
+    <div class="alert alert-info alert-dismissible fade show header-alert" role="alert" auto-close="5000">
+        <% messages.forEach((message) => {%>
+            <span class="text-center"><strong><%= message %></strong></span>
+       <% }) %> 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+</header>

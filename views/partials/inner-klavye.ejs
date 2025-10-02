@@ -1,0 +1,124 @@
+<script>
+  var active_page = '<%= active_page %>'
+  function dragElement(elmnt) {
+    var pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+    if (document.getElementById("kelime-keyboard-toolbar")) {
+      // if present, the header is where you move the DIV from:
+      document.getElementById("kelime-keyboard-toolbar").onmousedown =
+        dragMouseDown;
+    }
+    else {
+      // otherwise, move the DIV from anywhere inside the DIV:
+      elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      if (!$(e.target).hasClass("kelime-keyboard-selector") && $(e.target).hasClass("simple-keyboard")) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      e.stopPropagation();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+      elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+    }
+
+    function closeDragElement() {
+      // stop moving when mouse button is released:
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+
+  $(document).ready(function () {
+    dragElement(document.getElementById("kelime-keyboard"));
+
+    var wheight = $(window).height();
+    var wwidth = $(window).width();
+
+    var sanalKlavyeBtn = $("#smart-keyboard-toggle");
+    var sanalKlavye = $("kelime-keyboard");
+    $(window).resize(function () {
+      wheight = $(window).height();
+      wwidth = $(window).width();
+      if (wheight > 490) {
+        sanalKlavye.css("top", `${wheight - 490}px`);
+      }
+      if (wwidth > 610) {
+        sanalKlavye.css("left", `${wwidth - 610}px`);
+      } else {
+        sanalKlavye.css("left", `0`);
+      }
+    });
+    if (wheight > 490) {
+      sanalKlavye.css("top", `${wheight - 490}px`);
+    }
+    if (wwidth > 610) {
+      sanalKlavye.css("left", `${wwidth - 610}px`);
+    } else {
+      sanalKlavye.css("left", `0`);
+    }
+    var sanalKlavyeBtnIcon = $("#smart-keyboard-toggle i.fa-keyboard");
+
+    sanalKlavyeBtn.click(function () {
+      if (sanalKlavyeBtnIcon.hasClass("active")) {
+        sanalKlavye.hide();
+        sanalKlavyeBtnIcon.removeClass("active");
+      } else {
+        sanalKlavye.fadeToggle("fast");
+        sanalKlavyeBtnIcon.toggleClass("active");
+      }
+    });
+    let kelimeKeyboard = new KelimeKeyboard();
+    window.kelimeKeyboardOptions = {
+    inputElement: document.querySelectorAll("input[type=text]")[0],
+    onClose: function () {
+      //  isteğe bağlı eklenir. kapatma butonuna basıldığında bu fonksiyon çalışır.
+      $("kelime-keyboard").hide();
+      $("#smart-keyboard-toggle i.fa-keyboard").removeClass("active");
+    },
+    onLayoutChange: function (klavyeKodu) {
+      //  isteğe bağlı eklenir. o an seçilen klavyenin kodunu dönderir. klavye kodları: tr,en,os,fr,ar,de,ru,fa,zh,es
+      console.log("Klavye değişti", klavyeKodu);
+    },
+  };
+
+    document.querySelectorAll("input[type=text]").forEach(input => {
+        input.addEventListener("focus", onInputFocus);
+    });
+
+    document.querySelectorAll("textarea").forEach(input => {
+        input.addEventListener("focus", onInputFocus);
+    });
+
+    function onInputFocus(event) {
+        window.kelimeKeyboardOptions.inputElement = event.target;
+        kelimeKeyboard = null;
+        kelimeKeyboard = new KelimeKeyboard();
+        kelimeKeyboard.init(window.kelimeKeyboardOptions.inputElement);
+      };
+
+    kelimeKeyboard.init(window.kelimeKeyboardOptions.inputElement);
+  });
+</script>
+<script src="/assets/js/inner-keyboard/index.js"></script>

@@ -1,0 +1,190 @@
+<section class="standard-padding" id="enlerSection">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-16 mx-auto">
+                <div class="section-baslik"><%- __('enlere_bak') %></div>
+                <div class="section-alt-baslik">
+                  <%- __('enlere_bak_msg') %>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5 hidden-max-laptop">
+        <div class="col-lg-16 mx-auto">
+            <div class="sehirler-slider" id="statsByLang">
+            <a href="javascript:void(0);" class="sehir" data-lang="tr">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/turkce-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/turkce-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('turkish') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="en">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/ingilizce-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/ingilizce-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('english') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="os">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/osmanlica-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/osmanlica-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('osmanlica') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="fr">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/fransizca-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/fransizca-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('french') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="ar">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/arapca-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/arapca-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('arabic') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="de">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/almanca-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/almanca-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('germanic') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="ru">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/rusca-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/rusca-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('russian') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="fa">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/farsca-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/farsca-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('farsian') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="zh">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/cince-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/cince-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('chinese') %></div>
+            </a>
+            <a href="javascript:void(0);" class="sehir" data-lang="es">
+                <div class="sehir-img">
+                <img src="/assets/img/sehir-ikonlar/ispanyolca-gri.png" class="img-fluid">
+                <img src="/assets/img/sehir-ikonlar/ispanyolca-renkli.png" class="img-fluid">
+                </div>
+                <div class="link"><%- __('espanish') %></div>
+            </a>
+            </div>
+        </div>
+        </div>
+          <!-- ENLER DESKTOP -->
+          <div class="row hidden-max-laptop mb-4">
+            <div class="col-lg-16 mx-auto">
+              <div class="arananlar en-son">
+                <div class="aranan-baslik">
+                  <%- __('enson_aranan') %>
+                </div>
+                <div class="ticker--parent overflowScroll">
+                  <div id="prev">
+                    <i class="fas fa-chevron-left"></i>
+                  </div>
+                  <div id="next">
+                      <i class="fas fa-chevron-right"></i>
+                  </div>
+                  <div id="enSonArananlar" class="sliderWrapper eAranan">
+                  </div>
+                </div>
+              </div>
+              <div class="arananlar en-cok">
+                <div class="aranan-baslik">
+                  <%- __('encok_aranan') %>
+                </div>
+                <div class="ticker--parent overflowScroll">
+                  <div id="prevEnCok">
+                    <i class="fas fa-chevron-left"></i>
+                  </div>
+                  <div id="nextEnCok">
+                      <i class="fas fa-chevron-right"></i>
+                  </div>
+                  <div id="enCokArananlar" class="sliderWrapper enCok">
+                  </div>
+                </div>
+              </div>
+              <div class="arananlar eklenenler">
+                <div class="aranan-baslik">
+                  <%- __('enson_eklenen') %>
+                </div>
+                <div class="ticker--parent overflowScroll">
+                  <div id="prevEnSon">
+                    <i class="fas fa-chevron-left"></i>
+                  </div>
+                  <div id="nextEnSon">
+                      <i class="fas fa-chevron-right"></i>
+                  </div>
+                  <div id="enSonEklenenler" class="sliderWrapper enSon">
+                    <div class="ticker--item"><a href="/arama/zinetsiz">zinetsiz</a></div>
+                    <div class="ticker--item"><a href="/arama/zû-karaz">zû-karaz</a></div>
+                    <div class="ticker--item"><a href="/arama/zor">zor</a></div>
+                    <div class="ticker--item"><a href="/arama/topuz">topuz</a></div>
+                    <div class="ticker--item"><a href="/arama/zıvanasız">zıvanasız</a></div>
+                    <div class="ticker--item"><a href="/arama/zûd-endâz">zûd-endâz</a></div>
+                    <div class="ticker--item"><a href="/arama/zahmetsiz">zahmetsiz</a></div>
+                    <div class="ticker--item"><a href="/arama/zehr-âmîz">zehr-âmîz</a></div>
+                    <div class="ticker--item"><a href="/arama/zebân-gez">zebân-gez</a></div>
+                    <div class="ticker--item"><a href="/arama/zühre-sûz">zühre-sûz</a></div>
+                    <div class="ticker--item"><a href="/arama/zehr-amîz">zehr-amîz</a></div>
+                    <div class="ticker--item"><a href="/arama/zabayıtsız">zabayıtsız</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ENLER DESKTOP SONU -->
+          <!-- ENLER MOBİL -->
+          <div class="row hidden-min-laptop mb-5">
+            <div class="col-lg-16 mx-auto">
+
+              <ul class="accordion">
+                <li>
+                  <a class="toggle" href="javascript:void(0);"><%- __('enson_aranan') %></a>
+                  <ul class="inner etiketler" id="enSonArananlarMobil">
+                  </ul>
+                </li>
+
+                <li>
+                  <a class="toggle" href="javascript:void(0);"><%- __('encok_aranan') %></a>
+                  <ul class="inner etiketler" id="enCokArananlarMobil">
+                  </ul>
+                </li>
+
+                <li>
+                  <a class="toggle" href="javascript:void(0);"><%- __('enson_eklenen') %></a>
+                  <ul class="inner etiketler" id="enSonEklenenlerMobil">
+                        <a href="/arama/zinetsiz" class="badge badge-warning">zinetsiz</a>
+                        <a href="/arama/zû-karaz" class="badge badge-warning">zû-karaz</a>
+                        <a href="/arama/zor" class="badge badge-warning">zor</a>
+                        <a href="/arama/topuz" class="badge badge-warning">topuz</a>
+                        <a href="/arama/zıvanasız" class="badge badge-warning">zıvanasız</a>
+                        <a href="/arama/zûd-endâz" class="badge badge-warning">zûd-endâz</a>
+                        <a href="/arama/zahmetsiz" class="badge badge-warning">zahmetsiz</a>
+                        <a href="/arama/zehr-âmîz" class="badge badge-warning">zehr-âmîz</a>
+                        <a href="/arama/zebân-gez" class="badge badge-warning">zebân-gez</a>
+                        <a href="/arama/zühre-sûz" class="badge badge-warning">zühre-sûz</a>
+                        <a href="/arama/zehr-amîz" class="badge badge-warning">zehr-amîz</a>
+                        <a href="/arama/zabayıtsız" class="badge badge-warning">zabayıtsız</a>
+                  </ul>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+          <!-- ENLER MOBİL SONU -->
+        </div>
+  </section>

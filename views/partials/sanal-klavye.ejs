@@ -1,0 +1,334 @@
+<script>
+  var active_page = '<%= active_page %>'
+  var delaysearch = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
+  function dragElement(elmnt) {
+    var pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+    if (document.getElementById("kelime-keyboard-toolbar")) {
+      // if present, the header is where you move the DIV from:
+      document.getElementById("kelime-keyboard-toolbar").onmousedown =
+        dragMouseDown;
+    }
+    else {
+      // otherwise, move the DIV from anywhere inside the DIV:
+      elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      if (!$(e.target).hasClass("kelime-keyboard-selector") && $(e.target).hasClass("simple-keyboard")) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      e.stopPropagation();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+      elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+    }
+
+    function closeDragElement() {
+      // stop moving when mouse button is released:
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+
+
+
+  $(document).ready(function () {
+    dragElement(document.getElementById("kelime-keyboard"));
+    var aramakutusu = document.getElementById('kelimexAramaKutusu')
+    if (!aramakutusu) {
+      var aramakutusu = document.getElementById('cozumleyiciAramaKutusu')
+    }
+    const {left, bottom} = aramakutusu.getBoundingClientRect()
+    console.log('aramakutusu:', left, bottom)
+    var wheight = $(window).height();
+    var wwidth = $(window).width();
+
+    var sanalKlavyeBtn = $("#smart-keyboard-toggle");
+    var sanalKlavye = $("kelime-keyboard");
+    $(window).resize(function () {
+      wheight = $(window).height();
+      wwidth = $(window).width();
+      if (wheight > 250) {
+        sanalKlavye.css("top", `${bottom + 25}px`);
+      }
+      if (wwidth > 610) {
+        sanalKlavye.css("left", `${left - 50}px`);
+      } else {
+        sanalKlavye.css("left", `0`);
+      }
+    });
+    if (wheight > 250) {
+      sanalKlavye.css("top", `${bottom + 25}px`);
+    }
+    if (wwidth > 610) {
+      sanalKlavye.css("left", `${left - 50}px`);
+    } else {
+      sanalKlavye.css("left", `0`);
+    }
+    var sanalKlavyeBtnIcon = $("#smart-keyboard-toggle i.fa-keyboard");
+    var kelimexAramaKutusu = $("#kelimexAramaKutusu");
+    var cozumleyiciAramaKutusu = $("#cozumleyiciAramaKutusu");
+    var sonuckutusu = $("#arama-onerileri");
+
+    sanalKlavyeBtn.click(function () {
+      if (sanalKlavyeBtnIcon.hasClass("active")) {
+        sanalKlavye.hide();
+        sanalKlavyeBtnIcon.removeClass("active");
+      } else {
+        sanalKlavye.fadeToggle("fast");
+        sanalKlavyeBtnIcon.toggleClass("active");
+      }
+    });
+
+    var input = $("#kelimexAramaKutusu");
+    var inputcozumleyici = $("#cozumleyiciAramaKutusu");
+
+    input.on("keyup", function (e) {
+      var text = this.value.toLowerCase().replace(/(<([^>]+)>)/ig,"");
+      if (text.length > 2 && e.which !== 8) {
+        const skelotontemplate = `<ul class="card show shadow">
+        <li><a href="/arama/${encodeURIComponent(text)}"><div class="dil-kutu dil-en">tüm</div><div class="arama-onerisi"><span>${text}</span></div><div class="sonuc-turu">[tüm sonuçlar]</div></a></li>
+        <li id="skelotontemplate" class="skeleton-effect-wave ml-4">
+        <p style="width: 30%;" class="skeleton-block"></p>
+        <p style="width: 40%;" class="skeleton-block"></p>
+        <p style="width: 35%" class="skeleton-block"></p>
+        <p style="width: 60%" class="skeleton-block"></p>
+        <p style="width: 50%;" class="skeleton-block"></p>
+        <p style="width: 30%;" class="skeleton-block"></p>
+        <p style="width: 36%;" class="skeleton-block"></p></li>
+        </ul>`;
+        sonuckutusu.empty().append(skelotontemplate);
+        const secilenDil = sessionStorage.getItem('secilenDil') || '';
+        const secilenTip =  '';
+        const secilenSozluk = sessionStorage.getItem('secilenSozluk') || '';
+        searchOptions = { secilenDil, secilenTip };
+        console.log('delaysearch', text);
+
+        delaysearch(() => {
+          generalSearch(text, searchOptions);
+          }, 500 );
+      } else {
+        $("#arama-onerileri .card").removeClass("show");
+      }
+    });
+    input.on("focus", function() {
+      sanalKlavye.show("slow");
+      sanalKlavyeBtnIcon.addClass("active");
+    });
+    inputcozumleyici.on("focus", function() {
+      sanalKlavye.show("slow");
+      sanalKlavyeBtnIcon.addClass("active");
+    });
+    input.on("keypress", function (e) {
+      var text = this.value.toLowerCase().replace(/(<([^>]+)>)/ig,"");
+      if(e.which == 13) {
+        const secilenDil = sessionStorage.getItem('secilenDil') || '';
+        const secilenTip =  '';
+        const secilenSozluk = sessionStorage.getItem('secilenSozluk') || '';
+        searchOptions = { secilenDil, secilenTip };
+        // generalSearch(text, searchOptions);
+
+        let newurl = getMyDomain() + '/arama/' + encodeURIComponent(text);
+        if (secilenDil && !secilenTip && secilenDil !== 'tumu') {
+          newurl += '/' + secilenDil;
+        } else if (secilenDil && secilenTip) {
+          newurl += '/' + secilenDil;
+        } else {
+          newurl += '';
+        }
+        if (secilenTip) {
+          newurl += '/' + secilenTip;
+        }
+        window.location = newurl;
+      }
+    });
+
+    var searchIcon = $('#anaSearchIcon');
+    searchIcon.on("click", function (e) {
+      var text = input.val().toLowerCase().replace(/(<([^>]+)>)/ig,"");
+      if (text) {
+        const secilenDil = sessionStorage.getItem('secilenDil') || '';
+        const secilenTip =  '';
+        const secilenSozluk = sessionStorage.getItem('secilenSozluk') || '';
+        searchOptions = { secilenDil, secilenTip };
+        // generalSearch(text, searchOptions);
+        let newurl = getMyDomain() + '/arama/' + encodeURIComponent(text);
+        if (secilenDil && !secilenTip && secilenDil !== 'tumu') {
+          newurl += '/' + secilenDil;
+        } else if (secilenDil && secilenTip) {
+          newurl += '/' + secilenDil;
+        } else {
+          newurl += '';
+        }
+        if (secilenTip) {
+          newurl += '/' + secilenTip;
+        }
+        window.location = newurl;
+      }
+    });
+
+    inputcozumleyici.on("keypress", function (e) {
+      var text = this.value.toLowerCase().replace(/(<([^>]+)>)/ig,"");
+      const textcount = text.match(/[^?*.()[]|,٭؟،][\u0020-\u0FFF]/gi);
+
+      if(e.which == 13 && textcount && textcount.length >=2) {
+        const secilenDil = sessionStorage.getItem('secilenDil') || '';
+        const secilenTip =  '';
+        const secilenSozluk = sessionStorage.getItem('secilenSozluk') || '';
+        searchOptions = { secilenDil, secilenTip };
+        $('#cozumleyici-arama-sonucu').empty();
+        cozumleyiciSearch(text, searchOptions, true, 1, 100);
+      }
+    });
+
+    var cozumleyiciSearchIcon = $('#cozumleyiciSearchIcon');
+    cozumleyiciSearchIcon.on("click", function (e) {
+      var text = inputcozumleyici.val().toLowerCase();
+      const textcount = text.match(/[^?*.()[]|,٭؟،][\u0020-\u0FFF]/gi);
+
+      if (text && textcount && textcount.length >=2) {
+        const secilenDil = sessionStorage.getItem('secilenDil') || '';
+        const secilenTip =  '';
+        const secilenSozluk = sessionStorage.getItem('secilenSozluk') || '';
+        searchOptions = { secilenDil, secilenTip };
+        $('#cozumleyici-arama-sonucu').empty();
+        cozumleyiciSearch(text, searchOptions, true, 1, 100);
+      }
+    });
+    function readMoreFormatter() {
+  var maxLength = 300;
+  $(".show-read-more").each(function () {
+    if (!$(this).attr("data-formatted")) {
+      $(this).attr("data-formatted", true);
+      var myStr = $(this).text();
+
+      if ($.trim(myStr).length > maxLength) {
+        var newStr = myStr.substring(0, maxLength);
+        var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+        $(this).empty().html(newStr);
+        $(this).append(
+          ' <a href="javascript:void(0);" class="read-more devami-link">...devamı</a>'
+        );
+        $(this).append('<span class="more-text">' + removedStr + "</span>");
+      }
+    }
+  });
+  $(".read-more").click(function () {
+    $(this).siblings(".more-text").contents().unwrap();
+    $(this).remove();
+  });
+}
+    $(function () {
+
+      // $(document).on("click", "#dilsec a", function() {
+      //       $("a").removeClass("active");
+      //       $(this).addClass("active");
+      //       secilenDil = $(this).attr("data-keyword");
+      //        if (secilenDil) {
+      //         console.log("secilen dil:", secilenDil);
+      //         sessionStorage.setItem('secilenDil', secilenDil);
+      //        }
+      //         var dilBySelect = document.querySelector(
+      //           "select.kelime-keyboard-selector"
+      //         );
+      //         let langchosed = 'tr';
+      //       if (secilenDil !=='tumu') {
+      //           langchosed = secilenDil;
+      //       }
+      //         dilBySelect.value = langchosed;
+      //         dilBySelect.dispatchEvent(new Event("change"));
+      // });
+
+      $(document).on("click", "#dilsectop a", function() {
+        $('#dilsectop a').removeClass("active");
+        $(this).addClass("active");
+        secilenDil = $(this).attr("data-keyword");
+         if (secilenDil) {
+        sessionStorage.setItem('secilenDil', secilenDil);
+
+          if (secilenDil && $('#dilsectopGorunen')) {
+            $('#dilsectopGorunen').html(getLang(secilenDil));
+          }
+        }
+      });
+
+      $(document).on("click", "#dilfiltreleme a", function() {
+        secilenDil = $(this).attr("data-keyword");
+        if (secilenDil) {
+          sessionStorage.setItem('secilenDil', secilenDil);
+        }
+      });
+
+    });
+    $(function () {
+      $("#tip-filtre a").click(function () {
+        $("a").removeClass("active");
+        $(this).addClass("active");
+        secilenTip = $(this).attr("data-keyword");
+        if (secilenTip) {
+          sessionStorage.setItem('secilenTip', secilenTip);
+        }
+      });
+    });
+    readMoreFormatter();
+    // maddeDetaylari();
+  });
+  // Kelime Keyboard, ihtiyaç duyduğu importları kendisi yapar. Çakışma olmaması için sayfaya bunları eklemeyin:
+  // Dependencies: simple-keyboard.js, simple-keyboard.css, font-awesome@5.15.1.css
+  window.kelimeKeyboardOptions = {
+    /* HTML input elementi vermek zorunlu. Klavyede girilen harfler, bu input içine eklenir. */
+    inputElement: document.querySelector(".ana-arama-kutusu"),
+    onClose: function () {
+      //  isteğe bağlı eklenir. kapatma butonuna basıldığında bu fonksiyon çalışır.
+      $("kelime-keyboard").hide();
+      $("#smart-keyboard-toggle i.fa-keyboard").removeClass("active");
+    },
+    onLayoutChange: function (klavyeKodu) {
+      //  isteğe bağlı eklenir. o an seçilen klavyenin kodunu dönderir. klavye kodları: tr,en,os,fr,ar,de,ru,fa,zh,es
+      setLangLayouts();
+      console.log("Klavye değişti", klavyeKodu);
+    },
+    onChange: function (input) {
+      if (input.length > 2) {
+        var sOptions = { secilenDil, secilenTip };
+        if  (active_page != 'cozumleyici') {
+          const deger = document.getElementById("kelimexAramaKutusu");
+          delaysearch(() => {
+            generalSearch(deger.value, sOptions);
+          }, 500 );
+        }
+      }
+      //  isteğe bağlı eklenir. Eğer klavyeye basıldıktan sonra inputtaki değerde değişim olursa, input value'si buraya gelir.
+      // (mesela; shift, capslock, download vs. basıldığında çalışmaz)
+      console.log("Yazı değişti", input);
+    },
+  };
+</script>
+<script src="/assets/js/kelime-keyboard/index.js"></script>

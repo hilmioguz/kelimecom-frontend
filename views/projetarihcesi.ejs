@@ -1,0 +1,194 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+    <section class="alt-nav">
+        <div class="container">
+          <div class="row">
+            <div class="col mx-auto">
+              <ul>
+                <li><a href="/hakkimizda"><%- __('hakkimizda')  %></a></li>
+                <li><a href="/abonelerimiz"><%- __('intitutions')  %></a></li>
+                <!-- <li><a href="#">Kullanım Klavuzu</a></li>
+                <li><a href="#">Basında Biz</a></li>
+                <li><a href="#">Özel Logolar</a></li> -->
+                <li><a href="#" class="active"><%- __('history_project')  %></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </section>
+    <div class="header-top-img">
+        <img src="/assets/img/history.jpg">
+    </div>
+  </header>
+  <main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+                <div class="alt-sayfa-baslik">
+                  <h1 class="koyu-turuncu"><%- __('history_project')  %></h1>
+                  <h2><%- __('history_project_desc')  %></h2>
+                </div>
+                <div class="blog-ana-metin mb-2">
+                  <p><%- __('history_project_desc2')  %></p>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 1.0</span>
+                        <span class="small">Tarih: 01 Ekim 2021</span>
+                      </div>
+                      <ul>
+                        <li>Hızlı sonuç almak için geliştirilen altyapı yayına alındı.</li>
+                        <li>Sanal klavyemiz 10 dili destekleyecek şekilde düzenlendi.</li>
+                        <li>Mobil uyumlu veritabanımız arama motoru optimizasyonu (SEO) ile güçlendirilmeye başlandı.</li>
+                        <li>Dil filtrelemesi ve sıralaması aktif edildi.</li>
+                        <li>Gelen sonuçları madde tiplerine göre filtreleme aktif edildi.</li>
+                        <li>Arama sonuç sayfası daha kullanışlı ve detaylı hale getirildi.</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.9</span>
+                        <span class="small">Tarih: 10 Nisan 2021</span>
+                      </div>
+                      <ul>
+                        <li>Daha hızlı arama yapmak ve sonuç almak için altyapı planlaması yapıldı.</li>
+                        <li>Tüm dillerde arama yapmayı kolaylaştırmak için sanal klavye geliştirilmeye başlandı.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.8</span>
+                        <span class="small">Tarih: 03 Şubat 2021</span>
+                      </div>
+                      <ul>
+                        <li>eni altyapı ve arayüzde karşılaşılan birtakım eksiklikler giderildi.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.7</span>
+                        <span class="small">Tarih: 11 Aralık 2020</span>
+                      </div>
+                      <ul>
+                        <li>Proje yeni arayüzü, logosu ve ismiyle yayına başladı.
+                        </li>
+                        <li>Anadolu Üniversitesi, Bayburt Üniversitesi ve Ağrı İbrahim Çeçen Üniversitesi tarafından kurum aboneliği gerçekleştirildi.
+                        </li>
+                        <li>Projemiz ANKOS (Anadolu Üniversite Kütüphaneleri Konsorsiyumu) veritabanları listesine eklendi.</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.6</span>
+                        <span class="small">Tarih: 21 Mayıs 2020</span>
+                      </div>
+                      <ul>
+                        <li>İlk yayın başlangıcından itibaren karşılaşılan hatalar giderildi.</li>
+                        <li>Osmanlıca/Türkçe sözlükler içerisinde aramayı kolaylaştırma ve okunamayan kelimelerin çözümü için geliştirilen projenin tüm dilleri kapsayacak şekilde genişletilmesi düşünüldü.
+                        </li>
+                        <li>Hayalindeki projenin nihai hali üzerine çalışan Sadi Özgür projenin yeni arayüz tasarımlarını bitirdi.</li>
+                        <li>Yeni arayüzün farklı bir isimle yayına devam etmesi için alan adı yatırımı yapıldı ve kelime.com projenin yeni ismi oldu. </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.5</span>
+                        <span class="small">Tarih: 18 Ekim 2019</span>
+                      </div>
+                      <ul>
+                        <li>Kamus-i Türki (1901), Redhouse Turkish and English Lexicon (1890), Kamusu’l-Muhit (1814), Vankulu Lügatı (1589), Derleme Sözlüğü ve İsimler Sözlüğü ile projemiz test ortamından prod ortamına geçti. Böylelikle ilk yayına başlamış olduk. ☺
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.4</span>
+                        <span class="small">Tarih: 03 Ekim 2019</span>
+                      </div>
+                      <ul>
+                        <li>Çevirisi ve dizgisi planlanan sözlükler çevirmenlerimiz tarafından teslim edilmeye başlandı.
+                        </li>
+                        <li>Satın alınan alan adları içerisinden kelime-x.com’un kullanımı kararlaştırıldı.</li>
+                        <li>Sitenin ilk arayüz tasarımı, html – css dökümü ve logosu hazırlandı.
+                        </li>
+                        <li>Backend ve frontend tarafı birbiri ile bağlanarak test sürümü aktif edildi.
+                        </li>
+                        <li>İlk test araması “kelime” maddesiyle yapıldı.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.3</span>
+                        <span class="small">Tarih: 27 Mart 2018</span>
+                      </div>
+                      <ul>
+                        <li>Projenin içerisinde yer alacak özellikler belirlendi.</li>
+                        <li>Projenin ilk eskizleri ortaya çıktı. </li>
+                        <li>İsim üzerine birkaç alternatif düşünüldü.
+                        </li>
+                        <li>Veritabanı mimarisi hazırlanıp kodlanmaya başladı.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.2</span>
+                        <span class="small">Tarih: 15 Mart 2015</span>
+                      </div>
+                      <ul>
+                        <li>Hiperlink çatısı altında projenin hayata geçirilmesine karar verildi.
+                        </li>
+                        <li>Hiperlink’te telifi bulunan sözlüklerin listesi hazırlandı.</li>
+                        <li>Osmanlı Türkçesi sözlüklerinin çevirisine başlanıldı.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card bg-light mb-3">
+                    <div class="card-body">
+                      <div class="alert alert-primary tarihce-alert">
+                        <span class="lead">Sürüm 0.1</span>
+                        <span class="small">Tarih: Eylül 2013</span>
+                      </div>
+                      <ul>
+                        <li>Sadi Özgür tarafından 2013 yılının sonbaharında tüm basılı sözlükleri tek çatı altında toplama fikrini ortaya atıldı. Özgür, birkaç farklı alan adı satın aldı. Kelime aramanın basit ve kullanılabilir olmasını istiyordu. Onun için birkaç basit şekilde site tasarımı hazırladı. Daha sonra hangi sözlüklerin sisteme aktarılacağını planladı. İşler planlandığı şekilde gitmeyince Sadi Özgür farklı projelerde çalışmaya başladı. Projenin yapımı yarıda kaldı. Taa ki Hiperlink ile tanışana kadar ☺</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+            <!-- ANA İÇERİK SONU -->
+
+        </div>
+    </div>
+    <%- include('partials/sozlukmu-yazdiniz'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>

@@ -1,0 +1,175 @@
+<div class="alt-sayfa-top-arama">
+  <div class="container-fluid">
+      <div class="row flex-nowrap">
+          <div class="col-auto col-lg-5 col-xl-4 col-logo">
+              <a href="/">
+                  <img src="/assets/img/logo.svg" class="top-arama-logo hidden-max-laptop ml-3">
+                  <% if (meta && meta.menuId  && meta.menuId !=='arama' && meta.menuId !=='kelime') { %> <img src="/assets/img/logo.svg" class="top-arama-logo hidden-min-laptop"><% } %>
+              </a>
+          </div>
+          <% if (meta.showTopSearchBar) { %>
+            <div class="col-auto flex-grow-1 col-lg-10 col-xl-12 col-search">
+                <div class="alt-sayfa-top-arama__search">
+                  <div class="input-group position-relative">
+                    <div class="input-group-prepend">
+                      <button id="topDilSec" class="btn btn-secondary dropdown-toggle tumu-buton" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><span class="hidden-mobile" id="dilsectopGorunen"><%- __('all') %></span><i
+                          class="fas fa-book hidden-desktop"></i></button>
+                      <div id="dilsectop" class="dropdown-menu dropdown-sozlukler">
+                        <a class="dropdown-item" href="#" data-keyword="null"><%- __('all') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="tr"><%- __('turkish') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="en"><%- __('english') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="os"><%- __('osmanlica') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="fr"><%- __('french') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="ar"><%- __('arabic') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="de"><%- __('germanic') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="ru"><%- __('russian') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="fa"><%- __('farsian') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="zh"><%- __('chinese') %></a>
+                        <a class="dropdown-item" href="#" data-keyword="es"><%- __('espanish') %></a>
+                      </div>
+                      <span class="input-group-text buyutec-wrapper" id="anaSearchIcon">
+                        <img src="/assets/img/search.svg" class="arama-buyutec">
+                      </span>
+                    </div>
+                    <input type="text" id="kelimexAramaKutusu" dir="auto" class="form-control ana-arama-kutusu"
+                      placeholder="Bütün basılı sözlüklerde arama yapın">
+                    <button class="btn btn-text" id="smart-keyboard-toggle"><i class="fas fa-keyboard"></i></button>
+                  </div>
+                  <div id="arama-onerileri">
+                  </div>
+                </div>
+            </div>
+
+            <% } else { %>
+          <div class="col-auto flex-grow-1 col-lg-10 col-xl-12 col-search">
+              <div class="top-menu-linkler hidden-mobile">
+                <a href="/" <% if (meta && meta.menuId ==='home') { %>  class="active" <% } %> ><%- __('homepage') %></a>
+                <a href="/cozumleyici" <% if (meta && meta.menuId ==='cozumleyici') { %>  class="active" <% } %>><%- __('cozumleyici') %></a>
+                <!-- <a href="/gundem" <% if (meta && meta.menuId ==='sozlukler') { %>  class="active" <% } %>><%- __('gundem') %></a> -->
+                <a href="/kulucka" <% if (meta && meta.menuId ==='kulucka') { %>  class="active" <% } %>><%- __('kulucka') %></a>
+                <a href="/blog" <% if (meta && meta.menuId ==='blog') { %>  class="active" <% } %>><%- __('blog') %></a>
+                <a href="/hakkimizda" <% if (meta && meta.menuId ==='hakkimizda') { %>  class="active" <% } %>><%- __('hakkimizda') %></a>
+                <a href="/iletisim" <% if (meta && meta.menuId ==='iletisim') { %>  class="active" <% } %>><%- __('iletisim') %></a>
+              </div>
+          </div>
+          <% } %>
+          <div class="col-auto col-lg-5 col-xl-4 col-menu-button">
+              <ul class="dd-menu hidden-max-laptop">
+                <% if (typeof user == "undefined" || !user){ %>
+                  <li class="dd-item">
+                      <a href="/login" class="dd-link"><%- __('login') %></a>
+                  </li>
+                  <li class="dd-item">
+                      <a href="/register" class="dd-link"><%- __('register') %></a>
+                  </li>
+                  <% }else{ %>
+                    <li class="dd-item">
+                        <a href="/sende-ekle" class="dd-link">EKLE</a>
+                    </li>
+                    <li class="dd-item">
+                        <a href="javascript:;" class="dd-link dd-dropdown-toggle sidenav-toggle">
+                            <div class="dd-icon mr-2">
+                                <% if (user.picture) { %><img src="<%= user.picture %>" class="menu-user-avatar"><% } else { %> <img src="/assets/img/user-avatar.jpg" class="menu-user-avatar"><% } %>
+                              </div>
+                            <div class="dd-link__text nowrap">
+                            <span><%= user.name  %> </span>
+                          </div>
+                        </a>
+                    </li>
+                  <% } %>
+                  <li class="dd-item">
+                      <a href="#" class="dd-link dd-dropdown-toggle"><% if (meta && meta.siteLang) {%><%- meta.siteLang.toUpperCase() %><%} else {%>TR<%}%></a>
+                      <ul class="dd-dropdown dd-right dd-custom">
+                          <div class="dd-dropdown_body">
+                              <li><a href="/switch/tr">TR</a></li>
+                              <li><a href="/switch/en">EN</a></li>
+                          </div>
+                      </ul>
+                  </li>
+              </ul>
+              <button class="btn text-white btn-lg mobil-menu-button ml-2 hidden-min-laptop" id="btn-show"><img src="/assets/img/hamburger-icon.svg" alt=""></button>
+          </div>
+      </div>
+  </div>
+</div>
+<nav id="navigation-hidden" class="navigation">
+  <div class="navigation-header">
+      <div class="navigation-logo">
+          <a href="/">
+              <img src="/assets/img/logo.svg" alt="Kelime.com Logo">
+          </a>
+      </div>
+      <div class="navigation-button-toggler">
+          <i class="hamburger-icon"></i>
+      </div>
+  </div>
+  <div class="navigation-body">
+      <div class="navigation-body-header">
+
+          <span class="navigation-body-close-button">&#10005;</span>
+      </div>
+      <ul class="navigation-menu">
+          <li class="navigation-item is-active">
+              <a class="navigation-link" href="/"><%- __('homepage') %></a>
+          </li>
+          <li class="navigation-item">
+              <a class="navigation-link" href="/cozumleyici"><%- __('cozumleyici') %></a>
+          </li>
+          <!-- <li class="navigation-item">
+              <a class="navigation-link" href="/ceviri">Çeviri</a>
+          </li> -->
+          <!-- <li class="navigation-item">
+            <a class="navigation-link" href="/gundem"><%- __('gundem') %></a>
+        </li> -->
+        <li class="navigation-item">
+            <a class="navigation-link" href="/kulucka"><%- __('kulucka') %></a>
+        </li>
+          <li class="navigation-item">
+              <a class="navigation-link" href="/blog"><%- __('blog') %></a>
+          </li>
+          <li class="navigation-item">
+              <a class="navigation-link" href="/hakkimizda"><%- __('hakkimizda') %></a>
+          </li>
+          <li class="navigation-item">
+            <a class="navigation-link" href="/iletisim"><%- __('iletisim') %></a>
+         </li>
+      </ul>
+      <div class="navigation-menu navigation-sag-linkler">
+          <div class="navigation-item">
+              <a class="navigation-btn btn-giris-yap" href="/login"><%- __('login') %></a>
+          </div>
+          <div class="navigation-item">
+              <a class="navigation-btn btn-uye-ol" href="/register"><%- __('register') %></a>
+          </div>
+          <div class="navigation-item has-submenu dil-menu">
+              <a class="navigation-link pl-0" href="#"><% if (meta && meta.siteLang) {%><%- meta.siteLang.toUpperCase() %><%} else {%>TR<%}%></a>
+              <ul class="navigation-dropdown navigation-submenu">
+                  <li class="navigation-dropdown-item">
+                      <a href="/switch/tr" class="navigation-dropdown-link">TR</a>
+                  </li>
+                  <li class="navigation-dropdown-item">
+                      <a href="/switch/en" class="navigation-dropdown-link">EN</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</nav>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(91145219, "init", {
+         clickmap:true,
+         trackLinks:true,
+         accurateTrackBounce:true,
+         webvisor:true
+    });
+ </script>
+ <noscript><div><img src="https://mc.yandex.ru/watch/91145219" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+ <!-- /Yandex.Metrika counter -->

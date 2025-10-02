@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Kelime.com</title>
+    <meta name="description" content="Tanıtım webinarına kalan süre" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --smaller: 0.75;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        align-items: center;
+        background-image: url("/assets/img/desen-bg.png"),
+          linear-gradient(90deg, #eebc34 1%, #f8690d 100%);
+        background-position: center top;
+        display: flex;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      }
+      .logo {
+        margin-bottom: 20px;
+      }
+      .container {
+        color: #333;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      h1 {
+        font-weight: normal;
+        letter-spacing: 0.125rem;
+        text-transform: uppercase;
+      }
+
+      li {
+        display: inline-block;
+        font-size: 1.5em;
+        list-style-type: none;
+        padding: 1em;
+        text-transform: uppercase;
+      }
+
+      li span {
+        display: block;
+        font-size: 4.5rem;
+      }
+      .links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .links a {
+        color:aliceblue;
+        font-weight: 500;
+        font-size: 1rem;
+        margin-right: 20px;
+        text-decoration: none;
+      }
+      .links a:hover {
+        color:aquamarine;
+      }
+      .click {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+        margin-top: 20px;
+      }
+      .click img{
+        width: 50px;
+        height: auto;
+      }
+
+      @media all and (max-width: 768px) {
+        h1 {
+          font-size: calc(1.5rem * var(--smaller));
+        }
+
+        li {
+          font-size: calc(1.125rem * var(--smaller));
+        }
+
+        li span {
+          font-size: calc(3.375rem * var(--smaller));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    <div class="container">
+      <div class="logo"><img src="/assets/img/logo.svg" /></div>
+      <h1 id="headline">Tanıtım Webinarına kalan süre:</h1>
+      <div id="countdown">
+        <ul>
+          <li><span id="days"></span>gün</li>
+          <li><span id="hours"></span>saat</li>
+          <li><span id="minutes"></span>dakika</li>
+          <li><span id="seconds"></span>saniye</li>
+        </ul>
+      </div>
+      <div class="links">
+        <a href="https://bit.ly/3mU4NDv" target="_blank">Canlı yayın kanalımız (Cumartesi 20:30'da)</a>
+        <a href="https://bit.ly/3lH0Pi8" target="_blank">Hediye üyelik formu (6 Aylık)</a>
+      </div>
+      <div class="click"><img src="/assets/img/cursor.svg" /></div>
+    </div>
+    <script>
+      (function () {
+        const second = 1000,
+          minute = second * 60,
+          hour = minute * 60,
+          day = hour * 24;
+
+        const opening = "10/16/2021 20:30:00";
+
+        const countDown = new Date(opening).getTime(),
+          x = setInterval(function () {
+            const now = new Date().getTime(),
+              distance = countDown - now;
+
+            (document.getElementById("days").innerText = Math.floor(
+              distance / day
+            )),
+              (document.getElementById("hours").innerText = Math.floor(
+                (distance % day) / hour
+              )),
+              (document.getElementById("minutes").innerText = Math.floor(
+                (distance % hour) / minute
+              )),
+              (document.getElementById("seconds").innerText = Math.floor(
+                (distance % minute) / second
+              ));
+
+            if (distance < 0) {
+              document.getElementById("headline").innerText = "Yayındayız!";
+              document.getElementById("countdown").style.display = "none";
+              document.getElementById("content").style.display = "block";
+              clearInterval(x);
+            }
+          }, 0);
+      })();
+    </script>
+  </body>
+</html>

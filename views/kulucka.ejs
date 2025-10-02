@@ -1,0 +1,1008 @@
+<%- contentFor('headerBlock') %>
+<link href="/assets/css/style.css" rel="stylesheet">
+<style type="text/css">
+    /* Arrows */
+.slick-prev,
+.slick-next
+{
+    font-size: 0;
+    line-height: 0;
+
+    position: absolute;
+    top: 50%;
+
+    display: block;
+
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+
+    cursor: pointer;
+
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus
+{
+    color: transparent;
+    outline: none;
+    background: transparent;
+}
+.slick-prev:hover:before,
+.slick-prev:focus:before,
+.slick-next:hover:before,
+.slick-next:focus:before
+{
+    opacity: 1;
+}
+.slick-prev.slick-disabled:before,
+.slick-next.slick-disabled:before
+{
+    opacity: .25;
+}
+
+.slick-prev:before,
+.slick-next:before
+{
+    font-family: 'slick';
+    font-size: 20px;
+    line-height: 1;
+
+    opacity: .75;
+    color: white;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev
+{
+    left: -25px;
+}
+[dir='rtl'] .slick-prev
+{
+    right: -25px;
+    left: auto;
+}
+.slick-prev:before
+{
+    content: '←';
+}
+[dir='rtl'] .slick-prev:before
+{
+    content: '→';
+}
+
+.slick-next
+{
+    right: -25px;
+}
+[dir='rtl'] .slick-next
+{
+    right: auto;
+    left: -25px;
+}
+.slick-next:before
+{
+    content: '→';
+}
+[dir='rtl'] .slick-next:before
+{
+    content: '←';
+}
+
+/* Dots */
+.slick-dotted.slick-slider
+{
+    margin-bottom: 30px;
+}
+
+.slick-dots
+{
+    position: absolute;
+    bottom: -25px;
+
+    display: block;
+
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+    text-align: center;
+}
+.slick-dots li
+{
+    position: relative;
+
+    display: inline-block;
+
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+    padding: 0;
+
+    cursor: pointer;
+}
+.slick-dots li button
+{
+    font-size: 0;
+    line-height: 0;
+
+    display: block;
+
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+
+    cursor: pointer;
+
+    color: transparent;
+    border: 0;
+    outline: none;
+    background: transparent;
+}
+.slick-dots li button:hover,
+.slick-dots li button:focus
+{
+    outline: none;
+}
+.slick-dots li button:hover:before,
+.slick-dots li button:focus:before
+{
+    opacity: 1;
+}
+.slick-dots li button:before
+{
+    font-family: 'slick';
+    font-size: 6px;
+    line-height: 20px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 20px;
+    height: 20px;
+
+    content: '•';
+    text-align: center;
+
+    opacity: .25;
+    color: black;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.slick-dots li.slick-active button:before
+{
+    opacity: .75;
+    color: black;
+}
+
+    /* Slider */
+.slick-slider
+{
+    position: relative;
+
+    display: block;
+    box-sizing: border-box;
+
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -ms-touch-action: pan-y;
+        touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list
+{
+    position: relative;
+
+    display: block;
+    overflow: hidden;
+
+    margin: 0;
+    padding: 0;
+}
+.slick-list:focus
+{
+    outline: none;
+}
+.slick-list.dragging
+{
+    cursor: pointer;
+    cursor: hand;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list
+{
+    -webkit-transform: translate3d(0, 0, 0);
+       -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+         -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+}
+
+.slick-track
+{
+    position: relative;
+    top: 0;
+    left: 0;
+
+    display: block;
+    margin-left: initial;
+    margin-right: initial;
+}
+.slick-track:before,
+.slick-track:after
+{
+    display: table;
+
+    content: '';
+}
+.slick-track:after
+{
+    clear: both;
+}
+.slick-loading .slick-track
+{
+    visibility: hidden;
+}
+
+.slick-slide
+{
+    display: none;
+    float: left;
+
+    height: 100%;
+    min-height: 1px;
+    min-width: 200px;
+}
+[dir='rtl'] .slick-slide
+{
+    float: right;
+}
+.slick-slide img
+{
+    display: block;
+}
+.slick-slide.slick-loading img
+{
+    display: none;
+}
+.slick-slide.dragging img
+{
+    pointer-events: none;
+}
+.slick-initialized .slick-slide
+{
+    display: block;
+}
+.slick-loading .slick-slide
+{
+    visibility: hidden;
+}
+.slick-vertical .slick-slide
+{
+    display: block;
+
+    height: auto;
+
+    border: 1px solid transparent;
+}
+.slick-arrow.slick-hidden {
+    display: none;
+}
+.kulucka-asama-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+@media (max-width: 767px) {
+  .kulucka-asama-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.kulucka-asama-title .yumurta {
+  width: 70px;
+  height: 70px;
+  background-color: #f57e17;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-right: 15px;
+}
+.kulucka-asama-title .yumurta img {
+  height: 40px;
+}
+
+.yumurta-text__title {
+  color: #000;
+  font-size: 20px;
+}
+
+.yumurta-text__sub-title {
+  color: #bbb;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.kulucka-slider {
+  position: relative;
+  overflow-x: hidden;
+  /* the parent */
+}
+.kulucka-slider::after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, white 100%);
+  width: 60px;
+  pointer-events: none;
+}
+.kulucka-slider .slick-slide {
+  margin: 0 10px;
+}
+.kulucka-slider .slick-list {
+  margin: 0 -10px;
+}
+.kulucka-slider .sozluk-duzelt-card {
+  padding: 20px;
+}
+.kulucka-slider .sozluk-duzelt-card h5, .kulucka-slider .sozluk-duzelt-card h6 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    max-width: 200px;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+.kulucka-slider .sozluk-duzelt-card h6 {
+  font-size: 13px;
+}
+.kulucka-slider .sozluk-duzelt-card .sozluk-duzelt-card__header-img {
+  width: 50px !important;
+  height: 50px !important;
+  margin-right: 10px !important;
+}
+.kulucka-slider .sozluk-duzelt-card .sozluk-duzelt-card__header-yazilar {
+  min-width: 0;
+}
+
+[class^=kulucka-slider__nav] {
+  position: relative;
+  width: 20px;
+  margin-left: 40px;
+}
+[class^=kulucka-slider__nav] button {
+  opacity: 1;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background-color: #f57e17;
+  border-radius: 50%;
+}
+[class^=kulucka-slider__nav] button:hover {
+  cursor: pointer;
+  opacity: 1;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background-color: #f57e17;
+  border-radius: 50%;
+}
+[class^=kulucka-slider__nav] button::before {
+  color: #fff;
+  opacity: 1 !important;
+  font-size: 30px;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+[class^=kulucka-slider__nav] .slick-prev::before {
+  content: "\f104";
+}
+[class^=kulucka-slider__nav] .slick-next::before {
+  content: "\f105";
+}
+
+.kulucka-tab-nav {
+  justify-content: space-between;
+}
+.kulucka-tab-nav > a {
+  flex-grow: 1;
+  text-align: center;
+}
+</style>
+<%- contentFor('body') %>
+<header>
+    <%- include('partials/menu'); -%>
+</header>
+  <main role="main">
+    <section class="degrade-desen-bg">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-sm-20 col-md-16 col-lg-14 col-xl-12 mx-auto">
+                    <div class="cozumleyici-nedir">
+                        <h1><%- __('joinourstaff')%></h1>
+                        <p><%- __('joinourstaffdesc')%></p>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0gCTPYG-cUixS-S9tQPruN3J5GPtiw79O6hNeDe2VmG3dDg/viewform" target="_blank" class="btn btn-outline-light mr-md-1 px-5 mb-3 mb-sm-0"><%- __('seeformjoin')%></a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!-- sections/_sozlukler.scss -->
+                    <ul class="nav justify-content-center nav-tabs sozluk-tab-linkler" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="sozlukTumu-tab" data-lang="" data-toggle="tab" role="tab" href="#tumu"><%- __('all')%></a>
+                      </li>
+                    </ul>
+                    <!-- sections/_sozlukler.scss -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="standard-padding">
+        <div class="container">
+            <!-- sections/_sozlukler.scss -->
+            <div class="tab-content sozluk-tab-icerikler p-5">
+                <!--  tab starts here -->
+                <div class="tab-pane fade show active" id="sozlukTumu">
+                    <div class="row">
+                        <div class="col-lg-20 mx-auto">
+                          <div class="kulucka-asama-title">
+                            <div class="d-flex align-items-center mb-2 mb-lg-0">
+                              <div class="yumurta">
+                                <img src="/assets/img/kulucka-1.png" alt="">
+                              </div>
+                              <div class="yumurta-text">
+                                <div class="yumurta-text__title"><%- __('incubation1')%></div>
+                                <div class="yumurta-text__sub-title"><%- __('dictnotyet')%></div>
+                              </div>
+                            </div>
+                            <div class="d-flex align-items-center ml-lg-auto pr-2">
+                              <div class="kulucka-slider__nav1"></div>
+                            </div>
+                          </div>
+
+                          <div class="kulucka-slider kulucka-slider__slider1">
+                            <% if (kuluckalar.data && kuluckalar.data.length) {
+                                kuluckalar.data.forEach((kulucka) => { %>
+                                    <%  if (kulucka && kulucka.hangiAsama && kulucka.hangiAsama === 1) {%>
+                                        <div class="sozluk-duzelt-card mx-1">
+                                        <div class="sozluk-duzelt-card__header mb-2">
+                                            <div class="d-flex align-items-center mb-2">
+                                            <div class="sozluk-duzelt-card__header-img">
+                                                <% if (kulucka.coverImage) { %><img src="<%= kulucka.coverImage %>" class="img-fluid"><% } else { %><img src="https://dummyimage.com/100x100" class="img-fluid"><% } %>
+                                            </div>
+                                            <div class="sozluk-duzelt-card__header-yazilar">
+                                                <h5><%= kulucka.name %></h5>
+                                                <h6><%= kulucka.yazar %></h6>
+                                            </div>
+                                            </div>
+                                            <p class="sozluk-duzelt-card__header-blok-metin">
+                                                <%= kulucka.desc %>
+                                            </p>
+                                        </div>
+                                        <div class="sozluk-duzelt-card__footer">
+                                            <a href="<%= kulucka.hakkindaBlogUrl %>" class="btn btn-outline-dark btn-block text-center mt-3"><%- __('about') %></a>
+                                        </div>
+                                        </div>
+                                    <% }
+                                    }
+                                )
+                            } %>
+                          </div>
+                          <hr class="mb-5">
+
+                          <div class="kulucka-asama-title">
+                            <div class="d-flex align-items-center mb-2 mb-lg-0">
+                              <div class="yumurta">
+                                <img src="assets/img/kulucka-2.png" alt="">
+                              </div>
+                              <div class="yumurta-text">
+                                <div class="yumurta-text__title"><%- __('incubation2')%></div>
+                                <div class="yumurta-text__sub-title"><%- __('incubation2desc')%></div>
+                              </div>
+                            </div>
+                            <div class="d-flex align-items-center ml-lg-auto pr-lg-2">
+                              <div class="kulucka-slider__nav2"></div>
+                            </div>
+                          </div>
+                          <div class="kulucka-slider kulucka-slider__slider2">
+                                <% if (kuluckalar.data && kuluckalar.data.length) {
+                                    kuluckalar.data.forEach((kulucka) => { %>
+                                        <%  if (kulucka && kulucka.hangiAsama && kulucka.hangiAsama === 2) {%>
+                                        <div class="sozluk-duzelt-card mx-1">
+                                        <div class="sozluk-duzelt-card__header mb-2">
+                                            <div class="d-flex align-items-center mb-2">
+                                            <div class="sozluk-duzelt-card__header-img">
+                                                <% if (kulucka.coverImage) { %><img src="<%= kulucka.coverImage %>" class="img-fluid"><% } else { %><img src="https://dummyimage.com/100x100" class="img-fluid"><% } %>
+                                            </div>
+                                            <div class="sozluk-duzelt-card__header-yazilar">
+                                                <h5><%= kulucka.name %> </h5>
+                                                <h6><%= kulucka.yazar %></h6>
+                                            </div>
+                                            </div>
+                                            <p class="sozluk-duzelt-card__header-blok-metin">
+                                                <%= kulucka.desc %>
+                                            </p>
+                                        </div>
+                                        <div class="sozluk-duzelt-card__body mb-4">
+                                            <div class="progress-row">
+                                            <div class="sozluk-card-title mr-2"><small><%- __('progress') %></small></div>
+                                            <div class="progress" style="height: 8px;width: 100%;">
+                                                <div class="progress-bar bg-indigo" role="progressbar" style="width:<%= ((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa) %>%;" aria-valuenow="<%= ((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)%>"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="sozluk-card-title ml-1"><small><%= ((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa) %></small></div>
+                                            </div>
+                                            <div class="kelimeler">
+                                            <div class="kelime-row"><span class="bold"><%- __('totalpage') %>:</span><span
+                                                class="text-muted"><%= kulucka.toplamSayfa %></span></div>
+                                            <div class="kelime-row"><span class="bold"><%- __('pagefinished') %>:</span><span
+                                                class="text-muted"><%= kulucka.bitenSayfa %></span></div>
+                                            <div class="kelime-row"><span class="bold"><%- __('pageleft') %>:</span><span
+                                                class="text-muted"><%= (kulucka.toplamSayfa - kulucka.bitenSayfa) %></span></div>
+                                            </div>
+                                        </div>
+                                        <div class="sozluk-duzelt-card__footer">
+                                            <button type="button" class="btn btn-outline-dark btn-block text-center mt-3"
+
+                                            <% if (user && (user.canDoKulucka || user.canDoKuluckaModerate)) { %>
+                                                    onclick="location.href='/kulucka/<%=kulucka.id%>'"
+                                                <% }
+                                                if (user && !user.canDoKulucka && !user.canDoKuluckaModerate) { %>
+                                                    data-toggle="modal" data-target="#katilimFormuModal"
+                                                <% }
+                                                if (!user){ %>
+                                                    data-toggle="modal" data-target="#kuluckaGirisModal"
+                                                <%  } %>
+                                            ><%- __('startediting') %></button>
+                                        </div>
+                                        </div>
+                                    <% }})
+                                } %>
+                          </div>
+                          <hr class="mb-5">
+                          <div class="kulucka-asama-title">
+                            <div class="d-flex align-items-center mb-2 mb-lg-0">
+                              <div class="yumurta">
+                                <img src="/assets/img/kulucka-3.png" alt="">
+                              </div>
+                              <div class="yumurta-text">
+                                <div class="yumurta-text__title"><%- __('incubation3') %></div>
+                                <div class="yumurta-text__sub-title"><%- __('incubation3desc') %></div>
+                              </div>
+                            </div>
+                            <div class="d-flex align-items-center ml-lg-auto pr-2">
+                              <div class="kulucka-slider__nav3"></div>
+                            </div>
+                          </div>
+                          <div class="kulucka-slider kulucka-slider__slider3">
+                            <% if (kuluckalar.data && kuluckalar.data.length) {
+                                kuluckalar.data.forEach((kulucka) => { %>
+                                    <%  if (kulucka && kulucka.hangiAsama && kulucka.hangiAsama === 3) {%>
+                                    <div class="sozluk-duzelt-card mx-1">
+                                    <div class="sozluk-duzelt-card__header mb-2">
+                                        <div class="d-flex align-items-center mb-2">
+                                        <div class="sozluk-duzelt-card__header-img">
+                                            <% if (kulucka.coverImage) { %><img src="<%= kulucka.coverImage %>" class="img-fluid"><% } else { %><img src="https://dummyimage.com/100x100" class="img-fluid"><% } %>
+                                        </div>
+                                        <div class="sozluk-duzelt-card__header-yazilar">
+                                            <h5><%= kulucka.name %></h5>
+                                            <h6><%= kulucka.yazar %></h6>
+                                        </div>
+                                        </div>
+                                        <p class="sozluk-duzelt-card__header-blok-metin">
+                                            <%= kulucka.desc %>
+                                        </p>
+                                    </div>
+                                    <div class="sozluk-duzelt-card__body mb-4">
+                                            <div class="progress-row">
+                                            <div class="sozluk-card-title mr-2"><small><%- __('progress') %></small></div>
+                                            <div class="progress" style="height: 8px;width: 100%;">
+                                                <div class="progress-bar bg-indigo" role="progressbar" style="width:<%= ((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa) %>%;" aria-valuenow="<%= ((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)%>"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="sozluk-card-title ml-1"><small><%= ((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa) %></small></div>
+                                            </div>
+                                            <div class="kelimeler">
+                                            <div class="kelime-row"><span class="bold"><%- __('totalpage') %>:</span><span
+                                                class="text-muted"><%= kulucka.toplamSayfa %></span></div>
+                                            <div class="kelime-row"><span class="bold"><%- __('pagefinished') %>:</span><span
+                                                class="text-muted"><%= kulucka.bitenSayfa %></span></div>
+                                            <div class="kelime-row"><span class="bold"><%- __('pageleft') %>:</span><span
+                                                class="text-muted"><%= (kulucka.toplamSayfa - kulucka.bitenSayfa) %></span></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                <% }})
+                            } %>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                <!--  tab ends here -->
+                <!-- Modal Penceresi -->
+                <div class="modal modal-tip-1 fade" id="kuluckaGirisModal" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"><%- __('signinincubation') %></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p><%- __('signinincubationdesc') %></p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" onclick="location.href='/login'"><%- __('signin') %></button>
+                        <button type="button" class="btn btn-secondary" onclick="location.href='/register'"><%- __('creataccount') %></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal Penceresi Sonu -->
+                <!-- Katılım Formu Modal Sonu -->
+
+                <!-- Katılım Formu Modal -->
+                <!-- Modal Penceresi -->
+                <div class="modal modal-tip-1 fade" id="katilimFormuModal" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"><%- __('participationform') %></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p><%- __('participationformdesc', user ? user.name:'') %>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0gCTPYG-cUixS-S9tQPruN3J5GPtiw79O6hNeDe2VmG3dDg/viewform" target="_blank" class="btn btn-secondary"><%- __('clickforparticipation') %></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal Penceresi Sonu -->
+                <!-- Katılım Formu Modal Sonu -->
+            </div>
+        </div>
+    </section>
+    <%- include('partials/kulucka-sorular'); -%>
+    <%- include('partials/kulucka-nedir'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>
+<!-- Hakkında Modal -->
+<div class="modal fade" id="hakkindaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><%- __('about') %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Kapat">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Modal yazıları...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/openseadragon/openseadragon.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#mySelect').on('change', function (e) {
+            var id = $(this).val();
+            $('a[href="' + id + '"]').tab('show');
+        });
+    });
+</script>
+<script>
+  function initSilder() {
+
+      $('.kulucka-slider__slider1').slick({
+        dots: false,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 3.2,
+        slidesToScroll: 1,
+        arrows: true,
+        appendArrows: $('.kulucka-slider__nav1'),
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+      });
+
+      $('.kulucka-slider__slider2').slick({
+      dots: false,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 3.2,
+      slidesToScroll: 1,
+      arrows: true,
+      appendArrows: $('.kulucka-slider__nav2'),
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    });
+
+      $('.kulucka-slider__slider3').slick({
+      dots: false,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 3.2,
+      slidesToScroll: 1,
+      arrows: true,
+      appendArrows: $('.kulucka-slider__nav3'),
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    });
+
+  };
+
+$(document).ready(function() {
+   var kuluckadiller = <%- JSON.stringify(kuluckadiller)%>;
+
+    if(kuluckadiller) {
+      kuluckadiller.forEach(function(dil) {
+        $("ul.nav").append('<li class="nav-item"><a class="nav-link" data-lang="'+dil.value+'" href="#'+dil.value+'" data-toggle="tab" role="tab">'+dil.title+'</a></li>');
+      });
+    }
+   var kuluckalar = <%- JSON.stringify(kuluckalar.data)%>;
+   var user = <% if (user) {%><%-JSON.stringify(user.id)%><%} else {%> null <%}%>;
+   var canDoKulucka = <% if (user) {%><%-JSON.stringify(user.canDoKulucka)%><%} else {%> false <%}%>;
+   var canDoKuluckaModerate = <% if (user) {%><%-JSON.stringify(user.canDoKuluckaModerate)%><%} else {%> false <%}%>;
+
+   setTimeout(() => {
+            initSilder();
+    }, 500);
+
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            target = $(e.target).attr("data-lang") // activated tab
+            console.log('TAB:', target);
+            let filteredKuluckalar = null;
+            console.log('lang:', target);
+            if (target) {
+              filteredKuluckalar = kuluckalar.filter((kul) => kul.lang === target);
+            } else {
+              filteredKuluckalar = kuluckalar;
+            }
+          let slider1 = '';
+          let slider2 = '';
+          let slider3 = '';
+        if (filteredKuluckalar && filteredKuluckalar.length > 0) {
+          filteredKuluckalar.forEach(kulucka => {
+            if (kulucka && kulucka.hangiAsama && kulucka.hangiAsama === 1) {
+              slider1 += `<div class="sozluk-duzelt-card mx-1">
+                            <div class="sozluk-duzelt-card__header mb-2">
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="sozluk-duzelt-card__header-img">
+                                     <img src="${kulucka.coverImage ? kulucka.coverImage : 'https://dummyimage.com/100x100'}" class="img-fluid" />
+                                </div>
+                                <div class="sozluk-duzelt-card__header-yazilar">
+                                  <h5>${kulucka.name}</h5>
+                                  <h6>${kulucka.yazar}</h6>
+                                </div>
+                              </div>
+                              <p class="sozluk-duzelt-card__header-blok-metin">
+                                ${kulucka.desc}
+                              </p>
+                            </div>
+                            <div class="sozluk-duzelt-card__footer">
+                                <a href="${kulucka.hakkindaBlogUrl}" class="btn btn-outline-dark btn-block text-center mt-3">HAKKINDA</a>
+                            </div>
+                          </div>`;
+            }
+            if (kulucka && kulucka.hangiAsama && kulucka.hangiAsama === 2) {
+              slider2 += `<div class="sozluk-duzelt-card mx-1">
+                            <div class="sozluk-duzelt-card__header mb-2">
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="sozluk-duzelt-card__header-img">
+                                    <img src="${kulucka.coverImage ? kulucka.coverImage : 'https://dummyimage.com/100x100'}" class="img-fluid" />
+                                </div>
+                                <div class="sozluk-duzelt-card__header-yazilar">
+                                  <h5>${kulucka.name}</h5>
+                                  <h6>${kulucka.yazar}</h6>
+                                </div>
+                              </div>
+                              <p class="sozluk-duzelt-card__header-blok-metin">
+                                ${kulucka.desc}
+                              </p>
+                            </div>
+                            <div class="sozluk-duzelt-card__body mb-4">
+                                <div class="progress-row">
+                                <div class="sozluk-card-title mr-2"><small>İlerleme</small></div>
+                                <div class="progress" style="height: 8px;width: 100%;">
+                                    <div class="progress-bar bg-indigo" role="progressbar" style="width:${((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)}%;" aria-valuenow="${((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)}%"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="sozluk-card-title ml-1"><small>${((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)}</small></div>
+                                </div>
+                                <div class="kelimeler">
+                                <div class="kelime-row"><span class="bold">Toplam Sayfa:</span><span
+                                    class="text-muted">${kulucka.toplamSayfa}</span></div>
+                                <div class="kelime-row"><span class="bold">Biten Sayfa:</span><span
+                                    class="text-muted">${kulucka.bitenSayfa}</span></div>
+                                <div class="kelime-row"><span class="bold">Kalan Sayfa:</span><span
+                                    class="text-muted">${(kulucka.toplamSayfa - kulucka.bitenSayfa)}</span></div>
+                                </div>
+                            </div>
+                            <div class="sozluk-duzelt-card__footer">
+                                <button type="button" class="btn btn-outline-dark btn-block text-center mt-3"
+                                ${(user && (canDoKulucka || canDoKuluckaModerate)) ?
+                                        'onclick="location.href=\'/kulucka/' + kulucka.id +'\'"': ''}
+                                ${(user && !canDoKulucka && !canDoKuluckaModerate) ?
+                                        'data-toggle="modal" data-target="#katilimFormuModal"' : '' }
+                                ${(!user) ? 'data-toggle="modal" data-target="#kuluckaGirisModal"' : '' }
+                                >DÜZENLEMEYE BAŞLA</button>
+                            </div>
+                            </div>`;
+            }
+            if (kulucka && kulucka.hangiAsama && kulucka.hangiAsama === 3) {
+              slider3 += `<div class="sozluk-duzelt-card mx-1">
+                            <div class="sozluk-duzelt-card__header mb-2">
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="sozluk-duzelt-card__header-img">
+                                    <img src="${kulucka.coverImage ? kulucka.coverImage : 'https://dummyimage.com/100x100'}" class="img-fluid" />
+                                </div>
+                                <div class="sozluk-duzelt-card__header-yazilar">
+                                  <h5>${kulucka.name}</h5>
+                                  <h6>${kulucka.yazar}</h6>
+                                </div>
+                              </div>
+                              <p class="sozluk-duzelt-card__header-blok-metin">
+                                ${kulucka.desc}
+                              </p>
+                            </div>
+                            <div class="sozluk-duzelt-card__body mb-4">
+                                <div class="progress-row">
+                                <div class="sozluk-card-title mr-2"><small>İlerleme</small></div>
+                                <div class="progress" style="height: 8px;width: 100%;">
+                                    <div class="progress-bar bg-indigo" role="progressbar" style="width:${((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)}%;" aria-valuenow="${((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)}%"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="sozluk-card-title ml-1"><small>${((100 * kulucka.bitenSayfa) / kulucka.toplamSayfa)}</small></div>
+                                </div>
+                                <div class="kelimeler">
+                                <div class="kelime-row"><span class="bold">Toplam Sayfa:</span><span
+                                    class="text-muted">${kulucka.toplamSayfa}</span></div>
+                                <div class="kelime-row"><span class="bold">Biten Sayfa:</span><span
+                                    class="text-muted">${kulucka.bitenSayfa}</span></div>
+                                <div class="kelime-row"><span class="bold">Kalan Sayfa:</span><span
+                                    class="text-muted">${(kulucka.toplamSayfa - kulucka.bitenSayfa)}</span></div>
+                                </div>
+                            </div>
+                            </div>`;
+            }
+          });
+          $('.kulucka-slider__slider1').slick("unslick");
+          $('.kulucka-slider__slider2').slick("unslick");
+          $('.kulucka-slider__slider3').slick("unslick");
+          $('.kulucka-slider__slider1').html(slider1);
+          $('.kulucka-slider__slider2').html(slider2);
+          $('.kulucka-slider__slider3').html(slider3);
+          setTimeout(() => {
+            initSilder();
+         }, 50);
+
+        } else {
+          $('.kulucka-slider__slider1').slick("unslick");
+          $('.kulucka-slider__slider2').slick("unslick");
+          $('.kulucka-slider__slider3').slick("unslick");
+          $('.kulucka-slider__slider1').html('');
+          $('.kulucka-slider__slider2').html('');
+          $('.kulucka-slider__slider3').html('');
+          setTimeout(() => {
+            initSilder();
+         }, 50);
+        }
+    });
+});
+  </script>

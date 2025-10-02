@@ -1,0 +1,24 @@
+<div class="kx-card">
+    <div class="kx-card__header icon-header">
+        <img src="/assets/img/envelope-icon.svg">
+        <div class="kx-card__title">
+            <%- __('invite_person') %>
+        </div>
+    </div>
+    <div class="kx-card__body">
+        <div class="davetiye">
+            <p class="soru" style="color: #545454;"><%- __('invite_person_email') %></p>
+            <form id="invitation-form" method="post" autocomplete="off" action="javascript:;">
+                <div class="form-group">
+                <% if (typeof user == "undefined" || !user){ %>
+                    <input type="text" name="invitedBy" class="form-control davetiye my-2" placeholder="<%- __('name_lastname')%>" required>
+                <% } else { %>
+                    <input type="hidden" name="invitedBy" value="<%= user.name %>" class="form-control davetiye my-2" required>
+                <% } %>
+                    <input type="email" name="email" class="form-control davetiye my-2" placeholder="<%- __('email_invitation') %>" required>
+                </div>
+            </form>
+        </div>
+        <Button id="invitation-button" class="btn btn-outline-dark btn-block text-center mt-3"><%- __('send_invite') %></Button>
+    </div>
+</div>
