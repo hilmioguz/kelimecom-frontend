@@ -59,6 +59,16 @@ app.use(passport.session());
 // passport config
 //require('./config/passport')(passport);
 require('./services/passport-google')(passport);
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage()
+  });
+});
+
 // routes
 app.use('/', index);
 // catch 404 and forward to error handler
