@@ -1464,13 +1464,14 @@ router.post("/ajaxCall", async (req, res, next) => {
     await axios
       .post(`http://apiend:5001/v1/generalsearch`, payload, {
         headers,
+        timeout: 30000, // 30 saniye timeout
       })
       .then(({ data }) => {
         res.status(200).json(data);
       })
       .catch((error) => {
-        // console.log("Error:", error);
-        res.status(500).json(error.message);
+        console.error("ajaxCall API error:", error.message);
+        res.status(500).json({ error: error.message });
       });
   }
 } else {
@@ -1596,14 +1597,28 @@ res.redirect('/');
 });
 router.get("/randomMadde", async (req, res, next) => {
   await axios
-    .get(`http://apiend:5001/v1/generalsearch/randomone`)
+    .get(`http://apiend:5001/v1/generalsearch/randomone`, {
+      timeout: 10000, // 10 saniye timeout
+    })
     .then(({ data }) => {
-      data.data.map((item) => item.whichDict.anlam = mdr.render(item.whichDict.anlam));
-      res.status(200).json(data);
+      if (data && data.data && data.data.length > 0) {
+        data.data.map((item) => {
+          if (item.whichDict && item.whichDict.anlam) {
+            item.whichDict.anlam = mdr.render(item.whichDict.anlam);
+          }
+        });
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({ error: 'Rastgele madde bulunamadı' });
+      }
     })
     .catch((error) => {
-      // console.log(error.message);
-      res.status(500).json(error.message);
+      console.error('randomMadde API error:', error.message);
+      if (error.response && error.response.status === 429) {
+        res.status(429).json({ error: 'Rate limit aşıldı, lütfen daha sonra tekrar deneyin' });
+      } else {
+        res.status(500).json({ error: 'Rastgele madde alınamadı' });
+      }
     });
 });
 
