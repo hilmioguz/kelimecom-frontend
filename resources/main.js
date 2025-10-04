@@ -666,8 +666,32 @@ function generalSearch(
     success: function ({ data, meta }) {
       searchFormatter({ aranan, data, error: null });
     },
-    error: function (error) {
-      searchFormatter({ aranan, data: null, error });
+    error: function (xhr, status, error) {
+      if (xhr.status === 429) {
+        // Rate limiting hatası
+        const response = xhr.responseJSON;
+        let message = response.error || 'Arama limiti aşıldı.';
+        
+        if (response.userType === 'guest') {
+          message += ' Daha fazla arama yapmak için <a href="/register">kayıt olun</a>.';
+        }
+        
+        // Kullanıcıya bilgi ver
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Arama Limiti',
+            html: message,
+            icon: 'warning',
+            confirmButtonText: 'Tamam'
+          });
+        } else {
+          alert(message);
+        }
+        
+        searchFormatter({ aranan, data: null, error: { message: message } });
+      } else {
+        searchFormatter({ aranan, data: null, error });
+      }
     },
   });
 }
@@ -718,8 +742,29 @@ function cozumleyiciSearch(
         searchicon.attr("src", "/assets/img/search.svg");
       }
     },
-    error: function (error) {
-      // console.log("error..>:", error);
+    error: function (xhr, status, error) {
+      if (xhr.status === 429) {
+        // Rate limiting hatası
+        const response = xhr.responseJSON;
+        let message = response.error || 'Arama limiti aşıldı.';
+        
+        if (response.userType === 'guest') {
+          message += ' Daha fazla arama yapmak için <a href="/register">kayıt olun</a>.';
+        }
+        
+        // Kullanıcıya bilgi ver
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Arama Limiti',
+            html: message,
+            icon: 'warning',
+            confirmButtonText: 'Tamam'
+          });
+        } else {
+          alert(message);
+        }
+      }
+      
       cozumleyiciSearchFormatter({ aranan, data: null, meta: null, error });
       if (searchicon) {
         searchicon.attr("src", "/assets/img/search.svg");

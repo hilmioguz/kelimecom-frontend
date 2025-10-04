@@ -10,6 +10,30 @@ const { Address4, Address6 } = require("ip-address");
 const { storeIP, inRange, isV4 } = require("range_check");
 const { RateLimiterRedis } = require("rate-limiter-flexible");
 const { v4: uuidv4 } = require("uuid");
+
+// Rate limiting configuration
+const rateLimiter = new RateLimiterRedis({
+  storeClient: redis.createClient({
+    host: "redisdb",
+    port: 6379,
+    password: process.env.REDIS_PASSWORD,
+  }),
+  keyPrefix: 'rl_',
+  points: 10, // Number of requests
+  duration: 60, // Per 60 seconds
+});
+
+// Genel arama rate limiting - sadece IP bazlı (misafir kullanıcılar için)
+const ipBasedSearchLimiter = new RateLimiterRedis({
+  storeClient: redis.createClient({
+    host: "redisdb",
+    port: 6379,
+    password: process.env.REDIS_PASSWORD,
+  }),
+  keyPrefix: 'ip_search_',
+  points: 10, // IP başına günde 10 arama
+  duration: 60 * 60 * 24, // 24 saat
+});
 const remark = require("remarkable");
 const fileUploadRoute = require('./fileUploadRoute');
 
@@ -31,6 +55,7 @@ const getSiteLanguages = (headers) => new Promise((resolve, reject) => {
   axios
     .get("http://apiend:5001/v1/sitelanguage?perpage=1000&sortBy%5B%5D=order&sortDesc%5B%5D=false&isActive=true", {
       headers,
+      timeout: 10000, // 10 saniye timeout
     })
     .then(({data}) => {
       resolve(data.data);
@@ -43,6 +68,7 @@ const getKuluckalar = (headers) => new Promise((resolve, reject) => {
   axios
     .get("http://apiend:5001/v1/kuluckadictionary?perpage=1000&sortBy%5B%5D=updatedAt&sortDesc%5B%5D=true&isActive=true", {
       headers,
+      timeout: 10000, // 10 saniye timeout
     })
     .then(({data}) => {
       resolve(data);
@@ -305,6 +331,57 @@ const limiterPacketByIP = (keyname, searchType, defaultpoint) => {
     });
 };
 
+
+// IP bazlı arama rate limiting kontrolü (sadece misafir kullanıcılar için)
+const checkIPSearchLimit = async (req) => {
+  try {
+    // Kayıtlı kullanıcılar için IP limiti yok, mevcut sistem kullanılsın
+    if (req.session && req.session.user) {
+      return { isLimited: false, remainingPoints: 999, userType: 'registered' };
+    }
+    
+    const ipAddr = storeIP(req.clientIp);
+    const key = `ip_${ipAddr}`;
+    
+    const limitValue = await ipBasedSearchLimiter.get(key);
+    
+    if (limitValue && limitValue.remainingPoints <= 0) {
+      return {
+        isLimited: true,
+        remainingPoints: 0,
+        resetTime: limitValue.msBeforeNext,
+        userType: 'guest'
+      };
+    }
+    
+    return {
+      isLimited: false,
+      remainingPoints: limitValue ? limitValue.remainingPoints : 10,
+      resetTime: limitValue ? limitValue.msBeforeNext : 0,
+      userType: 'guest'
+    };
+  } catch (error) {
+    console.error('IP rate limiting error:', error);
+    return { isLimited: false, remainingPoints: 999, userType: 'unknown' };
+  }
+};
+
+// IP bazlı arama rate limiting tüketimi
+const consumeIPSearchLimit = async (req) => {
+  try {
+    // Kayıtlı kullanıcılar için IP limiti yok
+    if (req.session && req.session.user) {
+      return;
+    }
+    
+    const ipAddr = storeIP(req.clientIp);
+    const key = `ip_${ipAddr}`;
+    
+    await ipBasedSearchLimiter.consume(key);
+  } catch (error) {
+    console.error('IP rate limiting consume error:', error);
+  }
+};
 
 const sorguRateLimiter = (req, searchType) => {
   // console.log('sorguRateLimiter:', searchType);
@@ -639,6 +716,23 @@ router.get("/getstats", async (req, res) => {
   stats.latest = latest;
   stats.most = most;
   res.send(stats);
+});
+
+// Arama limiti bilgisi endpoint'i
+router.get("/search-limit-info", async (req, res) => {
+  try {
+    const ipLimitCheck = await checkIPSearchLimit(req);
+    res.json({
+      isLimited: ipLimitCheck.isLimited,
+      remainingPoints: ipLimitCheck.remainingPoints,
+      resetTime: ipLimitCheck.resetTime,
+      userType: ipLimitCheck.userType,
+      maxPoints: ipLimitCheck.userType === 'registered' ? 999 : 10
+    });
+  } catch (error) {
+    console.error('Search limit info error:', error);
+    res.status(500).json({ error: 'Limit bilgisi alınamadı' });
+  }
 });
 
 router.get("/switch/:lang", function (req, res, next) {
@@ -1245,6 +1339,21 @@ router.post("/ajaxCall", async (req, res, next) => {
   const searchTermE = decodeURIComponent(searchTerm);
   console.log('ARA ILKSORGU:searchTermE',searchTermE);
 
+  // IP bazlı arama rate limiting kontrolü (sadece misafir kullanıcılar için)
+  const ipLimitCheck = await checkIPSearchLimit(req);
+  
+  // Eğer IP limiti aşılmışsa ve bu bir arama isteği ise
+  if (ipLimitCheck.isLimited && (searchType === "ilksorgu" || searchType === "advanced")) {
+    const errorMessage = 'Bu IP adresinden günlük 10 arama limitini aştınız. Daha fazla arama yapmak için lütfen kayıt olun.';
+    
+    return res.status(429).json({
+      error: errorMessage,
+      remainingPoints: ipLimitCheck.remainingPoints,
+      resetTime: ipLimitCheck.resetTime,
+      userType: ipLimitCheck.userType
+    });
+  }
+
   const payload = {
     limit,
     page,
@@ -1295,8 +1404,14 @@ router.post("/ajaxCall", async (req, res, next) => {
 
     await axios.post(`http://apiend:5001/v1/generalsearch`, payload, {
         headers:headers,
+        timeout: 30000, // 30 saniye timeout
       })
       .then(({ data }) => {
+        // IP bazlı arama rate limiting tüketimi
+        if (searchType === "ilksorgu" || searchType === "advanced") {
+          consumeIPSearchLimit(req).catch(error => console.log('IP rate limiting consume error:', error));
+        }
+        
         if (aramaFormat === undefined && abonekurum == null) {
           if ( limitlessCount > 0 && (limitValue === null || (limitValue && limitValue.remainingPoints > 0))
           ) {
