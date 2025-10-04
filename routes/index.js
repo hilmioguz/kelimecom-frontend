@@ -61,7 +61,9 @@ const getSiteLanguages = (headers) => new Promise((resolve, reject) => {
       resolve(data.data);
     })
     .catch((error) => {
-      reject(error);
+      console.error('getSiteLanguages API error:', error.message);
+      // API bağlantı hatası durumunda boş array döndür
+      resolve([]);
     });
 });
 const getKuluckalar = (headers) => new Promise((resolve, reject) => {
@@ -74,7 +76,9 @@ const getKuluckalar = (headers) => new Promise((resolve, reject) => {
       resolve(data);
     })
     .catch((error) => {
-      reject(error);
+      console.error('getKuluckalar API error:', error.message);
+      // API bağlantı hatası durumunda boş array döndür
+      resolve([]);
     });
 });
 const getSetler = (headers,id) => new Promise((resolve, reject) => {
