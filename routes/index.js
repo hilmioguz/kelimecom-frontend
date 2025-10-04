@@ -61,8 +61,12 @@ const getSiteLanguages = (headers) => new Promise((resolve, reject) => {
       resolve(data.data);
     })
     .catch((error) => {
-      console.error('getSiteLanguages API error:', error.message);
-      // API bağlantı hatası durumunda boş array döndür
+      if (error.response && error.response.status === 429) {
+        console.log('getSiteLanguages rate limited, using cached data or empty array');
+      } else {
+        console.error('getSiteLanguages API error:', error.message);
+      }
+      // API bağlantı hatası veya rate limit durumunda boş array döndür
       resolve([]);
     });
 });
