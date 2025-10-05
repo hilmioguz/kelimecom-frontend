@@ -19,11 +19,11 @@ const rateLimiter = new RateLimiterRedis({
     password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   }),
   keyPrefix: 'rl_',
-  points: 10, // Number of requests
+  points: 100, // Number of requests - GEÇİCİ OLARAK ARTIRILDI
   duration: 60, // Per 60 seconds
 });
 
-// Genel arama rate limiting - sadece IP bazlı (misafir kullanıcılar için)
+// Genel arama rate limiting - sadece IP bazlı (misafir kullanıcılar için) - GEÇİCİ OLARAK KAPATILDI
 const ipBasedSearchLimiter = new RateLimiterRedis({
   storeClient: redis.createClient({
     host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
@@ -31,7 +31,7 @@ const ipBasedSearchLimiter = new RateLimiterRedis({
     password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   }),
   keyPrefix: 'ip_search_',
-  points: 10, // IP başına günde 10 arama
+  points: 1000, // IP başına günde 1000 arama - GEÇİCİ OLARAK ARTIRILDI
   duration: 60 * 60 * 24, // 24 saat
 });
 const remark = require("remarkable");
