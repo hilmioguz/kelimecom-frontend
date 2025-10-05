@@ -6,8 +6,15 @@ services:
     image: apiend
     restart: always
     environment:
+      - NODE_ENV=production
       - MONGODB_URL=mongodb://monster:S4n4n3123A@mongodb:27027/kelimecomdb?authSource=admin
       - REDIS_URL=redis://redisdb
+      - REDIS_PASSWORD=R3d1sP3SS
+      - JWT_SECRET=kelimecom-super-secret-key-2024
+      - JWT_ACCESS_EXPIRATION_MINUTES=30
+      - JWT_REFRESH_EXPIRATION_DAYS=30
+      - JWT_RESET_PASSWORD_EXPIRATION_MINUTES=10
+      - JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=10
     ports:
       - '5001:5001'
     depends_on:
@@ -51,8 +58,12 @@ services:
     image: frontend
     restart: always
     environment:
+      - NODE_ENV=production
       - MONGODB_URL=mongodb://monster:S4n4n3123A@mongodb:27027/kelimecomdb?authSource=admin
       - REDIS_URL=redis://redisdb
+      - REDIS_PASSWORD=R3d1sP3SS
+      - GOOGLE_CLIENT_ID=your-google-client-id
+      - GOOGLE_CLIENT_SECRET=your-google-client-secret
     ports:
       - '5000:5000'
     depends_on:
@@ -88,7 +99,7 @@ services:
   
   redisdb:
     image: redis
-    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    command: redis-server --requirepass R3d1sP3SS --appendonly yes
     restart: always
     environment:
       - REDIS_PASSWORD=R3d1sP3SS

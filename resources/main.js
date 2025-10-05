@@ -689,6 +689,22 @@ function generalSearch(
         }
         
         searchFormatter({ aranan, data: null, error: { message: message } });
+      } else if (xhr.status === 408 || status === 'timeout') {
+        // Timeout hatası
+        let message = 'Arama işlemi zaman aşımına uğradı. Lütfen tekrar deneyin.';
+        
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Zaman Aşımı',
+            text: message,
+            icon: 'warning',
+            confirmButtonText: 'Tamam'
+          });
+        } else {
+          alert(message);
+        }
+        
+        searchFormatter({ aranan, data: null, error: { message: message } });
       } else {
         searchFormatter({ aranan, data: null, error });
       }
@@ -730,6 +746,7 @@ function cozumleyiciSearch(
   }
   payload.searchFilter.filterOrders = siteDilleriComma;
 
+  console.log('🔍 cozumleyiciSearch ajax call starting...', payload);
   $.ajax({
     url: "/ajaxCall",
     method: "post",
@@ -737,12 +754,14 @@ function cozumleyiciSearch(
     data: { json: JSON.stringify(payload) },
     dataType: "json",
     success: function ({ data, meta }) {
+      console.log('✅ cozumleyiciSearch success:', { data, meta });
       cozumleyiciSearchFormatter({ aranan, data, meta, error: null });
       if (searchicon) {
         searchicon.attr("src", "/assets/img/search.svg");
       }
     },
     error: function (xhr, status, error) {
+      console.error('❌ cozumleyiciSearch error:', { xhr, status, error });
       if (xhr.status === 429) {
         // Rate limiting hatası
         const response = xhr.responseJSON;
@@ -757,6 +776,20 @@ function cozumleyiciSearch(
           Swal.fire({
             title: 'Arama Limiti',
             html: message,
+            icon: 'warning',
+            confirmButtonText: 'Tamam'
+          });
+        } else {
+          alert(message);
+        }
+      } else if (xhr.status === 408 || status === 'timeout') {
+        // Timeout hatası
+        let message = 'Arama işlemi zaman aşımına uğradı. Lütfen tekrar deneyin.';
+        
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Zaman Aşımı',
+            text: message,
             icon: 'warning',
             confirmButtonText: 'Tamam'
           });

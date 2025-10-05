@@ -14,9 +14,9 @@ const { v4: uuidv4 } = require("uuid");
 // Rate limiting configuration
 const rateLimiter = new RateLimiterRedis({
   storeClient: redis.createClient({
-    host: "redisdb",
+    host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
     port: 6379,
-    password: process.env.REDIS_PASSWORD,
+    password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   }),
   keyPrefix: 'rl_',
   points: 10, // Number of requests
@@ -26,9 +26,9 @@ const rateLimiter = new RateLimiterRedis({
 // Genel arama rate limiting - sadece IP bazlı (misafir kullanıcılar için)
 const ipBasedSearchLimiter = new RateLimiterRedis({
   storeClient: redis.createClient({
-    host: "redisdb",
+    host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
     port: 6379,
-    password: process.env.REDIS_PASSWORD,
+    password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   }),
   keyPrefix: 'ip_search_',
   points: 10, // IP başına günde 10 arama
@@ -51,28 +51,49 @@ const isJSON = (str) => {
       return false;
   }
 };
+
+// API URL helper function
+const getApiUrl = (endpoint) => {
+  const baseUrl = process.env.NODE_ENV === 'development' 
+    ? "http://localhost:5001"
+    : "http://apiend:5001";
+  return `${baseUrl}${endpoint}`;
+};
 const getSiteLanguages = (headers) => new Promise((resolve, reject) => {
-  axios
-    .get("http://apiend:5001/v1/sitelanguage?perpage=1000&sortBy%5B%5D=order&sortDesc%5B%5D=false&isActive=true", {
-      headers,
-      timeout: 10000, // 10 saniye timeout
-    })
-    .then(({data}) => {
-      resolve(data.data);
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 429) {
-        console.log('getSiteLanguages rate limited, using cached data or empty array');
-      } else {
-        console.error('getSiteLanguages API error:', error.message);
-      }
-      // API bağlantı hatası veya rate limit durumunda boş array döndür
-      resolve([]);
-    });
+  // Cache kontrolü
+  redisClient.get("sitelanguages:active", (err, reply) => {
+    if (reply) {
+      console.log('💾 [FRONTEND] Cache hit for sitelanguages');
+      resolve(JSON.parse(reply));
+      return;
+    }
+    
+    // Cache miss, API'den çek
+    axios
+      .get(getApiUrl("/v1/sitelanguage?perpage=1000&sortBy%5B%5D=order&sortDesc%5B%5D=false&isActive=true"), {
+        headers,
+        timeout: 10000, // 10 saniye timeout
+      })
+      .then(({data}) => {
+        // Cache'e kaydet (2 saat)
+        redisClient.setex("sitelanguages:active", 7200, JSON.stringify(data.data));
+        console.log('💾 [FRONTEND] Cached sitelanguages');
+        resolve(data.data);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 429) {
+          console.log('getSiteLanguages rate limited, using cached data or empty array');
+        } else {
+          console.error('getSiteLanguages API error:', error.message);
+        }
+        // API bağlantı hatası veya rate limit durumunda boş array döndür
+        resolve([]);
+      });
+  });
 });
 const getKuluckalar = (headers) => new Promise((resolve, reject) => {
   axios
-    .get("http://apiend:5001/v1/kuluckadictionary?perpage=1000&sortBy%5B%5D=updatedAt&sortDesc%5B%5D=true&isActive=true", {
+    .get(getApiUrl("/v1/kuluckadictionary?perpage=1000&sortBy%5B%5D=updatedAt&sortDesc%5B%5D=true&isActive=true"), {
       headers,
       timeout: 10000, // 10 saniye timeout
     })
@@ -87,7 +108,7 @@ const getKuluckalar = (headers) => new Promise((resolve, reject) => {
 });
 const getSetler = (headers,id) => new Promise((resolve, reject) => {
   axios
-    .get("http://apiend:5001/v1/kuluckasection?perpage=1000&sortBy%5B%5D=order&sortDesc%5B%5D=false&isActive=true&searchField=dictId&searchTerm=" + id, {
+    .get(getApiUrl("/v1/kuluckasection?perpage=1000&sortBy%5B%5D=order&sortDesc%5B%5D=false&isActive=true&searchField=dictId&searchTerm=" + id), {
       headers,
     })
     .then(({data}) => {
@@ -99,7 +120,7 @@ const getSetler = (headers,id) => new Promise((resolve, reject) => {
 });
 const getKuluckasozluk = (headers,id) => new Promise((resolve, reject) => {
   axios
-    .get("http://apiend:5001/v1/kuluckadictionary?searchField=_id&searchTerm=" + id, {
+    .get(getApiUrl("/v1/kuluckadictionary?searchField=_id&searchTerm=" + id), {
       headers,
     })
     .then(({data}) => {
@@ -111,7 +132,7 @@ const getKuluckasozluk = (headers,id) => new Promise((resolve, reject) => {
 });
 const getSet = (headers,id) => new Promise((resolve, reject) => {
   axios
-    .get("http://apiend:5001/v1/kuluckasection?searchField=_id&searchTerm=" + id, {
+    .get(getApiUrl("/v1/kuluckasection?searchField=_id&searchTerm=" + id), {
       headers,
     })
     .then(({data}) => {
@@ -123,7 +144,7 @@ const getSet = (headers,id) => new Promise((resolve, reject) => {
 });
 const getNextSet = (headers,id) => new Promise((resolve, reject) => {
   axios
-    .get("http://apiend:5001/v1/kuluckasection/nextset/" + id, {
+    .get(getApiUrl("/v1/kuluckasection/nextset/" + id), {
       headers,
     })
     .then(({data}) => {
@@ -135,7 +156,7 @@ const getNextSet = (headers,id) => new Promise((resolve, reject) => {
 });
 const registerSet = (headers, setId, id, isModerater) => new Promise((resolve, reject) => {
   axios
-    .post("http://apiend:5001/v1/kuluckasection/register/" + setId + "/" + id + "/" + isModerater, { }, {
+    .post(getApiUrl("/v1/kuluckasection/register/" + setId + "/" + id + "/" + isModerater), { }, {
       headers,
     })
     .then(({data}) => {
@@ -148,7 +169,7 @@ const registerSet = (headers, setId, id, isModerater) => new Promise((resolve, r
 
 const setTeslimEt = (headers, sectionId) => new Promise((resolve, reject) => {
   axios
-    .post("http://apiend:5001/v1/kuluckasection/teslimet/" + sectionId, { }, {
+    .post(getApiUrl("/v1/kuluckasection/teslimet/" + sectionId), { }, {
       headers,
     })
     .then(({data}) => {
@@ -160,7 +181,7 @@ const setTeslimEt = (headers, sectionId) => new Promise((resolve, reject) => {
 });
 const setKontrolEt = (headers, sectionId) => new Promise((resolve, reject) => {
   axios
-    .post("http://apiend:5001/v1/kuluckasection/kontroledildi/" + sectionId, { }, {
+    .post(getApiUrl("/v1/kuluckasection/kontroledildi/" + sectionId), { }, {
       headers,
     })
     .then(({data}) => {
@@ -266,9 +287,9 @@ const getHeader = (req) => {
 };
 
 const redisClient = redis.createClient({
-  host: "redisdb",
+  host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
   port: 6379,
-  password: process.env.REDIS_PASSWORD,
+  password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   enable_offline_queue: false,
 });
 
@@ -539,14 +560,17 @@ const getOrSetStats = (lang) => {
         resv(JSON.parse(reply));
       } else {
         await axios
-        .get(`http://apiend:5001/v1/getstats?lang=${lang}`)
+        .get(getApiUrl(`/v1/getstats?lang=${lang}`))
         .then(({ data }) => {
           redisClient.setex("topstats", 3600, JSON.stringify(data));
           resv(data);
         })
           .catch((error) => {
             console.log("get topstats ERR:", JSON.stringify(error.message));
-            rej(error);
+            // Fallback data if stats fail
+            const fallbackData = { latest: [], most: [], inserted: [] };
+            redisClient.setex("topstats", 300, JSON.stringify(fallbackData)); // 5 min cache
+            resv(fallbackData);
           });
       }
     });
@@ -561,8 +585,8 @@ const getOrSetPackets = () => {
       if (reply) {
         resv(JSON.parse(reply));
       } else {
-        await axios
-          .get("http://apiend:5001/v1/packet?perpage=1000")
+          await axios
+          .get(getApiUrl("/v1/packet?perpage=1000"))
           .then(({ data }) => {
             redisClient.setex("paketler", 3600, JSON.stringify(data.data));
             resv(data.data);
@@ -583,8 +607,8 @@ const getOrSetKurumlar = () => {
       if (reply) {
         resv(JSON.parse(reply));
       } else {
-        await axios
-          .get("http://apiend:5001/v1/kurumlar")
+          await axios
+          .get(getApiUrl("/v1/kurumlar"))
           .then(({ data }) => {
             redisClient.setex("kurumlar", 3600, JSON.stringify(data));
             resv(data);
@@ -604,8 +628,8 @@ const getOrSetSozlukler = () => {
       if (reply) {
         resv(JSON.parse(reply));
       } else {
-        await axios
-          .get("http://apiend:5001/v1/dictionary?perpage=1000&isActive=true")
+          await axios
+          .get(getApiUrl("/v1/dictionary?perpage=1000&isActive=true"))
           .then(({ data }) => {
             redisClient.setex("sozlukler", 3600, JSON.stringify(data.data));
             resv(data.data);
@@ -629,7 +653,7 @@ const deleteRedisCacheByName = async (key) => {
 const getStats = async (lang) => {
   return new Promise((resolve, reject) => {
     axios
-    .get(`http://apiend:5001/v1/getstats?lang=${lang}`)
+    .get(getApiUrl(`/v1/getstats?lang=${lang}`))
     .then(({ data }) => {
       resolve(data);
     })
@@ -795,7 +819,7 @@ router.post("/login", async function (req, res, next) {
       .send("Çok fazla istekte bulundunuz.Daha sonra tekrar deneyiniz.");
   } else {
     await axios
-      .post("http://apiend:5001/v1/auth/login", req.body)
+      .post(getApiUrl("/v1/auth/login"), req.body)
       .then(async ({ data }) => {
         if (resUsernameAndIP !== null && resUsernameAndIP.consumedPoints > 0) {
           // Reset on successful authorisation
@@ -840,7 +864,7 @@ router.post("/logout", async (req, res, next) => {
     const refreshToken = tokens?.refresh?.token;
     await axios
       .post(
-        "http://apiend:5001/v1/auth/logout",
+        getApiUrl("/v1/auth/logout"),
         {
           refreshToken,
         }
@@ -874,7 +898,7 @@ router.get("/register", async function (req, res, next) {
     if (inst_id) {
       try {
         const headers = await getHeader(req);
-        const response = await axios.get(`http://apiend:5001/v1/institutions/${inst_id}`, { headers });
+        const response = await axios.get(getApiUrl(`/v1/institutions/${inst_id}`), { headers });
         institutionName = response.data.name;
       } catch (error) {
         console.error('Kurum bilgisi alınamadı:', error);
@@ -899,7 +923,7 @@ router.post("/register", async function (req, res, next) {
   };
   
   await axios
-    .post("http://apiend:5001/v1/auth/register", payload)
+    .post(getApiUrl("/v1/auth/register"), payload)
     .then(({ data }) => {
       req.session.user = {};
       req.session.user = data;
@@ -930,7 +954,7 @@ router.get("/forgot-password", function (req, res, next) {
 
 router.post("/forgot-password", async function (req, res, next) {
   await axios
-    .post("http://apiend:5001/v1/auth/forgot-password", req.body)
+    .post(getApiUrl("/v1/auth/forgot-password"), req.body)
     .then(() => {
       res
         .status(200)
@@ -962,7 +986,7 @@ router.get("/reset-password", function (req, res, next) {
 
 router.post("/reset-password", async function (req, res, next) {
   await axios
-    .post("http://apiend:5001/v1/auth/reset-password", req.body)
+    .post(getApiUrl("/v1/auth/reset-password"), req.body)
     .then(() => {
       res.status(200).send("Şifreniz başarılı bir şekilde yenilenmiştir.");
     })
@@ -976,7 +1000,7 @@ router.post("/edit-password", async function (req, res, next) {
   const tokens = req.session.user.tokens;
   const payload = { newpassword: req.body.newpassword, newpassword2: req.body.newpassword2, oldpassword: req.body.oldpassword, token: tokens.refresh.token};
   await axios
-    .post("http://apiend:5001/v1/auth/edit-password", payload,
+    .post(getApiUrl("/v1/auth/edit-password"), payload,
     {
       headers,
     }
@@ -1065,7 +1089,7 @@ router.get(
 
     await axios
       .get(
-        `http://apiend:5001/v1/generalsearch/kelime/${encodeURIComponent(madde)}/${maddeId}/${dil}/${tip}/${sozluk}/${clientIp}`,
+        getApiUrl(`/v1/generalsearch/kelime/${encodeURIComponent(madde)}/${maddeId}/${dil}/${tip}/${sozluk}/${clientIp}`),
         {
           headers,
         }
@@ -1122,7 +1146,7 @@ router.get(
 
     await axios
       .get(
-        `http://apiend:5001/v1/generalsearch/kelimekendiharic/${encodeURIComponent(madde)}/${maddeId}/${dil}/${tip}/${sozluk}`,
+        getApiUrl(`/v1/generalsearch/kelimekendiharic/${encodeURIComponent(madde)}/${maddeId}/${dil}/${tip}/${sozluk}`),
         {
           headers,
         }
@@ -1197,7 +1221,7 @@ router.get("/api/arama", async (req, res, next) => {
   }
 
   await axios
-    .post(`http://apiend:5001/v1/generalsearch`, payload)
+    .post(getApiUrl(`/v1/generalsearch`), payload)
     .then(({ data }) => {
       if (data) {
           res.status(200).send(data);
@@ -1275,7 +1299,7 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
   }
   // log("searchFilter:", searchFilter);
   await axios
-    .post(`http://apiend:5001/v1/generalsearch`, payload, {
+    .post(getApiUrl(`/v1/generalsearch`), payload, {
       headers,
     })
     .then(({ data }) => {
@@ -1340,94 +1364,94 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
 
 router.post("/ajaxCall", async (req, res, next) => {
   if (isJSON(req.body.json)) {
-  const { limit, page, searchFilter, searchTerm, searchType, aramaFormat } = JSON.parse(req.body.json);
-  const clientIp = storeIP(req.clientIp);
-  const headers = await getHeader(req);
-  console.log('ARA ILKSORGU:',searchTerm);
-  const searchTermE = decodeURIComponent(searchTerm);
-  console.log('ARA ILKSORGU:searchTermE',searchTermE);
+    const { limit, page, searchFilter, searchTerm, searchType, aramaFormat } = JSON.parse(req.body.json);
+    const clientIp = storeIP(req.clientIp);
+    const headers = await getHeader(req);
+    console.log('ARA ILKSORGU:',searchTerm);
+    const searchTermE = decodeURIComponent(searchTerm);
+    console.log('ARA ILKSORGU:searchTermE',searchTermE);
 
-  // IP bazlı arama rate limiting kontrolü (sadece misafir kullanıcılar için)
-  const ipLimitCheck = await checkIPSearchLimit(req);
-  
-  // Eğer IP limiti aşılmışsa ve bu bir arama isteği ise
-  if (ipLimitCheck.isLimited && (searchType === "ilksorgu" || searchType === "advanced")) {
-    const errorMessage = 'Bu IP adresinden günlük 10 arama limitini aştınız. Daha fazla arama yapmak için lütfen kayıt olun.';
+    // IP bazlı arama rate limiting kontrolü (sadece misafir kullanıcılar için)
+    const ipLimitCheck = await checkIPSearchLimit(req);
     
-    return res.status(429).json({
-      error: errorMessage,
-      remainingPoints: ipLimitCheck.remainingPoints,
-      resetTime: ipLimitCheck.resetTime,
-      userType: ipLimitCheck.userType
-    });
-  }
-
-  const payload = {
-    limit,
-    page,
-    searchFilter,
-    searchTerm: searchTermE,
-    searchType,
-    clientIp,
-  };
-
-  let user = null;
-  if (req.session && req.session.user) {
-    user = req.session.user.user;
-  }
-
-  if ( page === 1 && (searchType === "exactwithdash" || searchType === "maddeanlam")) {
-    let whichType = null;
-    if (searchType === "exactwithdash") {
-      whichType = "cekim";
+    // Eğer IP limiti aşılmışsa ve bu bir arama isteği ise
+    if (ipLimitCheck.isLimited && (searchType === "ilksorgu" || searchType === "advanced")) {
+      const errorMessage = 'Bu IP adresinden günlük 10 arama limitini aştınız. Daha fazla arama yapmak için lütfen kayıt olun.';
+      
+      return res.status(429).json({
+        error: errorMessage,
+        remainingPoints: ipLimitCheck.remainingPoints,
+        resetTime: ipLimitCheck.resetTime,
+        userType: ipLimitCheck.userType
+      });
     }
 
-    if (searchType === "maddeanlam") {
-      whichType = "anlam";
-    }
-    let {
-      limiterInstance,
-      limitlessCount,
-      limitValue,
+    const payload = {
       limit,
-      usernameIPkey,
-      isLimited,
-    } = await sorguRateLimiter(req, whichType);
-    // console.log(aramaFormat, isLimited, limit, usernameIPkey, limitValue, limitlessCount, whichType, searchType);
-    let abonekurum = null;
-    if (req.session && req.session.abonekurum) {
-      abonekurum = req.session.abonekurum;
-    }
-    if (abonekurum) {
-      isLimited = false;
-    }
-    let misafir = 'Misafir kullanıcılar için sunduğumuz günlük 3 adet arama limitini aştığınız için bu maddenin detayını maalesef görüntüleyememektesiniz. Bu detayı görüntüleyebilmek için <a href="/register">bireysel</a> veya <a href="/abonelerimiz">kurumsal</a> abone olmanız gerekmektedir.';
+      page,
+      searchFilter,
+      searchTerm: searchTermE,
+      searchType,
+      clientIp,
+    };
 
-    if (req.cookies.lang === "en") {
-      misafir = 'Unfortunately, you cannot view the details of this entry because you have exceeded the daily limit of 3 searches for guests. To see the details you have to be an <a href="/register">individual</a> or <a href="/abonelerimiz">corporate</a> subscriber.';
-    }
-    if (aramaFormat && aramaFormat === "titleonly") {
-      payload.limit = 40;
+    let user = null;
+    if (req.session && req.session.user) {
+      user = req.session.user.user;
     }
 
-    await axios.post(`http://apiend:5001/v1/generalsearch`, payload, {
-        headers:headers,
-        timeout: 30000, // 30 saniye timeout
-      })
-      .then(({ data }) => {
-        // IP bazlı arama rate limiting tüketimi
-        if (searchType === "ilksorgu" || searchType === "advanced") {
-          consumeIPSearchLimit(req).catch(error => console.log('IP rate limiting consume error:', error));
-        }
-        
-        if (aramaFormat === undefined && abonekurum == null) {
-          if ( limitlessCount > 0 && (limitValue === null || (limitValue && limitValue.remainingPoints > 0))
-          ) {
-            limiterInstance
-              .consume(usernameIPkey)
-              .catch((error) => console.log(error.message));
+    if ( page === 1 && (searchType === "exactwithdash" || searchType === "maddeanlam")) {
+      let whichType = null;
+      if (searchType === "exactwithdash") {
+        whichType = "cekim";
+      }
+
+      if (searchType === "maddeanlam") {
+        whichType = "anlam";
+      }
+      let {
+        limiterInstance,
+        limitlessCount,
+        limitValue,
+        limit,
+        usernameIPkey,
+        isLimited,
+      } = await sorguRateLimiter(req, whichType);
+      // console.log(aramaFormat, isLimited, limit, usernameIPkey, limitValue, limitlessCount, whichType, searchType);
+      let abonekurum = null;
+      if (req.session && req.session.abonekurum) {
+        abonekurum = req.session.abonekurum;
+      }
+      if (abonekurum) {
+        isLimited = false;
+      }
+      let misafir = 'Misafir kullanıcılar için sunduğumuz günlük 3 adet arama limitini aştığınız için bu maddenin detayını maalesef görüntüleyememektesiniz. Bu detayı görüntüleyebilmek için <a href="/register">bireysel</a> veya <a href="/abonelerimiz">kurumsal</a> abone olmanız gerekmektedir.';
+
+      if (req.cookies.lang === "en") {
+        misafir = 'Unfortunately, you cannot view the details of this entry because you have exceeded the daily limit of 3 searches for guests. To see the details you have to be an <a href="/register">individual</a> or <a href="/abonelerimiz">corporate</a> subscriber.';
+      }
+      if (aramaFormat && aramaFormat === "titleonly") {
+        payload.limit = 40;
+      }
+
+      await axios.post(getApiUrl("/v1/generalsearch"), payload, {
+          headers:headers,
+          timeout: 15000, // 15 saniye timeout (daha kısa)
+        })
+        .then(({ data }) => {
+          // IP bazlı arama rate limiting tüketimi
+          if (searchType === "ilksorgu" || searchType === "advanced") {
+            consumeIPSearchLimit(req).catch(error => console.log('IP rate limiting consume error:', error));
           }
-        }
+          
+          if (aramaFormat === undefined && abonekurum == null) {
+            if ( limitlessCount > 0 && (limitValue === null || (limitValue && limitValue.remainingPoints > 0))
+            ) {
+              limiterInstance
+                .consume(usernameIPkey)
+                .catch((error) => console.log(error.message));
+            }
+          }
 
           data.data.map((item, index) => {
             let isFavored = false;
@@ -1453,33 +1477,63 @@ router.post("/ajaxCall", async (req, res, next) => {
             return $item;
           })
 
-        // const response = await limitedData(data);
-        res.status(200).json(data);
+          // const response = await limitedData(data);
+          
+          // Cache'e kaydet (sadece ilksorgu ve advanced için) - geçici olarak kapatıldı
+          // if (searchType === 'ilksorgu' || searchType === 'advanced') {
+          //   const cacheKey = `search:${searchTermE}:${searchType}:${JSON.stringify(searchFilter)}:${limit}:${page}`;
+          //   redisClient.setex(cacheKey, 1800, JSON.stringify(data)); // 30 dakika cache
+          //   console.log('💾 [FRONTEND] Cached search result for:', searchTermE);
+          // }
+          
+          res.status(200).json(data);
       })
-      .catch((error) => {
-        console.error('ajaxCall API error (main):', error.message);
-        console.error('ajaxCall API error details:', error.response?.data);
-        res.status(500).json({ error: error.message || 'Arama işlemi başarısız' });
-      });
-  } else {
-    // console.log("req:", req.body);
-    // payload zaten yukarıda tanımlandı, tekrar tanımlamaya gerek yok
-    await axios
-      .post(`http://apiend:5001/v1/generalsearch`, payload, {
-        headers,
-        timeout: 30000, // 30 saniye timeout
+        .catch((error) => {
+          console.error('ajaxCall API error (main):', error.message);
+          console.error('ajaxCall API error details:', error.response?.data);
+          
+          if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+            res.status(408).json({ error: 'Arama işlemi zaman aşımına uğradı. Lütfen tekrar deneyin.' });
+          } else if (error.response?.status === 429) {
+            res.status(429).json({ error: 'Çok fazla istek gönderildi. Lütfen bekleyin.' });
+          } else {
+            res.status(500).json({ error: error.message || 'Arama işlemi başarısız' });
+          }
+        });
+      } else {
+        // console.log("req:", req.body);
+        // payload zaten yukarıda tanımlandı, tekrar tanımlamaya gerek yok
+        await axios
+        .post(getApiUrl("/v1/generalsearch"), payload, {
+          headers,
+          timeout: 15000, // 15 saniye timeout (daha kısa)
+        })
+        .then(({ data }) => {
+          // Cache'e kaydet (sadece ilksorgu ve advanced için) - geçici olarak kapatıldı
+          // if (searchType === 'ilksorgu' || searchType === 'advanced') {
+          //   const cacheKey = `search:${searchTermE}:${searchType}:${JSON.stringify(searchFilter)}:${limit}:${page}`;
+          //   redisClient.setex(cacheKey, 1800, JSON.stringify(data)); // 30 dakika cache
+          //   console.log('💾 [FRONTEND] Cached search result for:', searchTermE);
+          // }
+          
+          res.status(200).json(data);
       })
-      .then(({ data }) => {
-        res.status(200).json(data);
-      })
-      .catch((error) => {
-        console.error("ajaxCall API error:", error.message);
-        res.status(500).json({ error: error.message });
-      });
-  }
-} else {
-  res.status(500).json({ message: 'Geçersiz arama'});
-}
+        .catch((error) => {
+          console.error("ajaxCall API error:", error.message);
+          console.error("ajaxCall API error payload:", payload);
+          
+          if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+            res.status(408).json({ error: 'Arama işlemi zaman aşımına uğradı. Lütfen tekrar deneyin.' });
+          } else if (error.response?.status === 429) {
+            res.status(429).json({ error: 'Çok fazla istek gönderildi. Lütfen bekleyin.' });
+          } else {
+            res.status(500).json({ error: error.message });
+          }
+        });
+      }
+    } else {
+      res.status(500).json({ message: 'Geçersiz arama'});
+    }
 });
 
 router.post("/getLikes", async (req, res, next) => {
@@ -1499,7 +1553,7 @@ router.post("/getLikes", async (req, res, next) => {
 
     // console.log("req:", req.body);
     await axios
-      .post(`http://apiend:5001/v1/profile/getLikes`, payload, {
+      .post(getApiUrl(`/v1/profile/getLikes`), payload, {
         headers,
       })
       .then(({ data }) => {
@@ -1551,7 +1605,7 @@ router.post("/getFavorites", async (req, res, next) => {
 
     // console.log("req:", req.body);
     await axios
-      .post(`http://apiend:5001/v1/profile/getFavorites`, payload, {
+      .post(getApiUrl(`/v1/profile/getFavorites`), payload, {
         headers,
       })
       .then(({ data }) => {
@@ -1600,7 +1654,7 @@ res.redirect('/');
 });
 router.get("/randomMadde", async (req, res, next) => {
   try {
-    const response = await axios.get(`http://apiend:5001/v1/generalsearch/randomone`, {
+    const response = await axios.get(getApiUrl("/v1/generalsearch/randomone"), {
       timeout: 15000, // 15 saniye timeout
     });
     
@@ -1647,9 +1701,9 @@ router.get("/randomMadde", async (req, res, next) => {
 router.get("/detay/:id/:dictId?", async (req, res, next) => {
   const maddeid = req.params.id;
   const dictId = req.params.dictId;
-  let apiurl = `http://apiend:5001/v1/generalsearch/kelimedetay/${maddeid}`;
+  let apiurl = getApiUrl(`/v1/generalsearch/kelimedetay/${maddeid}`);
   if (dictId) {
-    apiurl = `http://apiend:5001/v1/generalsearch/kelimedetay/${maddeid}/${dictId}`;
+    apiurl = getApiUrl(`/v1/generalsearch/kelimedetay/${maddeid}/${dictId}`);
   }
   const headers = await getHeader(req);
   await axios
@@ -1681,7 +1735,7 @@ router.get("/gundem", async function (req, res, next) {
     user = req.session.user.user;
   }
   await axios
-  .get(`http://apiend:5001/v1/gundem/getall`)
+  .get(getApiUrl(`/v1/gundem/getall`))
   .then(({ data }) => {
     console.log(data);
     data.data.map((item) => item.whichDict.map((b) => b.anlam = mdr.render(b.anlam)));
@@ -1691,7 +1745,7 @@ router.get("/gundem", async function (req, res, next) {
     console.log(error.message);
   });
   await axios
-  .get(`http://apiend:5001/v1/gundem/getMaddeBugun`)
+  .get(getApiUrl(`/v1/gundem/getMaddeBugun`))
   .then(({ data }) => {
     console.log(data);
     getMaddeBugun = data;
@@ -1700,7 +1754,7 @@ router.get("/gundem", async function (req, res, next) {
     console.log(error.message);
   });
   await axios
-  .get(`http://apiend:5001/v1/gundem/getMaddeDun`)
+  .get(getApiUrl(`/v1/gundem/getMaddeDun`))
   .then(({ data }) => {
     console.log(data);
     getMaddeDun = data;
@@ -1876,7 +1930,7 @@ router.post("/iletisim", async function (req, res, next) {
   const payload = { adisoyadi, email, baslik, konu, mesaj };
   const headers = await getHeader(req);
   await axios
-    .post("http://apiend:5001/v1/iletisim", payload, {
+    .post(getApiUrl("/v1/iletisim"), payload, {
       headers,
     })
     .then(() => {
@@ -1893,7 +1947,7 @@ router.post("/userfav", async function (req, res, next) {
   const payload = { maddeId, anlamId, method };
   const headers = await getHeader(req);
   await axios
-    .post("http://apiend:5001/v1/madde/userfav", payload, {
+    .post(getApiUrl("/v1/madde/userfav"), payload, {
       headers,
     })
     .then(() => {
@@ -1909,7 +1963,7 @@ router.post("/userlikes", async function (req, res, next) {
   const payload = { maddeId, anlamId, method };
   const headers = await getHeader(req);
   await axios
-    .post("http://apiend:5001/v1/madde/userlikes", payload, {
+    .post(getApiUrl("/v1/madde/userlikes"), payload, {
       headers,
     })
     .then(() => {
@@ -2122,7 +2176,7 @@ router.post("/kulucka-ekle", async function (req, res, next) {
   delete temppayload.digeryazim;
   console.log('PAYLOAD:', JSON.stringify(payload));
   await axios
-    .post("http://apiend:5001/v1/kuluckamadde", payload, { headers })
+    .post(getApiUrl("/v1/kuluckamadde"), payload, { headers })
     .then(() => {
       res
         .status(200)
@@ -2144,7 +2198,7 @@ router.post("/kulucka-sil/:id", async function (req, res, next) {
   const id = req.params.id;
   const headers = await getHeader(req);
   await axios
-  .delete(`http://apiend:5001/v1/kuluckamadde/${id}`, { headers })
+  .delete(getApiUrl(`/v1/kuluckamadde/${id}`), { headers })
   .then(() => {
     res
       .status(200)
@@ -2330,7 +2384,7 @@ router.post("/kulucka-guncelle", async function (req, res, next) {
   delete temppayload.digeryazim;
   console.log('Fİnal paylaod guncelelme:', JSON.stringify(payload));
   await axios
-    .patch(`http://apiend:5001/v1/kuluckamadde/${id}`, payload, { headers })
+    .patch(getApiUrl(`/v1/kuluckamadde/${id}`), payload, { headers })
     .then(() => {
       res
         .status(200)
@@ -2365,7 +2419,7 @@ router.get("/kulucka-eklediklerim/:setId", async function (req, res, next) {
     nextSet = await getNextSet(headers, setId);
     const dictionary = await getKuluckasozluk(headers, selectedSet.data[0].dictId.id);
     await axios
-    .get(`http://apiend:5001/v1/kuluckamadde/getmyownentries/${setId}`, { headers })
+    .get(getApiUrl(`/v1/kuluckamadde/getmyownentries/${setId}`), { headers })
     .then((response) => {
       myownentries = response.data;
     })
@@ -2520,7 +2574,7 @@ router.post("/sende-ekle", async function (req, res, next) {
   }
 
   await axios
-    .post("http://apiend:5001/v1/gundem", payload)
+    .post(getApiUrl("/v1/gundem"), payload)
     .then(() => {
       res
         .status(200)
@@ -2585,7 +2639,7 @@ console.log('payload:', payload);
 if (user && user.id) {
   const headers = await getHeader(req);
   await axios
-    .patch(`http://apiend:5001/v1/users/${user.id}`, payload, {
+    .patch(getApiUrl(`/v1/users/${user.id}`), payload, {
       headers,
     })
     .then(({ data }) => {
@@ -2638,7 +2692,7 @@ router.get("/blog", async function (req, res, next) {
   let blogs = [];
 
   await axios
-    .get("http://apiend:5001/v1/blog?isActive=true",
+    .get(getApiUrl("/v1/blog?isActive=true"),
     {
       headers,
     }
@@ -2672,7 +2726,7 @@ router.get("/blog/:slug", async function (req, res, next) {
   let blog = '';
 
   await axios
-    .get("http://apiend:5001/v1/blog/" + slug,
+    .get(getApiUrl("/v1/blog/" + slug),
     {
       headers,
     }
@@ -2758,7 +2812,7 @@ router.get("/verify-email", async function (req, res, next) {
   const payload = {};
   payload.token = token;
   await axios
-    .post("http://apiend:5001/v1/auth/verify-email", payload)
+    .post(getApiUrl("/v1/auth/verify-email"), payload)
     .then(async ({ data }) => {
       await req.flash("info", "E-postanız doğrulanmıştır!");
       return res.redirect("/");
@@ -2779,7 +2833,7 @@ router.post("/davetet", async (req, res, next) => {
     const payload = { email, invitedBy, invitedByIp };
     const headers = await getHeader(req);
     await axios
-      .post(`http://apiend:5001/v1/davet`, payload, {
+      .post(getApiUrl(`/v1/davet`), payload, {
         headers,
       })
       .then(({ data }) => {

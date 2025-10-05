@@ -12,7 +12,7 @@ var redis = require("redis");
 require("dotenv").config();
 
 const redisClient = redis.createClient({
-  host: "redisdb",
+  host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
   port: 6379,
   password: process.env.REDIS_PASSWORD,
   enable_offline_queue: false,
