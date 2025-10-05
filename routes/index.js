@@ -1457,10 +1457,13 @@ router.post("/ajaxCall", async (req, res, next) => {
         res.status(200).json(data);
       })
       .catch((error) => {
-        res.status(500).json(error.message);
+        console.error('ajaxCall API error (main):', error.message);
+        console.error('ajaxCall API error details:', error.response?.data);
+        res.status(500).json({ error: error.message || 'Arama işlemi başarısız' });
       });
   } else {
     // console.log("req:", req.body);
+    // payload zaten yukarıda tanımlandı, tekrar tanımlamaya gerek yok
     await axios
       .post(`http://apiend:5001/v1/generalsearch`, payload, {
         headers,
@@ -1596,30 +1599,49 @@ router.get("/Ara/:any", async (req, res) => {
 res.redirect('/');
 });
 router.get("/randomMadde", async (req, res, next) => {
-  await axios
-    .get(`http://apiend:5001/v1/generalsearch/randomone`, {
-      timeout: 10000, // 10 saniye timeout
-    })
-    .then(({ data }) => {
-      if (data && data.data && data.data.length > 0) {
-        data.data.map((item) => {
-          if (item.whichDict && item.whichDict.anlam) {
+  try {
+    const response = await axios.get(`http://apiend:5001/v1/generalsearch/randomone`, {
+      timeout: 15000, // 15 saniye timeout
+    });
+    
+    const { data } = response;
+    
+    if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
+      // Güvenli şekilde anlam render et
+      data.data.forEach((item) => {
+        try {
+          if (item && item.whichDict && item.whichDict.anlam) {
             item.whichDict.anlam = mdr.render(item.whichDict.anlam);
           }
-        });
-        res.status(200).json(data);
-      } else {
-        res.status(404).json({ error: 'Rastgele madde bulunamadı' });
-      }
-    })
-    .catch((error) => {
-      console.error('randomMadde API error:', error.message);
-      if (error.response && error.response.status === 429) {
+        } catch (renderError) {
+          console.error('Markdown render error:', renderError);
+          // Render hatası olursa orijinal anlamı koru
+        }
+      });
+      res.status(200).json(data);
+    } else {
+      console.log('randomMadde: Boş veya geçersiz data:', data);
+      res.status(404).json({ error: 'Rastgele madde bulunamadı' });
+    }
+  } catch (error) {
+    console.error('randomMadde API error:', error.message);
+    console.error('randomMadde API error details:', error.response?.data);
+    
+    if (error.response) {
+      const status = error.response.status;
+      if (status === 429) {
         res.status(429).json({ error: 'Rate limit aşıldı, lütfen daha sonra tekrar deneyin' });
+      } else if (status === 404) {
+        res.status(404).json({ error: 'Rastgele madde bulunamadı' });
       } else {
-        res.status(500).json({ error: 'Rastgele madde alınamadı' });
+        res.status(500).json({ error: `API hatası: ${status}` });
       }
-    });
+    } else if (error.code === 'ECONNREFUSED') {
+      res.status(503).json({ error: 'API servisi kullanılamıyor' });
+    } else {
+      res.status(500).json({ error: 'Rastgele madde alınamadı' });
+    }
+  }
 });
 
 router.get("/detay/:id/:dictId?", async (req, res, next) => {
