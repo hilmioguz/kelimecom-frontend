@@ -51,7 +51,11 @@ app.use(flash({ sessionKeyName: 'flashMessage' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.enable('trust proxy');
 app.use(i18n);
-app.use(requestIp.mw());
+app.use(requestIp.mw({
+  attributeName: 'clientIp',
+  headerName: 'x-forwarded-for',
+  trustProxy: true
+}));
 // passport middleware
 app.use(passport.initialize());
 app.use(passport.session());

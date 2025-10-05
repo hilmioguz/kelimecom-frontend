@@ -372,6 +372,18 @@ const checkIPSearchLimit = async (req) => {
     const ipAddr = storeIP(req.clientIp);
     const key = `ip_${ipAddr}`;
     
+    // DEBUG: IP bilgilerini logla
+    console.log('🔍 [RATE-LIMIT-DEBUG] IP Info:', {
+      clientIp: req.clientIp,
+      ipAddr: ipAddr,
+      key: key,
+      headers: {
+        'x-forwarded-for': req.headers['x-forwarded-for'],
+        'x-real-ip': req.headers['x-real-ip'],
+        'cf-connecting-ip': req.headers['cf-connecting-ip']
+      }
+    });
+    
     const limitValue = await ipBasedSearchLimiter.get(key);
     
     if (limitValue && limitValue.remainingPoints <= 0) {
@@ -1374,9 +1386,16 @@ router.post("/ajaxCall", async (req, res, next) => {
     // IP bazlı arama rate limiting kontrolü (sadece misafir kullanıcılar için)
     const ipLimitCheck = await checkIPSearchLimit(req);
     
-    // Eğer IP limiti aşılmışsa ve bu bir arama isteği ise
-    if (ipLimitCheck.isLimited && (searchType === "ilksorgu" || searchType === "advanced")) {
+    // Eğer IP limiti aşılmışsa ve bu bir arama isteği ise - GEÇİCİ OLARAK KAPATILDI
+    if (false && ipLimitCheck.isLimited && (searchType === "ilksorgu" || searchType === "advanced")) {
       const errorMessage = 'Bu IP adresinden günlük 10 arama limitini aştınız. Daha fazla arama yapmak için lütfen kayıt olun.';
+      
+      console.log('🚨 [RATE-LIMIT-BLOCKED] IP blocked:', {
+        ipAddr: storeIP(req.clientIp),
+        searchType: searchType,
+        remainingPoints: ipLimitCheck.remainingPoints,
+        resetTime: ipLimitCheck.resetTime
+      });
       
       return res.status(429).json({
         error: errorMessage,
