@@ -663,6 +663,7 @@ function generalSearch(
     data: payload,
     data: { json: JSON.stringify(payload) },
     dataType: "json",
+    timeout: 15000, // 15 saniye timeout
     success: function ({ data, meta }) {
       searchFormatter({ aranan, data, error: null });
     },
@@ -753,6 +754,7 @@ function cozumleyiciSearch(
     accepts: "application/json; charset=utf-8",
     data: { json: JSON.stringify(payload) },
     dataType: "json",
+    timeout: 15000, // 15 saniye timeout
     success: function ({ data, meta }) {
       console.log('✅ cozumleyiciSearch success:', { data, meta });
       cozumleyiciSearchFormatter({ aranan, data, meta, error: null });
@@ -1079,6 +1081,7 @@ function maddeDetaylari() {
         $.ajax({
           url: getMyDomain() + "/detay/" + crossId + "/" + dictId,
           method: "get",
+          timeout: 10000, // 10 saniye timeout
           success: function (data) {
             if (data && data.length) {
               if (idxkarsi) {
@@ -1116,6 +1119,7 @@ function gununKelimesi() {
     $.ajax({
       url: "/randomMadde",
       method: "get",
+      timeout: 10000, // 10 saniye timeout
       success: function ({ data }) {
         const temp = `
                 <strong>${data[0].madde
@@ -1314,6 +1318,7 @@ function cekimveturevSearch(
     data: payload,
     data: { json: JSON.stringify(payload) },
     dataType: "json",
+    timeout: 15000, // 15 saniye timeout
     success: function ({ data, meta }) {
       if (page === 1) {
         sonuckutusu.empty();
@@ -1323,6 +1328,7 @@ function cekimveturevSearch(
       cekimveturevFormatter({ aranan, data, isKisa, meta, error: null });
     },
     error: function (error) {
+      console.error('cekimveturevSearch ajax error:', error);
       cekimveturevFormatter({
         aranan,
         data: null,
@@ -1442,6 +1448,7 @@ function getLikes(
       data: payload,
       data: { json: JSON.stringify(payload) },
       dataType: "json",
+      timeout: 10000, // 10 saniye timeout
       success: function ({ data, meta }) {
         if (meta.page === 1) {
           lsonuckutusu.empty();
@@ -1572,6 +1579,7 @@ function getFavorites(
       data: payload,
       data: { json: JSON.stringify(payload) },
       dataType: "json",
+      timeout: 10000, // 10 saniye timeout
       success: function ({ data, meta }) {
         if (meta.page === 1) {
           fsonuckutusu.empty();
@@ -1742,6 +1750,7 @@ function maddAnlamlariSearch(aranan, searchOptions, page = 1, perpage = 10) {
     data: payload,
     data: { json: JSON.stringify(payload) },
     dataType: "json",
+    timeout: 15000, // 15 saniye timeout
     success: function ({ data, meta }) {
       if (page === 1) {
         sonuckutusu.empty();
@@ -1751,6 +1760,7 @@ function maddAnlamlariSearch(aranan, searchOptions, page = 1, perpage = 10) {
       maddeAnlamlariFormatter({ aranan, data, meta, error: null });
     },
     error: function (error) {
+      console.error('maddAnlamlariSearch ajax error:', error);
       maddeAnlamlariFormatter({ aranan, data: null, meta: null, error });
     },
   });
@@ -1827,6 +1837,7 @@ $(function () {
       url: "/setfilterOrders",
       method: "post",
       data: payload,
+      timeout: 10000, // 10 saniye timeout
       success: function (res) {
         $("#modalFilterClose").click();
         $(".modal-backdrop").remove();
@@ -2099,6 +2110,7 @@ $("#logout-button").on("click", function () {
   $.ajax({
     url: "/logout",
     method: "post",
+    timeout: 10000, // 10 saniye timeout
     success: function (response) {
       if (response == "success") {
         window.location.replace('/');
@@ -2151,6 +2163,7 @@ $(document).on('click', '.favorilereEkle', function (event) {
       url: "/userfav",
       method: "post",
       data: { maddeId: maddeId, anlamId: anlamId, method: method },
+      timeout: 10000, // 10 saniye timeout
       success: function (result) {
         if (typeof result.errors == "undefined") {
           if (method === 'delete') {
@@ -2208,6 +2221,7 @@ $(document).on('click', '.begenenlereEkle', function (event) {
       url: "/userlikes",
       method: "post",
       data: { maddeId: maddeId, anlamId: anlamId, method: method },
+      timeout: 10000, // 10 saniye timeout
       success: function (result) {
         if (typeof result.errors == "undefined") {
           if (method === 'delete') {
