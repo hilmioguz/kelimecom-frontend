@@ -5,11 +5,10 @@ RUN mkdir -p /usr/src/frontend
 # Create app directory
 WORKDIR /usr/src/frontend
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN corepack enable
-
-RUN yarn install --frozen-lockfile || yarn install
+# Use npm ci to avoid yarn.lock parse issues
+RUN npm ci --no-audit --no-fund
 
 COPY . .
 
