@@ -539,14 +539,33 @@ function searchFormatter({ aranan, data, error }) {
     data.forEach((item) => {
       let langs = "";
       let tipler = "";
+      let anlam = "";
 
       const link = item.madde;
-      temp += `<li><a href="/kelime/${encodeURIComponent(link)}/${item.maddeId}/${item._id}">`;
-      langs = `<div class="dil-kutu dil-${item._id}">${item._id}</div>`;
+      
+      // whichDict içinden dil ve tip bilgisi al
+      const firstDict = item.whichDict && item.whichDict[0] ? item.whichDict[0] : {};
+      // Compute language: only accept 2-letter codes; otherwise default to 'tr'
+      const rawLang = String(item.lang || firstDict.lang || 'tr').toLowerCase();
+      const displayLang = /^[a-z]{2}$/.test(rawLang) ? rawLang : 'tr';
+      const tip = firstDict.tip && firstDict.tip[0] ? firstDict.tip[0] : (item.tip || '');
+      const anlamText = firstDict.anlam || '';
+      
+      temp += `<li><a href="/kelime/${encodeURIComponent(link)}/${item.maddeId || item._id}/${displayLang}">`;
+      // Badge text is hidden via CSS; icon shown by background image
+      langs = `<div class="dil-kutu dil-${displayLang}"></div>`;
       temp += langs + `<div class="arama-onerisi">`;
       const word = item.madde.replaceAll(aranan, `<span>${aranan}</span>`);
-      temp += word + `</div><div class="sonuc-turu">`;
-      tipler = item.tip ? `[${item.tip}]` : "";
+      temp += word;
+      
+      // Kısa anlam ekle (ilk 80 karakter)
+      if (anlamText && anlamText.length > 0) {
+        const shortAnlam = anlamText.length > 80 ? anlamText.substring(0, 80) + '...' : anlamText;
+        temp += `<div class="anlam-ozet" style="font-size: 0.85em; color: #666; margin-top: 2px;">${shortAnlam}</div>`;
+      }
+      
+      temp += `</div><div class="sonuc-turu">`;
+      tipler = tip ? `[${tip}]` : "";
       temp += tipler + `</div></a></li>`;
     });
     temp += "</ul>";
@@ -663,7 +682,7 @@ function generalSearch(
     data: payload,
     data: { json: JSON.stringify(payload) },
     dataType: "json",
-    timeout: 15000, // 15 saniye timeout
+    timeout: 30000, // 30 saniye timeout
     success: function ({ data, meta }) {
       searchFormatter({ aranan, data, error: null });
     },
@@ -754,7 +773,7 @@ function cozumleyiciSearch(
     accepts: "application/json; charset=utf-8",
     data: { json: JSON.stringify(payload) },
     dataType: "json",
-    timeout: 15000, // 15 saniye timeout
+    timeout: 30000, // 15 saniye timeout
     success: function ({ data, meta }) {
       console.log('✅ cozumleyiciSearch success:', { data, meta });
       cozumleyiciSearchFormatter({ aranan, data, meta, error: null });
@@ -1318,7 +1337,7 @@ function cekimveturevSearch(
     data: payload,
     data: { json: JSON.stringify(payload) },
     dataType: "json",
-    timeout: 15000, // 15 saniye timeout
+    timeout: 30000, // 15 saniye timeout
     success: function ({ data, meta }) {
       if (page === 1) {
         sonuckutusu.empty();
@@ -1750,7 +1769,7 @@ function maddAnlamlariSearch(aranan, searchOptions, page = 1, perpage = 10) {
     data: payload,
     data: { json: JSON.stringify(payload) },
     dataType: "json",
-    timeout: 15000, // 15 saniye timeout
+    timeout: 30000, // 15 saniye timeout
     success: function ({ data, meta }) {
       if (page === 1) {
         sonuckutusu.empty();

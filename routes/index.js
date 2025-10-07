@@ -1455,7 +1455,7 @@ router.post("/ajaxCall", async (req, res, next) => {
 
       await axios.post(getApiUrl("/v1/generalsearch"), payload, {
           headers:headers,
-          timeout: 15000, // 15 saniye timeout (daha kısa)
+          timeout: 30000, // 15 saniye timeout (daha kısa)
         })
         .then(({ data }) => {
           // IP bazlı arama rate limiting tüketimi
@@ -1525,7 +1525,7 @@ router.post("/ajaxCall", async (req, res, next) => {
         await axios
         .post(getApiUrl("/v1/generalsearch"), payload, {
           headers,
-          timeout: 15000, // 15 saniye timeout (daha kısa)
+          timeout: 30000, // 15 saniye timeout (daha kısa)
         })
         .then(({ data }) => {
           // Cache'e kaydet (sadece ilksorgu ve advanced için) - geçici olarak kapatıldı
@@ -1674,7 +1674,7 @@ res.redirect('/');
 router.get("/randomMadde", async (req, res, next) => {
   try {
     const response = await axios.get(getApiUrl("/v1/generalsearch/randomone"), {
-      timeout: 15000, // 15 saniye timeout
+      timeout: 30000, // 15 saniye timeout
     });
     
     const { data } = response;
