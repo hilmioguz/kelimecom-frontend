@@ -1223,7 +1223,7 @@ function cekimveturevFormatter({ aranan, data, isKisa, meta, error }) {
             <div class="kx-card__header">
                 <div class="d-flex">
                     <a href="/kelime/${encodeURIComponent(item.madde)}/${item._id
-              }-${item.whichDict.id}/${item.dict.lang}/${metam.sonucFiltreTip
+              }-${item.whichDict.id}/${item.dict.lang}/${metam && metam.sonucFiltreTip ? metam.sonucFiltreTip : 'tumu'
               }/${item.dict.code.toLowerCase()}" class="kx-card-title"><span class="ana-metin">${item.madde
               }</span></a>`;
           }
@@ -1272,7 +1272,7 @@ function cekimveturevFormatter({ aranan, data, isKisa, meta, error }) {
             <div class="show-read-more">${item.whichDict.anlam}</div></span>`;
           } else {
             temp += `<a href="/kelime/${encodeURIComponent(item.madde)}/${item._id
-              }-${item.whichDict.id}/${item.dict.lang}/${metam.sonucFiltreTip
+              }-${item.whichDict.id}/${item.dict.lang}/${metam && metam.sonucFiltreTip ? metam.sonucFiltreTip : 'tumu'
               }/${item.dict.code.toLowerCase()}" class="body-text">
               <div class="show-read-more">${item.whichDict.anlam}</div></a>`;
           }
@@ -1281,9 +1281,10 @@ function cekimveturevFormatter({ aranan, data, isKisa, meta, error }) {
         });
         $("#skelotontemplate").remove();
         sonuckutusu.append(temp);
+        const perpage = meta.perpage || meta.limit || 10;
         if (
-          (meta && meta.page * meta.perpage > meta.total) ||
-          metam.isLimited
+          (meta && meta.page * perpage >= meta.total) ||
+          (metam && metam.isLimited)
         ) {
           dahafazlaButton.remove();
         }
