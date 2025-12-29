@@ -1006,8 +1006,15 @@ router.get("/register", async function (req, res, next) {
     return res.redirect("/");
   } else {
     // URL'den parametreleri al
-    const inst_id = req.query.inst_id;
+    let inst_id = req.query.inst_id;
     const username = req.query.username;
+    
+    // IP kontrolü yap - eğer kullanıcının IP'si kurum IP'si ise kurum bilgisini göster
+    let abonekurum = await setKurumsalAccess(req);
+    if (abonekurum && !inst_id) {
+      // IP'den kurum bulunduysa ve URL'den inst_id gelmemişse, IP'den bulunan kurumu kullan
+      inst_id = abonekurum._id ? abonekurum._id.toString() : (abonekurum.id ? abonekurum.id.toString() : null);
+    }
     
     // Kurum bilgisini çek
     let institutionName = '';
@@ -2162,15 +2169,16 @@ router.get("/api/v1/getstats/user-history", async function (req, res, next) {
         limit: limit || 50,
         sortBy: sortBy || 'createdAt:desc'
       },
-      timeout: 10000
+      timeout: 30000
     });
     res.status(200).json(response.data);
   } catch (error) {
     console.error('User history API error:', error.message);
+    console.error('User history API error details:', error.response?.data || error);
     if (error.response) {
-      res.status(error.response.status).json(error.response.data);
+      res.status(error.response.status).json(error.response.data || { message: error.message });
     } else {
-      res.status(500).json({ message: 'Arama geçmişi alınırken bir hata oluştu' });
+      res.status(500).json({ message: 'Arama geçmişi alınırken bir hata oluştu: ' + error.message });
     }
   }
 });

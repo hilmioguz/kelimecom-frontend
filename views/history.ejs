@@ -132,10 +132,17 @@ $(document).ready(function() {
             },
             error: function(xhr) {
                 isLoading = false;
-                if (page === 1) {
-                    container.html('<div class="alert alert-danger"><p>Arama geçmişi yüklenirken bir hata oluştu. Lütfen tekrar deneyin.</p></div>');
-                }
                 console.error('History load error:', xhr);
+                console.error('Error response:', xhr.responseJSON || xhr.responseText);
+                
+                let errorMessage = 'Arama geçmişi yüklenirken bir hata oluştu.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage += '<br><strong>Hata:</strong> ' + xhr.responseJSON.message;
+                }
+                
+                if (page === 1) {
+                    container.html('<div class="alert alert-danger"><p>' + errorMessage + '</p></div>');
+                }
             }
         });
     }
