@@ -133,6 +133,29 @@
                         </div>
                     </div>
                     <% }) %>
+                <% if (meta.isLimited && kelime.length > 0 && metadata && metadata.total > kelime.length) { %>
+                    <div class="sonuc-info-card kx-card kx-card__sari mt-3">
+                        <div class="kx-card__header">
+                            <span class="kx-card-title">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                <% if (meta.siteLang === "en") { %>
+                                    Limited Access
+                                <% } else { %>
+                                    Sınırlı Erişim
+                                <% } %>
+                            </span>
+                        </div>
+                        <div class="kx-card__body">
+                            <p class="body-text">
+                                <% if (meta.siteLang === "en") { %>
+                                    You are viewing limited results. This word has <strong><%= metadata.total - kelime.length %> more results</strong> in other dictionaries. To view all results, please <a href="/register">register</a> or check if your institution has a <a href="/abonelerimiz">corporate subscription</a>.
+                                <% } else { %>
+                                    Sınırlı sonuçları görüntülüyorsunuz. Bu kelime için diğer sözlüklerde <strong><%= metadata.total - kelime.length %> sonuç daha</strong> bulunmaktadır. Tüm sonuçları görmek için lütfen <a href="/register">kayıt olun</a> veya kurumunuzun <a href="/abonelerimiz">kurumsal abonelik</a> durumunu kontrol edin.
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+                <% } %>
                 <% } else { %>
                     <div id="hasNoResultBlock" class="kx-card kx-card__sari active">
                         <div class="kx-card__header align-left">

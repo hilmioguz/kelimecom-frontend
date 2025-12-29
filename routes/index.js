@@ -19,7 +19,7 @@ const rateLimiter = new RateLimiterRedis({
     password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   }),
   keyPrefix: 'rl_',
-  points: 100, // Number of requests - GEÇİCİ OLARAK ARTIRILDI
+  points: 100000, // Number of requests - GEÇİCİ OLARAK ÇOK YÜKSEK AYARLANDI (NEREDEYSE KAPALI)
   duration: 60, // Per 60 seconds
 });
 
@@ -31,7 +31,7 @@ const ipBasedSearchLimiter = new RateLimiterRedis({
     password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
   }),
   keyPrefix: 'ip_search_',
-  points: 1000, // IP başına günde 1000 arama - GEÇİCİ OLARAK ARTIRILDI
+  points: 100000, // IP başına günde 100000 arama - GEÇİCİ OLARAK ÇOK YÜKSEK AYARLANDI (NEREDEYSE KAPALI)
   duration: 60 * 60 * 24, // 24 saat
 });
 const remark = require("remarkable");
@@ -691,7 +691,46 @@ const setKurumsalAccess = async (req) => {
   let abonekurum = null;
   console.log('---> ip: ' + ip);
   const kurumlar = await getOrSetKurumlar();
-  const ipMatch = kurumlar.filter((kurum) => inRange(ip, kurum.cidr));
+  const now = new Date();
+  
+  // IP kontrolü + isActive + packetEnd (varsa) veya endDate kontrolü
+  const ipMatch = kurumlar.filter((kurum) => {
+    // 1. IP CIDR range kontrolü
+    if (!inRange(ip, kurum.cidr)) {
+      return false;
+    }
+    
+    // 2. isActive kontrolü - kurum aktif olmalı
+    if (kurum.isActive !== true) {
+      return false;
+    }
+    
+    // 3. packetEnd kontrolü (varsa) veya endDate kontrolü
+    let endDateToCheck = null;
+    if (kurum.packetEnd) {
+      // packetEnd varsa onu kullan
+      endDateToCheck = new Date(kurum.packetEnd);
+    } else if (kurum.endDate) {
+      // packetEnd yoksa endDate kullan
+      endDateToCheck = new Date(kurum.endDate);
+    }
+    
+    // endDate kontrolü - bugünden büyük veya eşit olmalı
+    if (endDateToCheck && endDateToCheck < now) {
+      return false; // Abonelik bitmiş
+    }
+    
+    // 4. beginDate kontrolü - bugünden küçük veya eşit olmalı (opsiyonel)
+    if (kurum.beginDate) {
+      const beginDate = new Date(kurum.beginDate);
+      if (beginDate > now) {
+        return false; // Abonelik henüz başlamamış
+      }
+    }
+    
+    return true;
+  });
+  
   console.log('ipMatch: ', JSON.stringify(ipMatch));
   if (ipMatch && ipMatch.length) {
     abonekurum = ipMatch[0];
@@ -1266,11 +1305,6 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
     searchFilter.filterOrders = req.session.filterOrders;
   }
   const aranankelime = req.params.kelime;
-  const payload = {
-    searchTerm: decodeURIComponent(aranankelime),
-    searchType: "exact",
-    searchFilter,
-  };
   let {
     limiterInstance,
     limitlessCount,
@@ -1286,6 +1320,16 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
     isLimited = false;
   }
 
+  // Kullanıcı aktif mi kontrolü: abonekurum varsa veya isLimited false ise aktif
+  const isUserActive = !isLimited || abonekurum !== null;
+  
+  const payload = {
+    searchTerm: decodeURIComponent(aranankelime),
+    searchType: "exact",
+    searchFilter,
+    isUserActive: isUserActive, // Kullanıcı aktifse tüm whichDict kayıtlarını getir
+  };
+
   res.locals.meta = {
     menuId: "arama",
     sonucPath: "arama",
@@ -1297,6 +1341,7 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
     showTopSearchBar: true,
     siteLang: req.cookies.lang,
     isLimited,
+    isUserActive, // Frontend'de kullanmak için
   };
   let misafir = 'Misafir kullanıcılar için sunduğumuz günlük 3 adet arama limitini aştığınız için bu maddenin detayını maalesef görüntüleyememektesiniz. Bu detayı görüntüleyebilmek için <a href="/register">bireysel</a> veya <a href="/abonelerimiz">kurumsal</a> abone olmanız gerekmektedir.';
 
@@ -1309,6 +1354,10 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
   if (req.session && req.session.user) {
     user = req.session.user.user;
   }
+  
+  // Payload'a isUserActive ekle
+  payload.isUserActive = isUserActive;
+  
   // log("searchFilter:", searchFilter);
   await axios
     .post(getApiUrl(`/v1/generalsearch`), payload, {
@@ -1324,6 +1373,11 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
           .catch((error) => console.log(error.message));
       }
       metadata = data.meta;
+      // Eğer kullanıcı aktifse ve tüm whichDict kayıtları döndürülmüşse, total sayısını güncelle
+      if (isUserActive && data.meta && data.meta.hasMoreResults === false) {
+        // Tüm kayıtlar gösterilmiş, total = gösterilen kayıt sayısı
+        metadata.total = data.data ? data.data.length : 0;
+      }
       // console.log(aranankelime, " nin arama sonucu:", data);
       if (data.data) {
         data.data.forEach((item, i) => {
@@ -1443,6 +1497,14 @@ router.post("/ajaxCall", async (req, res, next) => {
       }
       if (abonekurum) {
         isLimited = false;
+      }
+      
+      // Kullanıcı aktif mi kontrolü: abonekurum varsa veya isLimited false ise aktif
+      const isUserActive = !isLimited || abonekurum !== null;
+      
+      // Payload'a isUserActive ekle (sadece exact search için)
+      if (searchType === 'exact') {
+        payload.isUserActive = isUserActive;
       }
       let misafir = 'Misafir kullanıcılar için sunduğumuz günlük 3 adet arama limitini aştığınız için bu maddenin detayını maalesef görüntüleyememektesiniz. Bu detayı görüntüleyebilmek için <a href="/register">bireysel</a> veya <a href="/abonelerimiz">kurumsal</a> abone olmanız gerekmektedir.';
 
