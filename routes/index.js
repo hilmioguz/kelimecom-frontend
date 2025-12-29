@@ -788,6 +788,71 @@ router.get("/", async function (req, res, next) {
     user = req.session.user.user;
   }
 
+  // Eğer IP'den kurum bulunamadıysa ve kullanıcı login ise, kullanıcının kurumId'sinden kurumu kontrol et
+  if (!abonekurum && user && user.kurumId) {
+    const kurumlar = await getOrSetKurumlar();
+    const now = new Date();
+    const userKurumId = user.kurumId;
+    
+    // kurumId string veya object olabilir (populate edilmiş olabilir)
+    let kurumIdString = null;
+    if (typeof userKurumId === 'string') {
+      kurumIdString = userKurumId;
+    } else if (userKurumId && typeof userKurumId === 'object') {
+      // Populate edilmiş obje ise _id veya id alanını al
+      kurumIdString = userKurumId._id ? userKurumId._id.toString() : (userKurumId.id ? userKurumId.id.toString() : null);
+    } else if (userKurumId) {
+      kurumIdString = userKurumId.toString();
+    }
+    
+    if (kurumIdString) {
+      // Kurumları ID'ye göre filtrele
+      const userKurumMatch = kurumlar.filter((kurum) => {
+        if (!kurum || !kurumIdString) return false;
+        
+        // Kurum ID'sini string'e çevir
+        const kurumIdStr = (kurum._id ? kurum._id.toString() : (kurum.id ? kurum.id.toString() : null));
+        if (!kurumIdStr || kurumIdStr !== kurumIdString) {
+          return false;
+        }
+        
+        // isActive kontrolü - kurum aktif olmalı
+        if (!kurum.isActive || kurum.isActive !== true) {
+          return false;
+        }
+        
+        // packetEnd kontrolü (varsa) veya endDate kontrolü
+        let endDateToCheck = null;
+        if (kurum.packetEnd) {
+          endDateToCheck = new Date(kurum.packetEnd);
+        } else if (kurum.endDate) {
+          endDateToCheck = new Date(kurum.endDate);
+        }
+        
+        // endDate kontrolü - bugünden büyük veya eşit olmalı
+        if (endDateToCheck && endDateToCheck < now) {
+          return false; // Abonelik bitmiş
+        }
+        
+        // beginDate kontrolü - bugünden küçük veya eşit olmalı (opsiyonel)
+        if (kurum.beginDate) {
+          const beginDate = new Date(kurum.beginDate);
+          if (beginDate > now) {
+            return false; // Abonelik henüz başlamamış
+          }
+        }
+        
+        return true;
+      });
+      
+      if (userKurumMatch && userKurumMatch.length > 0) {
+        abonekurum = userKurumMatch[0];
+        req.session.abonekurum = abonekurum;
+        req.session.save();
+      }
+    }
+  }
+
   res.render("index", { page: "Home", title: "Kelime.com", user, ip, messages, abonekurum });
 });
 
@@ -1316,6 +1381,77 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
 
   let abonekurum = null;
   abonekurum = await setKurumsalAccess(req);
+  
+  // Eğer IP'den kurum bulunamadıysa ve kullanıcı login ise, kullanıcının kurumId'sinden kurumu kontrol et
+  let user = null;
+  if (req.session && req.session.user && req.session.user.user) {
+    user = req.session.user.user;
+  }
+  
+  if (!abonekurum && user && user.kurumId) {
+    const kurumlar = await getOrSetKurumlar();
+    const now = new Date();
+    const userKurumId = user.kurumId;
+    
+    // kurumId string veya object olabilir (populate edilmiş olabilir)
+    let kurumIdString = null;
+    if (typeof userKurumId === 'string') {
+      kurumIdString = userKurumId;
+    } else if (userKurumId && typeof userKurumId === 'object') {
+      // Populate edilmiş obje ise _id veya id alanını al
+      kurumIdString = userKurumId._id ? userKurumId._id.toString() : (userKurumId.id ? userKurumId.id.toString() : null);
+    } else if (userKurumId) {
+      kurumIdString = userKurumId.toString();
+    }
+    
+    if (kurumIdString) {
+      // Kurumları ID'ye göre filtrele
+      const userKurumMatch = kurumlar.filter((kurum) => {
+        if (!kurum || !kurumIdString) return false;
+        
+        // Kurum ID'sini string'e çevir
+        const kurumIdStr = (kurum._id ? kurum._id.toString() : (kurum.id ? kurum.id.toString() : null));
+        if (!kurumIdStr || kurumIdStr !== kurumIdString) {
+          return false;
+        }
+        
+        // isActive kontrolü - kurum aktif olmalı
+        if (!kurum.isActive || kurum.isActive !== true) {
+          return false;
+        }
+        
+        // packetEnd kontrolü (varsa) veya endDate kontrolü
+        let endDateToCheck = null;
+        if (kurum.packetEnd) {
+          endDateToCheck = new Date(kurum.packetEnd);
+        } else if (kurum.endDate) {
+          endDateToCheck = new Date(kurum.endDate);
+        }
+        
+        // endDate kontrolü - bugünden büyük veya eşit olmalı
+        if (endDateToCheck && endDateToCheck < now) {
+          return false; // Abonelik bitmiş
+        }
+        
+        // beginDate kontrolü - bugünden küçük veya eşit olmalı (opsiyonel)
+        if (kurum.beginDate) {
+          const beginDate = new Date(kurum.beginDate);
+          if (beginDate > now) {
+            return false; // Abonelik henüz başlamamış
+          }
+        }
+        
+        return true;
+      });
+      
+      if (userKurumMatch && userKurumMatch.length > 0) {
+        abonekurum = userKurumMatch[0];
+        req.session.abonekurum = abonekurum;
+        req.session.save();
+      }
+    }
+  }
+  
   if (abonekurum) {
     isLimited = false;
   }
@@ -1350,10 +1486,7 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
   }
   const headers = await getHeader(req);
   // console.log('kelime', kelime);
-  let user = null;
-  if (req.session && req.session.user) {
-    user = req.session.user.user;
-  }
+  // user zaten yukarıda tanımlandı
   
   // Payload'a isUserActive ekle
   payload.isUserActive = isUserActive;
