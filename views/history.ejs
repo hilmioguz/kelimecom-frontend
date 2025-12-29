@@ -1,0 +1,151 @@
+<%- contentFor('headerBlock') %>
+<link href="assets/css/style.css" rel="stylesheet">
+
+<%- contentFor('body') %>
+<header class="mb-2">
+    <%- include('partials/menu'); -%>
+</header>
+<main role="main" class="alt-sayfa">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- ANA İÇERİK BASLANGICI -->
+            <div class="col-md-18 col-lg-16 col-xl-13 mx-auto">
+                <div class="alt-sayfa-baslik">
+                    <h1 class="koyu-turuncu">Arama Geçmişim</h1>
+                    <h2>Daha önce aradığınız kelimelerin listesi</h2>
+                </div>
+                <div class="blog-ana-metin mb-2">
+                    <% if (!user) { %>
+                        <div class="alert alert-warning">
+                            <p>Arama geçmişinizi görmek için lütfen <a href="/login">giriş yapın</a> veya <a href="/register">kayıt olun</a>.</p>
+                        </div>
+                    <% } else { %>
+                        <div id="history-container">
+                            <div class="kx-card kx-card__simple">
+                                <div class="skeleton-effect-wave p-4">
+                                    <p style="width: 15%;" class="skeleton-block"></p>
+                                    <p style="width: 25%;" class="skeleton-block"></p>
+                                    <p style="width: 100%" class="skeleton-block"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="history-load-more" class="text-center mt-3" style="display: none;">
+                            <button class="btn btn-primary">Daha Fazla Yükle</button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <!-- ANA İÇERİK SONU -->
+        </div>
+    </div>
+    <%- include('partials/sozlukmu-yazdiniz'); -%>
+    <%- include('partials/profile-sidenav'); -%>
+</main>
+
+<%- contentFor('footerBlock') %>
+<script>
+$(document).ready(function() {
+    <% if (user) { %>
+    let currentPage = 1;
+    let isLoading = false;
+    let hasMore = true;
+
+    function loadHistory(page = 1) {
+        if (isLoading || !hasMore) return;
+        
+        isLoading = true;
+        const container = $('#history-container');
+        
+        if (page === 1) {
+            container.html('<div class="kx-card kx-card__simple"><div class="skeleton-effect-wave p-4"><p style="width: 15%;" class="skeleton-block"></p><p style="width: 25%;" class="skeleton-block"></p><p style="width: 100%" class="skeleton-block"></p></div></div>');
+        }
+
+        $.ajax({
+            url: '/api/v1/getstats/user-history',
+            method: 'GET',
+            data: {
+                page: page,
+                limit: 50,
+                sortBy: 'createdAt:desc'
+            },
+            success: function(response) {
+                isLoading = false;
+                
+                if (page === 1) {
+                    container.empty();
+                }
+
+                if (!response || !response.data || response.data.length === 0) {
+                    if (page === 1) {
+                        container.html('<div class="alert alert-info"><p>Arama geçmişinizde henüz bir kayıt bulunmuyor.</p></div>');
+                    }
+                    hasMore = false;
+                    $('#history-load-more').hide();
+                    return;
+                }
+
+                response.data.forEach(function(item) {
+                    const searchTerm = item.searchTerm || '';
+                    const searchType = item.searchType || '';
+                    const secilenDil = item.secilenDil || '';
+                    const createdAt = item.createdAt ? new Date(item.createdAt).toLocaleString('tr-TR') : '';
+                    const isInDict = item.isInDict ? '<span class="badge badge-success">Bulundu</span>' : '<span class="badge badge-secondary">Bulunamadı</span>';
+                    
+                    let searchTypeText = '';
+                    if (searchType === 'ilksorgu') {
+                        searchTypeText = 'Normal Arama';
+                    } else if (searchType === 'advanced') {
+                        searchTypeText = 'Çözümleme';
+                    } else if (searchType === 'exact') {
+                        searchTypeText = 'Tam Eşleşme';
+                    }
+
+                    const historyItem = `
+                        <div class="kx-card kx-card__simple mb-3">
+                            <div class="kx-card__body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <a href="/arama/${encodeURIComponent(searchTerm)}" class="kx-card-title h5 mb-1">
+                                            ${searchTerm}
+                                        </a>
+                                        <div class="text-muted small">
+                                            ${searchTypeText} ${secilenDil ? '• ' + secilenDil.toUpperCase() : ''}
+                                        </div>
+                                    </div>
+                                    ${isInDict}
+                                </div>
+                                <div class="text-muted small">
+                                    <i class="far fa-clock mr-1"></i>${createdAt}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.append(historyItem);
+                });
+
+                hasMore = response.meta && response.meta.pages > page;
+                if (hasMore) {
+                    $('#history-load-more').show();
+                } else {
+                    $('#history-load-more').hide();
+                }
+            },
+            error: function(xhr) {
+                isLoading = false;
+                if (page === 1) {
+                    container.html('<div class="alert alert-danger"><p>Arama geçmişi yüklenirken bir hata oluştu. Lütfen tekrar deneyin.</p></div>');
+                }
+                console.error('History load error:', xhr);
+            }
+        });
+    }
+
+    loadHistory(1);
+
+    $('#history-load-more button').on('click', function() {
+        currentPage++;
+        loadHistory(currentPage);
+    });
+    <% } %>
+});
+</script>

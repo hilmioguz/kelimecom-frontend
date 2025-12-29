@@ -2128,6 +2128,53 @@ router.get("/projetarihcesi", function (req, res, next) {
   }
   res.render("projetarihcesi", { page: "Proje Tarihcesi Sayfası", user });
 });
+router.get("/history", function (req, res, next) {
+  // Sadece login olan kullanıcılar için
+  if (!req.session || !req.session.user) {
+    req.flash('error', 'Arama geçmişinizi görmek için lütfen giriş yapın.');
+    return res.redirect('/login');
+  }
+
+  res.locals.meta = {
+    menuId: "history",
+    siteLang: req.cookies.lang,
+  };
+  let user = null;
+  if (req.session && req.session.user) {
+    user = req.session.user.user;
+  }
+  res.render("history", { page: "Arama Geçmişi", user });
+});
+
+router.get("/api/v1/getstats/user-history", async function (req, res, next) {
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ message: 'Kullanıcı giriş yapmamış' });
+  }
+
+  const headers = await getHeader(req);
+  const { page, limit, sortBy } = req.query;
+
+  try {
+    const response = await axios.get(getApiUrl("/v1/getstats/user-history"), {
+      headers,
+      params: {
+        page: page || 1,
+        limit: limit || 50,
+        sortBy: sortBy || 'createdAt:desc'
+      },
+      timeout: 10000
+    });
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('User history API error:', error.message);
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ message: 'Arama geçmişi alınırken bir hata oluştu' });
+    }
+  }
+});
+
 router.get("/iletisim", function (req, res, next) {
   res.locals.meta = {
     menuId: "iletisim",
