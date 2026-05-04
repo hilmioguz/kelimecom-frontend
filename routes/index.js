@@ -612,6 +612,13 @@ const getOrSetPackets = () => {
   });
 };
 
+// QR kod -> kurum _id eşleşmesi (sabit, hard-coded)
+// Yeni bir QR linki tanımlamak için bu objeye satır eklemek yeterlidir.
+const QR_CODE_INSTITUTION_MAP = {
+  // Milli Eğitim Bakanlığı (Talim ve Terbiye Kurulu)
+  'ca1516cf-1552-11ef-9da1-202556bfb2c7': '677d2b2ae41fe967ae3de77e',
+};
+
 const getOrSetKurumlar = () => {
   return new Promise((resv, rej) => {
     redisClient.get("kurumlar", async (err, reply) => {
@@ -743,6 +750,15 @@ const setKurumsalAccess = async (req) => {
   return abonekurum;
 };
 
+/** IP ile kurum yoksa session'daki kurumsal erişimi kullan (ör. QR linki ile set edilmiş) */
+const getAbonekurumWithSessionFallback = async (req) => {
+  let abonekurum = await setKurumsalAccess(req);
+  if (!abonekurum && req.session && req.session.abonekurum) {
+    abonekurum = req.session.abonekurum;
+  }
+  return abonekurum;
+};
+
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   res.locals.meta = {
@@ -774,7 +790,7 @@ router.get("/", async function (req, res, next) {
   getOrSetSozlukler();
   let user = null;
   let abonekurum = null;
-  abonekurum = await setKurumsalAccess(req);
+  abonekurum = await getAbonekurumWithSessionFallback(req);
 
   if (!req.cookies['duyuruGosterildi']) {
     res.cookie("duyuruGosterildi ", true, { maxAge: 6000000, httpOnly: false });
@@ -891,6 +907,56 @@ router.get("/switch/:lang", function (req, res, next) {
 
 router.get("/Ara", function (req, res, next) {
   return res.redirect("/");
+});
+
+router.get("/login/QRCodeReader", async function (req, res, next) {
+  try {
+    const qrId = (req.query.id || "").trim();
+    const targetKurumId = QR_CODE_INSTITUTION_MAP[qrId];
+
+    if (!qrId || !targetKurumId) {
+      await req.flash("info", "Geçersiz QR kod linki.");
+      return res.redirect("/");
+    }
+
+    const kurumlar = await getOrSetKurumlar();
+    const now = new Date();
+
+    const kurum = (kurumlar || []).find((k) => {
+      if (!k) return false;
+      const kid = k._id ? k._id.toString() : (k.id ? k.id.toString() : null);
+      return kid === targetKurumId;
+    });
+
+    if (!kurum) {
+      await req.flash("info", "QR kodun bağlı olduğu kurum bulunamadı.");
+      return res.redirect("/");
+    }
+
+    // setKurumsalAccess ile aynı geçerlilik kontrolü
+    if (kurum.isActive !== true) {
+      await req.flash("info", "Kurumsal erişim şu anda aktif değil.");
+      return res.redirect("/");
+    }
+    const endDateToCheck = kurum.packetEnd
+      ? new Date(kurum.packetEnd)
+      : (kurum.endDate ? new Date(kurum.endDate) : null);
+    if (endDateToCheck && endDateToCheck < now) {
+      await req.flash("info", "Kurumsal aboneliğin süresi dolmuş.");
+      return res.redirect("/");
+    }
+    if (kurum.beginDate && new Date(kurum.beginDate) > now) {
+      await req.flash("info", "Kurumsal abonelik henüz başlamamış.");
+      return res.redirect("/");
+    }
+
+    req.session.abonekurum = kurum;
+    req.session.save();
+    return res.redirect("/");
+  } catch (err) {
+    console.error("QRCodeReader error:", err && err.message);
+    return res.redirect("/");
+  }
 });
 
 router.get("/login", function (req, res, next) {
@@ -1010,7 +1076,7 @@ router.get("/register", async function (req, res, next) {
     const username = req.query.username;
     
     // IP kontrolü yap - eğer kullanıcının IP'si kurum IP'si ise kurum bilgisini göster
-    let abonekurum = await setKurumsalAccess(req);
+    let abonekurum = await getAbonekurumWithSessionFallback(req);
     if (abonekurum && !inst_id) {
       // IP'den kurum bulunduysa ve URL'den inst_id gelmemişse, IP'den bulunan kurumu kullan
       inst_id = abonekurum._id ? abonekurum._id.toString() : (abonekurum.id ? abonekurum.id.toString() : null);
@@ -1162,7 +1228,7 @@ router.get("/cozumleyici", async function (req, res, next) {
     user = req.session.user.user;
   }
   let abonekurum = null;
-  abonekurum = await setKurumsalAccess(req);
+  abonekurum = await getAbonekurumWithSessionFallback(req);
 
   res.render("cozumleyici", { page: "Home", title: "HELDLF", user, abonekurum });
 });
@@ -1183,7 +1249,7 @@ router.get(
     let { isLimited } = await sorguRateLimiter(req, "maddebasi");
 
     let abonekurum = null;
-    abonekurum = await setKurumsalAccess(req);
+    abonekurum = await getAbonekurumWithSessionFallback(req);
     if (abonekurum) {
       isLimited = false;
     }
@@ -1387,7 +1453,7 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
   } = await sorguRateLimiter(req, "maddebasi");
 
   let abonekurum = null;
-  abonekurum = await setKurumsalAccess(req);
+  abonekurum = await getAbonekurumWithSessionFallback(req);
   
   // Eğer IP'den kurum bulunamadıysa ve kullanıcı login ise, kullanıcının kurumId'sinden kurumu kontrol et
   let user = null;
