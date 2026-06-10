@@ -11,6 +11,14 @@ const { storeIP, inRange, isV4 } = require("range_check");
 const { RateLimiterRedis } = require("rate-limiter-flexible");
 const { v4: uuidv4 } = require("uuid");
 
+const safeDecodeURIComponent = (str) => {
+  try {
+    return decodeURIComponent(str);
+  } catch (e) {
+    return str || "";
+  }
+};
+
 const redisClient = redis.createClient({
   host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
   port: 6379,
@@ -1400,7 +1408,7 @@ router.get(
   async (req, res, next) => {
     let kelime = null;
     let metadata = {};
-    const madde = decodeURIComponent(req.params.madde);
+    const madde = safeDecodeURIComponent(req.params.madde);
     const maddeId = req.params.id;
     const dil = req.params.dil;
     const tip = req.params.tip;
@@ -1562,7 +1570,7 @@ router.get("/api/arama", async (req, res, next) => {
   }
 
   const payload = {
-    searchTerm: decodeURIComponent(kelime),
+    searchTerm: safeDecodeURIComponent(kelime),
     searchType: "exact",
     searchFilter,
   };
@@ -1695,7 +1703,7 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
   const isUserActive = !isLimited || abonekurum !== null;
   
   const payload = {
-    searchTerm: decodeURIComponent(aranankelime),
+    searchTerm: safeDecodeURIComponent(aranankelime),
     searchType: "exact",
     searchFilter,
     isUserActive: isUserActive, // Kullanıcı aktifse tüm whichDict kayıtlarını getir
@@ -1704,7 +1712,7 @@ router.get("/arama/:kelime/:dil?/:tip?/:sozluk?", async (req, res, next) => {
   res.locals.meta = {
     menuId: "arama",
     sonucPath: "arama",
-    sonucKelime: decodeURIComponent(aranankelime),
+    sonucKelime: safeDecodeURIComponent(aranankelime),
     sonucFiltreDil: searchFilter.dil ? searchFilter.dil : "tumu",
     sonucFiltreTip: searchFilter.tip ? searchFilter.tip : "tumu",
     sonucTitleDil: await getLang(req, searchFilter.dil ? searchFilter.dil : "tumu", true),
@@ -1802,7 +1810,7 @@ router.post("/ajaxCall", async (req, res, next) => {
     const clientIp = storeIP(req.clientIp);
     const headers = await getHeader(req);
     console.log('ARA ILKSORGU:',searchTerm);
-    const searchTermE = decodeURIComponent(searchTerm);
+    const searchTermE = safeDecodeURIComponent(searchTerm);
     console.log('ARA ILKSORGU:searchTermE',searchTermE);
 
     // IP bazlı arama rate limiting kontrolü (sadece misafir kullanıcılar için)
