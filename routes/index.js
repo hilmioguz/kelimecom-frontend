@@ -11,25 +11,26 @@ const { storeIP, inRange, isV4 } = require("range_check");
 const { RateLimiterRedis } = require("rate-limiter-flexible");
 const { v4: uuidv4 } = require("uuid");
 
-// Rate limiting configuration
-const rateLimiter = new RateLimiterRedis({
-  storeClient: redis.createClient({
-    host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
-    port: 6379,
-    password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
-  }),
-  keyPrefix: 'rl_',
-  points: 100000, // Number of requests - GEÇİCİ OLARAK ÇOK YÜKSEK AYARLANDI (NEREDEYSE KAPALI)
-  duration: 60, // Per 60 seconds
+const redisClient = redis.createClient({
+  host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
+  port: 6379,
+  password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
+  enable_offline_queue: false,
 });
+
+redisClient.on("error", (err) => {
+  console.error("Redis error in routes/index.js:", err.message);
+});
+
+const mockLimiterInstance = {
+  get: () => Promise.resolve({ remainingPoints: 9999, consumedPoints: 0, msBeforeNext: 0 }),
+  consume: () => Promise.resolve({ remainingPoints: 9999, consumedPoints: 0, msBeforeNext: 0 }),
+  delete: () => Promise.resolve(true),
+};
 
 // Genel arama rate limiting - sadece IP bazlı (misafir kullanıcılar için) - GEÇİCİ OLARAK KAPATILDI
 const ipBasedSearchLimiter = new RateLimiterRedis({
-  storeClient: redis.createClient({
-    host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
-    port: 6379,
-    password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
-  }),
+  storeClient: redisClient,
   keyPrefix: 'ip_search_',
   points: 100000, // IP başına günde 100000 arama - GEÇİCİ OLARAK ÇOK YÜKSEK AYARLANDI (NEREDEYSE KAPALI)
   duration: 60 * 60 * 24, // 24 saat
@@ -60,24 +61,21 @@ const getApiUrl = (endpoint) => {
   return `${baseUrl}${endpoint}`;
 };
 const getSiteLanguages = (headers) => new Promise((resolve, reject) => {
-  // Cache kontrolü
-  redisClient.get("sitelanguages:active", (err, reply) => {
-    if (reply) {
-      console.log('💾 [FRONTEND] Cache hit for sitelanguages');
-      resolve(JSON.parse(reply));
-      return;
-    }
-    
-    // Cache miss, API'den çek
+  const fetchFromApi = () => {
     axios
       .get(getApiUrl("/v1/sitelanguage?perpage=1000&sortBy%5B%5D=order&sortDesc%5B%5D=false&isActive=true"), {
         headers,
-        timeout: 10000, // 10 saniye timeout
+        timeout: 10000,
       })
       .then(({data}) => {
-        // Cache'e kaydet (2 saat)
-        redisClient.setex("sitelanguages:active", 7200, JSON.stringify(data.data));
-        console.log('💾 [FRONTEND] Cached sitelanguages');
+        try {
+          if (redisClient && redisClient.connected) {
+            redisClient.setex("sitelanguages:active", 7200, JSON.stringify(data.data));
+            console.log('💾 [FRONTEND] Cached sitelanguages');
+          }
+        } catch (e) {
+          console.warn('Failed to cache sitelanguages in redis:', e.message);
+        }
         resolve(data.data);
       })
       .catch((error) => {
@@ -86,9 +84,33 @@ const getSiteLanguages = (headers) => new Promise((resolve, reject) => {
         } else {
           console.error('getSiteLanguages API error:', error.message);
         }
-        // API bağlantı hatası veya rate limit durumunda boş array döndür
         resolve([]);
       });
+  };
+
+  if (!redisClient || !redisClient.connected) {
+    console.warn('Redis is not connected, fetching sitelanguages from API directly');
+    fetchFromApi();
+    return;
+  }
+
+  redisClient.get("sitelanguages:active", (err, reply) => {
+    if (err) {
+      console.warn('Redis error fetching sitelanguages:', err.message);
+      fetchFromApi();
+      return;
+    }
+    if (reply) {
+      console.log('💾 [FRONTEND] Cache hit for sitelanguages');
+      try {
+        resolve(JSON.parse(reply));
+      } catch (parseErr) {
+        console.error("Failed to parse cached sitelanguages JSON:", parseErr);
+        fetchFromApi();
+      }
+    } else {
+      fetchFromApi();
+    }
   });
 });
 const getKuluckalar = (headers) => new Promise((resolve, reject) => {
@@ -286,16 +308,7 @@ const getHeader = (req) => {
   });
 };
 
-const redisClient = redis.createClient({
-  host: process.env.NODE_ENV === 'development' ? "kelime.com" : "redisdb",
-  port: 6379,
-  password: process.env.REDIS_PASSWORD || "R3d1sP3SS",
-  enable_offline_queue: false,
-});
 
-redisClient.on("error", (err) => {
-  console.log(err);
-});
 
 const limiterInvitation = () =>
   new RateLimiterRedis({
@@ -310,11 +323,23 @@ const invitationLimiter = (req) => {
     let isLimited = false;
     try {
       const ipAddr = storeIP(req.clientIp);
+      let usernameIPkey = null;
       if (req.session && req.session.user) {
         usernameIPkey = getUsernameIPkey(req.session.user.user.email, ipAddr);
       } else {
         usernameIPkey = getUsernameIPkey(req.session.uniqueMacId, ipAddr);
       }
+      
+      if (!redisClient || !redisClient.connected) {
+        console.warn("Redis is not connected, bypassing invitation rate limiting");
+        resv({
+          limiterInstance: mockLimiterInstance,
+          usernameIPkey: usernameIPkey || 'fallback_key',
+          isLimited: false,
+        });
+        return;
+      }
+
       const limiterInstance = limiterInvitation();
       const limitValue = await limiterInstance.get(usernameIPkey);
       if (limitValue != null && limitValue.remainingPoints === 0) {
@@ -326,7 +351,12 @@ const invitationLimiter = (req) => {
         isLimited,
       });
     } catch (error) {
-      rej(error);
+      console.error("invitationLimiter error (Redis down?):", error);
+      resv({
+        limiterInstance: mockLimiterInstance,
+        usernameIPkey: 'fallback_key',
+        isLimited: false,
+      });
     }
   });
 };
@@ -438,35 +468,40 @@ const sorguRateLimiter = (req, searchType) => {
       const ipAddr = storeIP(req.clientIp);
       if (req.session && req.session.user) {
         usernameIPkey = getUsernameIPkey(req.session.user.user.email, ipAddr);
-        const uyekul = paketler.find(
+        const uyekul = (paketler && paketler.length) ? paketler.find(
           (item) => item.role === req.session.user.user.packetId.role
-        );
-        limitlessCount = uyekul[searchType].limitlessCount;
-        limitLater = uyekul[searchType].limitLater;
-        limiterInstance = limiterPacketByIP(
+        ) : null;
+        limitlessCount = uyekul ? uyekul[searchType].limitlessCount : 9999;
+        limitLater = uyekul ? uyekul[searchType].limitLater : null;
+        limiterInstance = uyekul ? limiterPacketByIP(
           uyekul.role,
           searchType,
           limitlessCount
-        );
+        ) : mockLimiterInstance;
       } else {
         usernameIPkey = getUsernameIPkey(req.session.uniqueMacId, ipAddr);
-        const ziyaretci = paketler.find((item) => item.role === "ziyaretci");
-        limitlessCount = ziyaretci[searchType].limitlessCount;
-        limitLater = ziyaretci[searchType].limitLater;
-        limiterInstance = limiterPacketByIP(
+        const ziyaretci = (paketler && paketler.length) ? paketler.find((item) => item.role === "ziyaretci") : null;
+        limitlessCount = ziyaretci ? ziyaretci[searchType].limitlessCount : 9999;
+        limitLater = ziyaretci ? ziyaretci[searchType].limitLater : null;
+        limiterInstance = ziyaretci ? limiterPacketByIP(
           ziyaretci.role,
           searchType,
           limitlessCount
-        );
-        // console.log(
-        //   "dddd",
-        //   ziyaretci.role,
-        //   limitlessCount,
-        //   req.session.uniqueMacId,
-        //   usernameIPkey,
-        //   limiterInstance
-        // );
+        ) : mockLimiterInstance;
       }
+      
+      if (!redisClient || !redisClient.connected) {
+        resv({
+          limiterInstance: mockLimiterInstance,
+          limitlessCount: 9999,
+          limitValue: null,
+          limit: null,
+          usernameIPkey: usernameIPkey || 'fallback_key',
+          isLimited: false,
+        });
+        return;
+      }
+
       const limitValue = await limiterInstance.get(usernameIPkey);
       if (limitValue != null && limitValue.remainingPoints === 0) {
         limit = limitLater;
@@ -481,7 +516,15 @@ const sorguRateLimiter = (req, searchType) => {
         isLimited,
       });
     } catch (error) {
-      rej(error);
+      console.error('sorguRateLimiter error (Redis down?):', error);
+      resv({
+        limiterInstance: mockLimiterInstance,
+        limitlessCount: 9999,
+        limitValue: null,
+        limit: null,
+        usernameIPkey: 'fallback_key',
+        isLimited: false,
+      });
     }
   });
 };
@@ -565,25 +608,51 @@ const fixedEncodeURIComponent = (str) => {
 
 const getOrSetStats = (lang) => {
   return new Promise((resv, rej) => {
-    redisClient.get("topstats", async (err, reply) => {
-      if (err) rej(err);
-      // console.log('REPLY:',reply);
-      if (reply) {
-        resv(JSON.parse(reply));
-      } else {
-        await axios
+    const fetchFromApi = () => {
+      axios
         .get(getApiUrl(`/v1/getstats?lang=${lang}`))
         .then(({ data }) => {
-          redisClient.setex("topstats", 3600, JSON.stringify(data));
+          try {
+            if (redisClient && redisClient.connected) {
+              redisClient.setex("topstats", 3600, JSON.stringify(data));
+            }
+          } catch (e) {
+            console.warn('Failed to cache topstats in redis:', e.message);
+          }
           resv(data);
         })
-          .catch((error) => {
-            console.log("get topstats ERR:", JSON.stringify(error.message));
-            // Fallback data if stats fail
-            const fallbackData = { latest: [], most: [], inserted: [] };
-            redisClient.setex("topstats", 300, JSON.stringify(fallbackData)); // 5 min cache
-            resv(fallbackData);
-          });
+        .catch((error) => {
+          console.log("get topstats ERR:", JSON.stringify(error.message));
+          const fallbackData = { latest: [], most: [], inserted: [] };
+          try {
+            if (redisClient && redisClient.connected) {
+              redisClient.setex("topstats", 300, JSON.stringify(fallbackData));
+            }
+          } catch (e) {}
+          resv(fallbackData);
+        });
+    };
+
+    if (!redisClient || !redisClient.connected) {
+      fetchFromApi();
+      return;
+    }
+
+    redisClient.get("topstats", async (err, reply) => {
+      if (err) {
+        console.warn('Redis error fetching topstats:', err.message);
+        fetchFromApi();
+        return;
+      }
+      if (reply) {
+        try {
+          resv(JSON.parse(reply));
+        } catch (parseErr) {
+          console.error("Failed to parse cached topstats JSON:", parseErr);
+          fetchFromApi();
+        }
+      } else {
+        fetchFromApi();
       }
     });
   });
@@ -591,22 +660,45 @@ const getOrSetStats = (lang) => {
 
 const getOrSetPackets = () => {
   return new Promise((resv, rej) => {
+    const fetchFromApi = () => {
+      axios
+        .get(getApiUrl("/v1/packet?perpage=1000"))
+        .then(({ data }) => {
+          try {
+            if (redisClient && redisClient.connected) {
+              redisClient.setex("paketler", 3600, JSON.stringify(data.data));
+            }
+          } catch (e) {
+            console.warn('Failed to cache paketler in redis:', e.message);
+          }
+          resv(data.data);
+        })
+        .catch((error) => {
+          console.log("get packets ERR:", JSON.stringify(error.message));
+          resv([]);
+        });
+    };
+
+    if (!redisClient || !redisClient.connected) {
+      fetchFromApi();
+      return;
+    }
+
     redisClient.get("paketler", async (err, reply) => {
-      if (err) rej(err);
-      // console.log('REPLY:',reply);
+      if (err) {
+        console.warn('Redis error fetching paketler:', err.message);
+        fetchFromApi();
+        return;
+      }
       if (reply) {
-        resv(JSON.parse(reply));
+        try {
+          resv(JSON.parse(reply));
+        } catch (parseErr) {
+          console.error("Failed to parse cached paketler JSON:", parseErr);
+          fetchFromApi();
+        }
       } else {
-          await axios
-          .get(getApiUrl("/v1/packet?perpage=1000"))
-          .then(({ data }) => {
-            redisClient.setex("paketler", 3600, JSON.stringify(data.data));
-            resv(data.data);
-          })
-          .catch((error) => {
-            console.log("get packets ERR:", JSON.stringify(error.message));
-            rej(error);
-          });
+        fetchFromApi();
       }
     });
   });
@@ -621,48 +713,100 @@ const QR_CODE_INSTITUTION_MAP = {
 
 const getOrSetKurumlar = () => {
   return new Promise((resv, rej) => {
+    const fetchFromApi = () => {
+      axios
+        .get(getApiUrl("/v1/kurumlar"))
+        .then(({ data }) => {
+          try {
+            if (redisClient && redisClient.connected) {
+              redisClient.setex("kurumlar", 3600, JSON.stringify(data));
+            }
+          } catch (e) {
+            console.warn('Failed to cache kurumlar in redis:', e.message);
+          }
+          resv(data);
+        })
+        .catch((error) => {
+          console.log("get kurumlar ERR:", JSON.stringify(error.message));
+          resv([]);
+        });
+    };
+
+    if (!redisClient || !redisClient.connected) {
+      fetchFromApi();
+      return;
+    }
+
     redisClient.get("kurumlar", async (err, reply) => {
-      if (err) rej(err);
+      if (err) {
+        console.warn('Redis error fetching kurumlar:', err.message);
+        fetchFromApi();
+        return;
+      }
       if (reply) {
-        resv(JSON.parse(reply));
+        try {
+          resv(JSON.parse(reply));
+        } catch (parseErr) {
+          console.error("Failed to parse cached kurumlar JSON:", parseErr);
+          fetchFromApi();
+        }
       } else {
-          await axios
-          .get(getApiUrl("/v1/kurumlar"))
-          .then(({ data }) => {
-            redisClient.setex("kurumlar", 3600, JSON.stringify(data));
-            resv(data);
-          })
-          .catch((error) => {
-            console.log("get kurumlar ERR:", JSON.stringify(error.message));
-            rej(error);
-          });
+        fetchFromApi();
       }
     });
   });
 };
 const getOrSetSozlukler = () => {
   return new Promise((resv, rej) => {
+    const fetchFromApi = () => {
+      axios
+        .get(getApiUrl("/v1/dictionary?perpage=1000&isActive=true"))
+        .then(({ data }) => {
+          try {
+            if (redisClient && redisClient.connected) {
+              redisClient.setex("sozlukler", 3600, JSON.stringify(data.data));
+            }
+          } catch (e) {
+            console.warn('Failed to cache sozlukler in redis:', e.message);
+          }
+          resv(data.data);
+        })
+        .catch((error) => {
+          console.log("get sozlukler ERR:", JSON.stringify(error.message));
+          resv([]);
+        });
+    };
+
+    if (!redisClient || !redisClient.connected) {
+      fetchFromApi();
+      return;
+    }
+
     redisClient.get("sozlukler", async (err, reply) => {
-      if (err) rej(err);
+      if (err) {
+        console.warn('Redis error fetching sozlukler:', err.message);
+        fetchFromApi();
+        return;
+      }
       if (reply) {
-        resv(JSON.parse(reply));
+        try {
+          resv(JSON.parse(reply));
+        } catch (parseErr) {
+          console.error("Failed to parse cached sozlukler JSON:", parseErr);
+          fetchFromApi();
+        }
       } else {
-          await axios
-          .get(getApiUrl("/v1/dictionary?perpage=1000&isActive=true"))
-          .then(({ data }) => {
-            redisClient.setex("sozlukler", 3600, JSON.stringify(data.data));
-            resv(data.data);
-          })
-          .catch((error) => {
-            console.log("get sozlukler ERR:", JSON.stringify(error.message));
-            rej(error);
-          });
+        fetchFromApi();
       }
     });
   });
 };
 const deleteRedisCacheByName = async (key) => {
   return new Promise((resv, rej) => {
+    if (!redisClient || !redisClient.connected) {
+      resv(1);
+      return;
+    }
     redisClient.del(key, (err, reply) => {
       console.log("delete redis cache:", key);
       resv(1);
@@ -975,10 +1119,19 @@ router.post("/login", async function (req, res, next) {
   const ipAddr = req.clientIp;
   const usernameIPkey = getUsernameIPkey(req.body.email, ipAddr);
 
-  const [resUsernameAndIP, resSlowByIP] = await Promise.all([
-    limiterConsecutiveFailsByUsernameAndIP.get(usernameIPkey),
-    limiterSlowBruteByIP.get(ipAddr),
-  ]);
+  let resUsernameAndIP = null;
+  let resSlowByIP = null;
+
+  try {
+    if (redisClient && redisClient.connected) {
+      [resUsernameAndIP, resSlowByIP] = await Promise.all([
+        limiterConsecutiveFailsByUsernameAndIP.get(usernameIPkey),
+        limiterSlowBruteByIP.get(ipAddr),
+      ]);
+    }
+  } catch (error) {
+    console.error("Login rate limit check error (Redis down?):", error);
+  }
 
   let retrySecs = 0;
 
@@ -1005,7 +1158,13 @@ router.post("/login", async function (req, res, next) {
       .then(async ({ data }) => {
         if (resUsernameAndIP !== null && resUsernameAndIP.consumedPoints > 0) {
           // Reset on successful authorisation
-          await limiterConsecutiveFailsByUsernameAndIP.delete(usernameIPkey);
+          try {
+            if (redisClient && redisClient.connected) {
+              await limiterConsecutiveFailsByUsernameAndIP.delete(usernameIPkey);
+            }
+          } catch (e) {
+            console.warn("Failed to delete login rate limit in redis:", e.message);
+          }
         }
         req.session.user = {};
         req.session.user = data;
@@ -1014,16 +1173,19 @@ router.post("/login", async function (req, res, next) {
       })
       .catch(async (error) => {
         try {
-          const promises = [limiterSlowBruteByIP.consume(ipAddr)];
-          // Count failed attempts by Username + IP only for registered users
-          promises.push(
-            limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
-          );
-          await Promise.all(promises);
-          res.status(400).end(error.response.message);
+          if (redisClient && redisClient.connected) {
+            const promises = [limiterSlowBruteByIP.consume(ipAddr)];
+            // Count failed attempts by Username + IP only for registered users
+            promises.push(
+              limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
+            );
+            await Promise.all(promises);
+          }
+          res.status(400).send(error.response && error.response.data ? (error.response.data.message || error.response.data) : error.message);
         } catch (rlRejected) {
           if (rlRejected instanceof Error) {
-            throw rlRejected;
+            console.error("Login rate limit consume error (Redis down?):", rlRejected.message);
+            res.status(400).send(error.response && error.response.data ? (error.response.data.message || error.response.data) : error.message);
           } else {
             res.set(
               "Retry-After",

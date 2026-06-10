@@ -17,6 +17,9 @@ const redisClient = redis.createClient({
   password: process.env.REDIS_PASSWORD,
   enable_offline_queue: false,
 });
+redisClient.on("error", (err) => {
+  console.error("Redis error in app.js:", err.message);
+});
 let RedisStore = require('connect-redis')(session)
 
 var expressLayouts = require('express-ejs-layouts');
