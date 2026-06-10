@@ -2511,12 +2511,16 @@ router.get("/kulucka/:id", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
-  const id = req.params.id;
-  const headers = await getHeader(req);
-  const setler = await getSetler(headers, id);
-  const dictionary = await getKuluckasozluk(headers, id);
-console.log('user:', user);
-  res.render("kulucka2", { page: "Kuluçka Sayfası", user, setler, dictionary: dictionary.data[0] });
+  try {
+    const id = req.params.id;
+    const headers = await getHeader(req);
+    const setler = await getSetler(headers, id);
+    const dictionary = await getKuluckasozluk(headers, id);
+    res.render("kulucka2", { page: "Kuluçka Sayfası", user, setler, dictionary: dictionary.data[0] });
+  } catch (err) {
+    console.error('/kulucka/:id hatası:', err.message);
+    next(err);
+  }
 });
 
 router.get("/kulucka/:dictId/set/:setId", async function (req, res, next) {
@@ -2530,26 +2534,31 @@ router.get("/kulucka/:dictId/set/:setId", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
-  const setId = req.params.setId;
-  const headers = await getHeader(req);
-  const selectedSet = await getSet(headers, setId);
-  const dictionary = await getKuluckasozluk(headers, selectedSet.data[0].dictId.id);
-  const nextSet = await getNextSet(headers, setId);
-  let isModerater = false;
-  if (user && user.id && !user.assignedSet) {
-    if (user.canDoKuluckaModerate) {
-      isModerater = true;
+  try {
+    const setId = req.params.setId;
+    const headers = await getHeader(req);
+    const selectedSet = await getSet(headers, setId);
+    const dictionary = await getKuluckasozluk(headers, selectedSet.data[0].dictId.id);
+    const nextSet = await getNextSet(headers, setId);
+    let isModerater = false;
+    if (user && user.id && !user.assignedSet) {
+      if (user.canDoKuluckaModerate) {
+        isModerater = true;
+      }
+      const reg = await registerSet(headers, setId, user.id, isModerater);
+      if (reg) {
+        req.session.user.user = reg;
+        req.session.save();
+      }
+      if (user.canDoKuluckaModerate) {
+        return res.redirect(`/kulucka-eklediklerim/${setId}`);
+      }
     }
-    const reg = await registerSet(headers, setId, user.id, isModerater);
-    if (reg) {
-      req.session.user.user = reg;
-      req.session.save();
-    }
-    if (user.canDoKuluckaModerate) {
-      res.redirect(`/kulucka-eklediklerim/${setId}`);
-    }
+    res.render("kulucka3", { page: "Kuluçka Sayfası", user, selectedSet: selectedSet.data[0], nextSet: nextSet[0], dictionary: dictionary.data[0] });
+  } catch (err) {
+    console.error('/kulucka/:dictId/set/:setId hatası:', err.message);
+    next(err);
   }
-  res.render("kulucka3", { page: "Kuluçka Sayfası", user, selectedSet: selectedSet.data[0], nextSet: nextSet[0], dictionary: dictionary.data[0] });
 });
 
 router.post("/kulucka-ekle", async function (req, res, next) {
@@ -2558,6 +2567,7 @@ router.post("/kulucka-ekle", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
+  try {
   const headers = await getHeader(req);
   const temppayload = {...req.body};
   delete temppayload.madde;
@@ -2692,6 +2702,10 @@ router.post("/kulucka-ekle", async function (req, res, next) {
     .catch((error) => {
       res.status(400).send(error.response.data);
     });
+  } catch (err) {
+    console.error('/kulucka-ekle hatası:', err.message);
+    next(err);
+  }
 });
 
 router.post("/kulucka-sil/:id", async function (req, res, next) {
@@ -2723,17 +2737,22 @@ router.post("/kulucka-teslimet", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
-  const headers = await getHeader(req);
-  const temppayload = {...req.body};
-  const sectionId = temppayload.setId;
-  const nuser = await setTeslimEt(headers, sectionId);
-  console.log('nuser', JSON.stringify(nuser));
-  if (nuser) {
-    req.session.user.user = nuser;
-    req.session.save();
-    return res.status(200).send("Başarılı teslimat yaptınız");
+  try {
+    const headers = await getHeader(req);
+    const temppayload = {...req.body};
+    const sectionId = temppayload.setId;
+    const nuser = await setTeslimEt(headers, sectionId);
+    console.log('nuser', JSON.stringify(nuser));
+    if (nuser) {
+      req.session.user.user = nuser;
+      req.session.save();
+      return res.status(200).send("Başarılı teslimat yaptınız");
+    }
+    res.status(400).send('Bir hata var!');
+  } catch (err) {
+    console.error('/kulucka-teslimet hatası:', err.message);
+    next(err);
   }
-  res.status(400).send('Bir hata var!');
 });
 
 router.post("/kulucka-kontroledildi", async function (req, res, next) {
@@ -2742,16 +2761,21 @@ router.post("/kulucka-kontroledildi", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
-  const headers = await getHeader(req);
-  const temppayload = {...req.body};
-  const sectionId = temppayload.setId;
-  const nuser = await setKontrolEt(headers, sectionId);
-  if (nuser) {
-    req.session.user.user = nuser;
-    req.session.save();
-    return res.status(200).send("Başarılı teslimat yaptınız");
+  try {
+    const headers = await getHeader(req);
+    const temppayload = {...req.body};
+    const sectionId = temppayload.setId;
+    const nuser = await setKontrolEt(headers, sectionId);
+    if (nuser) {
+      req.session.user.user = nuser;
+      req.session.save();
+      return res.status(200).send("Başarılı teslimat yaptınız");
+    }
+    res.status(400).send('Bir hata var');
+  } catch (err) {
+    console.error('/kulucka-kontroledildi hatası:', err.message);
+    next(err);
   }
-  res.status(400).send('Bir hata var');
 });
 router.post("/kulucka-guncelle", async function (req, res, next) {
   if (req.session && req.session.user) {
@@ -2759,6 +2783,7 @@ router.post("/kulucka-guncelle", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
+  try {
   const headers = await getHeader(req);
   const temppayload = {...req.body};
   delete temppayload.madde;
@@ -2900,6 +2925,10 @@ router.post("/kulucka-guncelle", async function (req, res, next) {
     .catch((error) => {
       res.status(400).send(error.response.data);
     });
+  } catch (err) {
+    console.error('/kulucka-guncelle hatası:', err.message);
+    next(err);
+  }
 });
 
 router.get("/kulucka-eklediklerim/:setId", async function (req, res, next) {
@@ -2909,9 +2938,6 @@ router.get("/kulucka-eklediklerim/:setId", async function (req, res, next) {
   };
   let user = null;
   let myownentries = null;
-  let selectedSet = null;
-  let nextSet = null;
-  let headers = null;
   const setId = req.params.setId;
 
   if (req.session && req.session.user) {
@@ -2919,20 +2945,24 @@ router.get("/kulucka-eklediklerim/:setId", async function (req, res, next) {
   } else {
     return res.redirect("/");
   }
-    headers = await getHeader(req);
-    selectedSet = await getSet(headers, setId);
-    nextSet = await getNextSet(headers, setId);
+  try {
+    const headers = await getHeader(req);
+    const selectedSet = await getSet(headers, setId);
+    const nextSet = await getNextSet(headers, setId);
     const dictionary = await getKuluckasozluk(headers, selectedSet.data[0].dictId.id);
     await axios
-    .get(getApiUrl(`/v1/kuluckamadde/getmyownentries/${setId}`), { headers })
-    .then((response) => {
-      myownentries = response.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-
+      .get(getApiUrl(`/v1/kuluckamadde/getmyownentries/${setId}`), { headers })
+      .then((response) => {
+        myownentries = response.data;
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
     res.render("kulucka-eklediklerim", { page: "Kuluçka Eklediklerim Sayfası", user, myownentries, selectedSet: selectedSet.data[0], nextSet: nextSet[0], dictionary: dictionary.data[0] });
+  } catch (err) {
+    console.error('/kulucka-eklediklerim/:setId hatası:', err.message);
+    next(err);
+  }
 });
 
 router.get("/sende-ekle", ensureAuthenticated, function (req, res, next) {
