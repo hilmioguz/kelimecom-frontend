@@ -99,7 +99,7 @@ services:
   
   redisdb:
     image: redis
-    command: redis-server --requirepass R3d1sP3SS --appendonly yes
+    command: redis-server --requirepass R3d1sP3SS --appendonly no
     restart: always
     environment:
       - REDIS_PASSWORD=R3d1sP3SS

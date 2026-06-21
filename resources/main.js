@@ -1169,7 +1169,11 @@ function cekimveturevFormatter({ aranan, data, isKisa, meta, error }) {
   let sonuckutusu = $("#cekim-benzerlerde-arama-sonucu");
   let cekimveturevBlock = $("#cekim-benzerlerde-arama");
   if (cekimveturevBlock && cekimveturevBlock.length > 0) {
-    cekimveturevBlock.attr("data-total", Number(meta.total));
+    if (meta && meta.total !== undefined) {
+      cekimveturevBlock.attr("data-total", Number(meta.total));
+    } else {
+      cekimveturevBlock.attr("data-total", 0);
+    }
   }
   if (isKisa) {
     sonuckutusu = $("#cekim-benzerlerde-arama-sonucu-kisa");
@@ -1627,6 +1631,8 @@ function maddeAnlamlariFormatter({ aranan, data, meta, error }) {
   const baslikContent = $("#madde-anlamlarinda-arama .ara-baslik");
   if (meta && meta.total !== undefined) {
     $("#madde-anlamlarinda-arama").attr("data-total", Number(meta.total));
+  } else {
+    $("#madde-anlamlarinda-arama").attr("data-total", 0);
   }
   if (error === null) {
     let metam = $("#metaHolder").attr("data-meta");
