@@ -4,6 +4,7 @@ services:
   apiend:
     build: ${PWD:-.}/apiend/.
     image: apiend
+    command: node src/index.js
     restart: always
     environment:
       - NODE_ENV=production
