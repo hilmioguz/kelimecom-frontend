@@ -1490,7 +1490,7 @@ router.get(
 
     await axios
       .get(
-        getApiUrl(`/v1/generalsearch/kelime/${encodeURIComponent(madde)}/${maddeId}/${dil}/${tip}/${sozluk}/${clientIp}`),
+        getApiUrl(`/v1/generalsearch/kelime/${encodeURIComponent(madde)}/${encodeURIComponent(maddeId)}/${encodeURIComponent(dil)}/${encodeURIComponent(tip)}/${encodeURIComponent(sozluk)}/${clientIp}`),
         {
           headers,
         }
@@ -1547,7 +1547,7 @@ router.get(
 
     await axios
       .get(
-        getApiUrl(`/v1/generalsearch/kelimekendiharic/${encodeURIComponent(madde)}/${maddeId}/${dil}/${tip}/${sozluk}`),
+        getApiUrl(`/v1/generalsearch/kelimekendiharic/${encodeURIComponent(madde)}/${encodeURIComponent(maddeId)}/${encodeURIComponent(dil)}/${encodeURIComponent(tip)}/${encodeURIComponent(sozluk)}`),
         {
           headers,
         }
@@ -1576,8 +1576,8 @@ router.get(
       })
       .catch((error) => {
         metadata = {};
-        // console.log("ERRRR:KENDIHARICSONUC_________", error);
-        console.log(error)
+        // Tam axios hata nesnesini yazdırmak (socket, istek gövdesi vb.) çok CPU harcıyordu.
+        console.warn("kelimekendiharic API hatası:", error.response ? error.response.status : error.message);
       });
 
     res.render("kelime", {
@@ -3280,7 +3280,7 @@ router.get("/blog", async function (req, res, next) {
       blogs = a;
     })
     .catch((error) => {
-      console.log(error);
+      console.warn("blog API hatası:", error.response ? error.response.status : error.message);
     });
 
   res.render("blog", { page: "Blog Sayfası", user, blogs });
@@ -3314,7 +3314,7 @@ router.get("/blog/:slug", async function (req, res, next) {
       blog = a;
     })
     .catch((error) => {
-      console.log(error);
+      console.warn("blog API hatası:", error.response ? error.response.status : error.message);
     });
 
   res.render("blogdetay", { page: "Blog DetaySayfası", user, blog });
