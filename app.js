@@ -41,6 +41,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts)
 app.set('layout', './layout')
 app.set('view engine', 'ejs');
+// Sunucudaki konteynerde NODE_ENV tanımlı değil; Express bu durumda şablon önbelleğini
+// kapatıp EJS şablonlarını (layout + partial'lar) her istekte yeniden derliyordu.
+// Şablon değişiklikleri deploy sonrası restart ile yansır.
+app.set('view cache', true);
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
