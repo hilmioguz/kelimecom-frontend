@@ -51,7 +51,10 @@ app.use(cookieParser());
 app.use(flash({ sessionKeyName: 'flashMessage' }));
 
 // set path for static assets
-app.use(express.static(path.join(__dirname, 'public')));
+// Önbellek süresi yoktu (max-age=0): her sayfa açılışında 1,8 MB app-min.js ve
+// 500 KB style.css Node'dan yeniden isteniyordu (frontend CPU %100+).
+// 1 gün: yeni JS/CSS deploy edildiğinde kullanıcılara en geç 1 gün içinde ulaşır.
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 app.enable('trust proxy');
 app.use(i18n);
 app.use(requestIp.mw({
