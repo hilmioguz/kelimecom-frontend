@@ -4,6 +4,15 @@
  * Module dependencies.
  */
 
+/**
+ * Yakalanmamış Promise hataları Node 20'de süreci öldürüyordu
+ * (tek bir route'taki hata tüm siteyi ~10 sn kapatıyordu).
+ * Hatayı logla, süreci ayakta tut.
+ */
+process.on('unhandledRejection', function (reason) {
+  console.error('[unhandledRejection]', reason && reason.stack ? reason.stack : reason);
+});
+
 var app = require('../app');
 var debug = require('debug')('website:server');
 var http = require('http');

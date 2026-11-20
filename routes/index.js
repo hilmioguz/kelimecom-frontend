@@ -719,7 +719,7 @@ const QR_CODE_INSTITUTION_MAP = {
   'ca1516cf-1552-11ef-9da1-202556bfb2c7': '677d2b2ae41fe967ae3de77e',
 };
 
-const getOrSetKurumlar = () => {
+const loadKurumlar = () => {
   return new Promise((resv, rej) => {
     const fetchFromApi = () => {
       axios
@@ -764,7 +764,7 @@ const getOrSetKurumlar = () => {
     });
   });
 };
-const getOrSetSozlukler = () => {
+const loadSozlukler = () => {
   return new Promise((resv, rej) => {
     const fetchFromApi = () => {
       axios
@@ -809,7 +809,52 @@ const getOrSetSozlukler = () => {
     });
   });
 };
+// --- Süreç içi bellek önbelleği ---------------------------------------------
+// kurumlar (~160 KB) ve sozlukler her sayfa isteğinde Redis'ten çekilip
+// JSON.parse ediliyordu (istek başına ~30 ms CPU, tek çekirdeği dolduruyordu).
+// Çözülmüş listeyi 60 sn Node belleğinde tutuyoruz. Boş sonuç (API/Redis
+// hatası) önbelleğe alınmaz. Çağıranlar diziyi yerinde sıralayabildiği için
+// (sozlukSort) her seferinde sığ kopya döndürülür.
+const MEM_CACHE_TTL_MS = 60 * 1000;
+const memCache = new Map(); // key -> { value, expires, pending }
+const withMemCache = (key, loader) => {
+  const now = Date.now();
+  const entry = memCache.get(key);
+  if (entry && entry.value && entry.expires > now) {
+    return Promise.resolve(entry.value.slice());
+  }
+  if (entry && entry.pending) {
+    return entry.pending.then((v) => (Array.isArray(v) ? v.slice() : v));
+  }
+  const pending = loader()
+    .then((value) => {
+      if (Array.isArray(value) && value.length > 0) {
+        memCache.set(key, { value, expires: Date.now() + MEM_CACHE_TTL_MS });
+      } else {
+        memCache.delete(key);
+      }
+      return value;
+    })
+    .catch((err) => {
+      memCache.delete(key);
+      throw err;
+    });
+  memCache.set(key, { ...(entry || {}), pending });
+  return pending.then((v) => (Array.isArray(v) ? v.slice() : v));
+};
+const getOrSetKurumlar = () => withMemCache("kurumlar", loadKurumlar);
+const getOrSetSozlukler = () => withMemCache("sozlukler", loadSozlukler);
+
+// axios hatasında API yanıtı yoksa (timeout, socket hang up, ECONNREFUSED)
+// error.response undefined olur; error.response.data okumak catch içinde
+// TypeError fırlatıp Node sürecini öldürüyordu.
+const apiErrorData = (error) =>
+  error && error.response && error.response.data !== undefined
+    ? error.response.data
+    : { message: (error && error.message) || "API hatası" };
+
 const deleteRedisCacheByName = async (key) => {
+  memCache.delete(key);
   return new Promise((resv, rej) => {
     if (!redisClient || !redisClient.connected) {
       resv(1);
@@ -848,19 +893,18 @@ const getCleanIpAddress = async (req) => {
 const setKurumsalAccess = async (req) => {
   const ip = await getCleanIpAddress(req);
   let abonekurum = null;
-  console.log('---> ip: ' + ip);
   const kurumlar = await getOrSetKurumlar();
   const now = new Date();
   
   // IP kontrolü + isActive + packetEnd (varsa) veya endDate kontrolü
   const ipMatch = kurumlar.filter((kurum) => {
-    // 1. IP CIDR range kontrolü
-    if (!inRange(ip, kurum.cidr)) {
+    // 1. isActive kontrolü - kurum aktif olmalı (ucuz kontrol önce)
+    if (kurum.isActive !== true) {
       return false;
     }
-    
-    // 2. isActive kontrolü - kurum aktif olmalı
-    if (kurum.isActive !== true) {
+
+    // 2. IP CIDR range kontrolü
+    if (!inRange(ip, kurum.cidr)) {
       return false;
     }
     
@@ -890,7 +934,6 @@ const setKurumsalAccess = async (req) => {
     return true;
   });
   
-  console.log('ipMatch: ', JSON.stringify(ipMatch));
   if (ipMatch && ipMatch.length) {
     abonekurum = ipMatch[0];
   }
@@ -898,7 +941,6 @@ const setKurumsalAccess = async (req) => {
     req.session.abonekurum = abonekurum;
     req.session.save();
   }
-  console.log('---------> abonekurum: ', JSON.stringify(abonekurum));
   return abonekurum;
 };
 
@@ -1290,7 +1332,7 @@ router.post("/register", async function (req, res, next) {
       res.status(200).send("success");
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
 });
 router.use('/file-upload', fileUploadRoute);
@@ -1322,7 +1364,7 @@ router.post("/forgot-password", async function (req, res, next) {
         );
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
 });
 
@@ -1350,7 +1392,7 @@ router.post("/reset-password", async function (req, res, next) {
       res.status(200).send("Şifreniz başarılı bir şekilde yenilenmiştir.");
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
 });
 
@@ -1368,7 +1410,7 @@ router.post("/edit-password", async function (req, res, next) {
       res.status(200).send("Şifreniz başarılı bir şekilde yenilenmiştir.");
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
 });
 
@@ -1379,7 +1421,7 @@ router.post("/setfilterOrders", async (req, res, next) => {
     req.session.save();
     res.status(200).send("success");
   } catch (error) {
-    res.status(401).send(error.response.data);
+    res.status(401).send(apiErrorData(error));
   }
 });
 
@@ -1511,7 +1553,6 @@ router.get(
         }
       )
       .then(({ data }) => {
-        console.log('kelimekendiharic:', JSON.stringify(data));
         if (data.data && data.data.length > 0) {
           data.data.forEach((item) => {
             // if (sozluk === item.dict.code.toLowerCase()) {
@@ -2700,7 +2741,7 @@ router.post("/kulucka-ekle", async function (req, res, next) {
         );
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
   } catch (err) {
     console.error('/kulucka-ekle hatası:', err.message);
@@ -2726,7 +2767,7 @@ router.post("/kulucka-sil/:id", async function (req, res, next) {
       );
   })
   .catch((error) => {
-    res.status(400).send(error.response.data);
+    res.status(400).send(apiErrorData(error));
   });
 
 });
@@ -2923,7 +2964,7 @@ router.post("/kulucka-guncelle", async function (req, res, next) {
         );
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
   } catch (err) {
     console.error('/kulucka-guncelle hatası:', err.message);
@@ -3118,7 +3159,7 @@ router.post("/sende-ekle", async function (req, res, next) {
         );
     })
     .catch((error) => {
-      res.status(400).send(error.response.data);
+      res.status(400).send(apiErrorData(error));
     });
 });
 
@@ -3183,7 +3224,7 @@ if (user && user.id) {
       res.status(200).send("success");
     })
     .catch((error) => {
-      res.status(500).json(error.response.data);
+      res.status(500).json(apiErrorData(error));
     });
   } else {
     res.status(500).json('Önce giriş yapmalısınız.');
@@ -3353,7 +3394,7 @@ router.get("/verify-email", async function (req, res, next) {
       return res.redirect("/");
     })
     .catch(async (error) => {
-      await req.flash("info", error.response.message);
+      await req.flash("info", error.response ? error.response.message : error.message);
       return res.redirect("/");
     });
 });
@@ -3378,7 +3419,7 @@ router.post("/davetet", async (req, res, next) => {
         res.status(200).json(data);
       })
       .catch((error) => {
-        res.status(500).json(error.response.message);
+        res.status(500).json(error.response ? error.response.message : error.message);
       });
   } else {
     res.status(500).json("Günlük en fazla 3 kişiye davet gönderebilirsiniz!");
